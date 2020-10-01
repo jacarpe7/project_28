@@ -25,12 +25,12 @@
 **Code Review** 
 The following are our review policies for both developer and reviewer:  
   > The developer will answer the following questions in their pull request:  
-    >> Why was this code needed?  
-    >> Was the most recent version of dev pulled before this request?  
-    >> Does this code follow standard conventions?  
+    > Why was this code needed?  
+    > Was the most recent version of dev pulled before this request?  
+    > Does this code follow standard conventions?  
   > The reviewer will answer the following questions while reviewing:  
-    >> What does this code do and how?  
-    >> Does this code meet the functional requirements it's trying to fulfill?  
-    >> Is this code understandable?  
-    >> Does it have proper comments?  
+    > What does this code do and how?  
+    > Does this code meet the functional requirements it's trying to fulfill?  
+    > Is this code understandable?  
+    > Does it have proper comments?  
   
