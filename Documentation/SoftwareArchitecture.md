@@ -2,9 +2,9 @@
 
 ## Coding Language  ##
 
-Language:
+Language: Python (Data Extraction and Manipulation)
 
-Api('s):
+Api('s): TensorFlow (https://www.tensorflow.org/api_docs)
 
 
 ### Data Storage ###
