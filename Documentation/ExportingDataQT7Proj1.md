@@ -1,5 +1,5 @@
 ## Exporting data via QTouch Data Visualizer in Atmel Studio:
-Note: This document uses configuration from the qt7-proj1 solution file Bob provided us.
+Note: This document uses configuration from the qt7-proj1 solution file Bob provided us. The file with key functionality is datastreamer_UART_avr.c
 
 *	Open Atmel Studio and ensure your hardware (AVR128DA48, QT7 Xplained Pro, QTouch PTC) is connected via USB and has the qt7-proj1 solution loaded.
 *	Open the Data Visualizer from the Tools menu.
