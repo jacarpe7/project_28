@@ -1,5 +1,5 @@
 ## Exporting data via File Logger in Atmel Studio:
-Note: It appears this method only allows for exporting the data from one sensor at a time.
+Note: It appears this method only allows for exporting the data from one sensor at a time. See the other instructions which use the QTouch Data Visualizer for multiple sensors.
 *	Connect your data source and get the Data Visualizer responsive to activity with the QT7 Xplained. 
 *	Make sure Serial Port Control Panel is open and shows as connected.
 *	Open up Configuration by clicking the arrow/expander (left side of screen) to display Data Visualizer Modules.
