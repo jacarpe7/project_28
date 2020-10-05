@@ -9,5 +9,5 @@ Api('s):
 
 ### Data Storage ###
 
-Database:
+Database: CSV file (excel)
 
