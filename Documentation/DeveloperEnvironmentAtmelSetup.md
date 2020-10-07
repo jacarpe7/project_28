@@ -4,6 +4,8 @@
 
 Atmel Studio 7 is an integrated development platform for developing and debugging all AVR(R) and SAM microcontroller applications.  It will be used to code and debug the AVR128DA48 microcontroller and Qt7 Xplained extension board for the length of the project.
 
+**A Video walkthrough of these steps can be found [here](https://drive.google.com/file/d/1tgBlZLX5sDQPm3unXJMnlFUaIS4k1C4Q/view?usp=sharing).**
+
 ### Prerequisites
 
   - Curiousity Nano Touch Adapter 
