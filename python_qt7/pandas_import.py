@@ -36,6 +36,6 @@ data4 = data.loc[(data'FrameCounter'] < 37) & ()
 print(data)
 print(data2)
 print(data3)
-
+print(data4)
 
 
