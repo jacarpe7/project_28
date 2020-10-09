@@ -1,0 +1,7 @@
+#Anaconda Files
+.spyproject/
+
+#Atmel Debug Files added when running
+qt7-proj1/Debug
+AVR128-rawblink/Debug
+qt7-dig-gain4/Debug
