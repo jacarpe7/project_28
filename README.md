@@ -20,4 +20,4 @@ QT7 Xplained Pro extension board</br>
 </br>
 </br>
 **Video Links**</br>
-More to follow
+[Artifact Review 1](https://youtu.be/0COBPH9X2WI)
