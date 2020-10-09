@@ -114,6 +114,7 @@ void datastreamer_output(void)
 	uint8_t           u8temp_output, send_header;
 	volatile uint16_t count_bytes_out;
 
+
 	send_header = sequence & (0x0f);
 	if (send_header == 0) {
 		for (i = 0; i < sizeof(data); i++) {
@@ -143,6 +144,15 @@ void datastreamer_output(void)
 		temp_int_calc -= get_sensor_node_reference(count_bytes_out);
 		u16temp_output = (uint16_t)(temp_int_calc);
 		datastreamer_transmit((uint8_t)u16temp_output);
+		if (index < 1000) {
+			arr[index] = (uint8_t)u16temp_output;
+			index++;
+		}
+		if (index >= 1000) {
+			if (index >= 1001) {
+				index = 1003;
+			}
+		}
 		datastreamer_transmit((uint8_t)(u16temp_output >> 8u));
 
 		/* Comp Caps */
