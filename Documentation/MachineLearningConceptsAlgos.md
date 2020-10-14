@@ -12,7 +12,7 @@ Python is the most popular language for ML and data science[1]
 
 ### ML Methods
 
-ML algorithms can be broken into several different high-level styles:</br></br>
+ML algorithms can be broken into several different high-level learning styles:</br></br>
 
 1. **Supervised Learning** - These are the most common[1] and basically the machine goes through a training process in which we the developers supervise the process.  The initial input data is used to train the machine and it is corrected when it is wrong.  You continue this process until a required level of accuracy/precision is obtained [2].  Common types are **classification** and **regression**:
 	1. **Classification** is predicting a class label based on input data, requires training datasets and lots of input/output for learning [3].  There are several types of classification tasks, one being binary which does not sound like something we could use within the context of this projet.  It essentially maps to one of two values, and expected and abnormal state.  What sounds more like something we could use is Multi-Class  classification, which is tasks that have more than 2 classes (an output category)[3].  Since we will have more than 2 gestures, and it is not as simple as normal/abnormal, this seems like the most similar to our problem at hand.  A popular model for multi-class classification according to Brownlee[3] is prediction with a Multinoulli probability distribution.  This will predict the probability that some data input belongs to a given class label.  In our context this could mean the probability that the data represents a specific gesture which we are trying to train the hardware to recognize.  Multi-Label classification is another type of classification task, but here in the context of our project it would mean a single gesture could be translated into multiple inputs, which I don't think we want.
@@ -21,13 +21,49 @@ ML algorithms can be broken into several different high-level styles:</br></br>
 2. **Unsupervised Learning** - These are different from the previous algorithm type in that obviously here there is no human-aided training or guidance that takes place [1].  This is more for scenarios where we don't have labelled input data to learn from and still want to find meaningful patterns.  I'm not sure this will apply to our project directly, since we'll be using known and labeled data with specific outputs/responses that we want to elicit.  Most common and useful unsupervised learning types are:
 	1. **Clustering** - This algorithm type finds similarities and patterns among various data samples and "clusters" them into group based on these features [1].
 	2. **Association** - This is more about learning new details and patterns about large data sets and is commonly used for analyzing customer shopping patterns [1].
-	3. **Dimensionality Reduction** - This method seeks to reduce the number of variablwes for the data sample by finding a set of the most representative features [1].
+	3. **Dimensionality Reduction** - This method seeks to reduce the number of variables for the data sample by finding a set of the most representative features [1].
 	4. **Anomoly Detection** - This is used to identify abnormal, rare, or unexpected events from the data [1].
+	
+3. **Semi-Supervised Learning** - This is a combination of the previous 2 types of algorithms and contains both labeled and unlabeled data.  Some of the previous types of algorithms are also part of this section. [1]
+	1. **Classification** - See above
+	2. **Regression** - See above 
+	
+### ML Algorithms for the Project
+
+Based on the above research it seems that the best option for our project is going to be supervised learning algorithm, and more specifically a multi-class classification algorithm.  This most correctly will apply to our project; we will have labeled data from which we will need to extract and analyze and "classify" this data into an appropriate output, i.e. categorize the type of gesture being presented to the hardware sensors.  Some popular algorithms that can be used for multi-class classification ML include[3]:
+
+1. **K-Nearest Neighbors** - In simple terms, this algorithm works on the idea that similar data points are near each other, and can be grouped as such[4].  One big disadvantage of this algorithm is that it gets significantly less efficient the larger the data set.  
+
+2. **Decision Trees** - Decision tree algorithms are essentially top to bottom binary trees, with decision nodes, edges and leaves (meaning no further decision is made).  This has some feasibility within the scope of our project, as we could potentially use this to confirm different conditions, leading to a final determination as to what gesture is being presented to the sensors.  There are many types of decision tree algorithms:[2]
+	1. **Classification and Regression Tree (CART)** - This is your standard binary tree model that we all know from Data Structures class.   See above description for decision trees.
+	2. **Iterative Dichotomiser 3 (ID3)** - This is a specific decision tree algorithm which seeks to create a shallow decision tree and is generally only used for nominal data only.  It uses this data to continuously split the data into 2 opposite sets.  That essentially rules this algorithm out as an option for our project.
+	3. **C4.5 and C5.0** - These are both similar in concept to the ID3 algorithm with some minor improvements from each previous version
+	4. **Chi-squared Automatic Interaction Detection (CHAID)** - This is a decision tree algorithm that uses the chi-square statistic which correlates to the similarity between 2 data points.  In order to use this one for the project we would need to categorize all of our continuous dependent variables (the sensor readings) into categories[6].
+	5. **Decision Stump** - This is a decision tree with only one root node and all leaves then connected to this node.  This is not relevant to the project as we will have much more than a single input value.
+	6. **M5** - This is a combination of a decision tree and also uses linear regression modeling at each node as well.  This works well with lots of attributes, and is specifically good for predicting values of numerical responses.[7]
+
+3. **Naive Bayes** - 
+
+4. **Random Forest** - 
+
+5. **Gradient Boosting** - 
+
+6. **Logistic Regression** - 
+
+7. **Support Vector Machine** - 
 
 ### References
 
-[1] ***Machine Learning with Python Tutorial***.  Accessed on: Oct. 13, 2020.  [Online].  Available:  https://www.tutorialspoint.com/machine_learning_with_python/index.htm
+[1] *Machine Learning with Python Tutorial*.  Accessed on: Oct. 13, 2020.  [Online].  Available:  https://www.tutorialspoint.com/machine_learning_with_python/index.htm
 
-[2] J. Brownlee, "A Tour of Machine Learning Algorithms," ***Machine Learning Mastery,*** August 2020. Accessed on: Oct. 13, 2020. [Online]. Available: https://machinelearningmastery.com/a-tour-of-machine-learning-algorithms/
+[2] J. Brownlee, "A Tour of Machine Learning Algorithms," *Machine Learning Mastery,* August 2020. Accessed on: Oct. 13, 2020. [Online]. Available: https://machinelearningmastery.com/a-tour-of-machine-learning-algorithms/
 
-[3] J. Brownlee, "4 Types of Classification Tasks in Machine Learning," ***Machine Learning Mastery,*** August 2020. Accessed on: Oct. 13, 2020. [Online]. Available: https://machinelearningmastery.com/types-of-classification-in-machine-learning/
+[3] J. Brownlee, "4 Types of Classification Tasks in Machine Learning," *Machine Learning Mastery,* August 2020. Accessed on: Oct. 13, 2020. [Online]. Available: https://machinelearningmastery.com/types-of-classification-in-machine-learning/
+
+[4] O. Harrison, "Machine Learning Basics with the K-Nearest Neighbors Algorithm," *Towards Data Science,* September 2018. Accessed on: Oct. 14, 2020. [Online]. Available: https://towardsdatascience.com/machine-learning-basics-with-the-k-nearest-neighbors-algorithm-6a6e71d01761
+
+[5] P. Gupta, "Decision Trees in Machine Learning," *Towards Data Science,* May 2017. Accessed on: Oct. 14, 2020. [Online]. Available: https://towardsdatascience.com/decision-trees-in-machine-learning-641b9c4e8052
+
+[6] J. Ramzai, "Simple guide for Top 2 types of Decision Trees: CHAID & CART," *Towards Data Science,* June 2020. Accessed on: Oct. 14, 2020. [Online]. Available: https://towardsdatascience.com/clearly-explained-top-2-types-of-decision-trees-chaid-cart-8695e441e73e
+
+[7] S. Shaier, "ML Algorithms: One SD - Decision Trees Algorithms," *Towards Data Science,* February 2019. Accessed on: Oct. 14, 2020. [Online]. Available: https://towardsdatascience.com/ml-algorithms-one-sd-%CF%83-decision-trees-algorithms-746e866ac3f
