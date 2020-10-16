@@ -42,15 +42,26 @@ Based on the above research it seems that the best option for our project is goi
 	5. **Decision Stump** - This is a decision tree with only one root node and all leaves then connected to this node.  This is not relevant to the project as we will have much more than a single input value.
 	6. **M5** - This is a combination of a decision tree and also uses linear regression modeling at each node as well.  This works well with lots of attributes, and is specifically good for predicting values of numerical responses.[7]
 
-3. **Naive Bayes** - 
+3. **Naive Bayes** - The first piece to understanding the Naive Bayes algorithm is understanding the Bayes Theorem, which is defined by Wikipedia as a theorem in probability theory and statistics that "describes the probability of an event, based on prior knowledge of conditions that might be related to the event."  One key point is that it works best when each of the variables can be considered independent of one another.  In the context of our project it would work by predicting the probability of the data representing a specific gesture.  Each data point would be analyzed for the probability that it independently represents a specific gesture.  One common example of this algorithm's usage is spam email detection.[8]  There are three kinds of this algorithm that are mainly based on how the data is distributed:
+	1. **Gaussian Naive Bayes** - When the data is continuous and distribution is Gaussian [8]
+	2. **Multinomial Naive Bayes** - Data is multinomial distributed (common use is text classification[8]
+	3. **Bernoulli Naive Bayes** - Data is multivariate Bernoulli distributed, meaning that each variable is a binary value with each having *p* and *1-p* probability of occurring (not for this project based on that).
+	
+4. **Random Forest** - This algorithm is a group of decision trees that work together for a prediction of the class of data (or in our project, the gesture being presented) [1]
 
-4. **Random Forest** - 
+5. **Gradient Boosting** - Works by iteratively learning from previous predictions with non-linear functions.  This algorithm will be best used when the number of independent variables in the data is not significant and when non-linear models are a more appropriate fit for the data points.  
 
-5. **Gradient Boosting** - 
+6. **Logistic Regression** - This algorithm is more specific and useful for binary classification which will not apply to our project.  Abstract real world examples are spam/not spam, pass/fail, etc.  
 
-6. **Logistic Regression** - 
+7. **Support Vector Machine** - Some real world applications of this algorithm are face detection, image classification, text classification, and bioinformatics.  
 
-7. **Support Vector Machine** - 
+### Other ML Algorithms
+
+There are many ML algorithms, an overwhelming amount actually.  Here's a Wikipedia [link](https://en.wikipedia.org/wiki/Outline_of_machine_learning#Machine_learning_methods) with a nice list of many others for review.
+
+### Summary
+
+After much research I feel like we are just scratching the surface on Machine Learning and the different kinds of algorithms that can be used.  It seems that the best type of algorithm for this project is going to be a **Supervised, Multi-Class Classification algorithm**.  Some of the specific algorithms to take deep dives in are going to be **K-Nearest Neighbors, Random Forest/decision trees, Support Vector Machine, and Naive Bayes**.  We may want to implement multiple algorithms and find the one that is most accurate for our training and test data sets.
 
 ### References
 
@@ -67,3 +78,8 @@ Based on the above research it seems that the best option for our project is goi
 [6] J. Ramzai, "Simple guide for Top 2 types of Decision Trees: CHAID & CART," *Towards Data Science,* June 2020. Accessed on: Oct. 14, 2020. [Online]. Available: https://towardsdatascience.com/clearly-explained-top-2-types-of-decision-trees-chaid-cart-8695e441e73e
 
 [7] S. Shaier, "ML Algorithms: One SD - Decision Trees Algorithms," *Towards Data Science,* February 2019. Accessed on: Oct. 14, 2020. [Online]. Available: https://towardsdatascience.com/ml-algorithms-one-sd-%CF%83-decision-trees-algorithms-746e866ac3f
+
+[8] R. Dwivedi, "What is Naive Bayes Algorithm in Machine Learning?," *Analytics Steps,* April 2020. Accessed on: Oct. 16, 2020. [Online]. Available: https://www.analyticssteps.com/blogs/what-naive-bayes-algorithm-machine-learning
+
+[9] J. Brownlee, "Logistic Regression for Machine Learning," *Machine Learning Mastery,* August 2020. Accessed on: Oct. 16, 2020. [Online]. Available: https://machinelearningmastery.com/logistic-regression-for-machine-learning/
+
