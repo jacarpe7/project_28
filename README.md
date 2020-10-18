@@ -8,6 +8,10 @@ Michael Frederic</br>
 Russell Smith</br>
 </br>
 </br>
+
+**Design Diagram**</br>
+![Image of Diagram](https://i.imgur.com/U47sitI.png)
+
 **Software & Tools**</br>
 [AtmelStudio7](https://www.microchip.com/images/default-source/avr-support/atmel-studio-7/atmelstudio7__google_291x202-min.jpg?sfvrsn=c1ad339d_1)</br>
 [Atmel Start](https://start.atmel.com/)</br>
