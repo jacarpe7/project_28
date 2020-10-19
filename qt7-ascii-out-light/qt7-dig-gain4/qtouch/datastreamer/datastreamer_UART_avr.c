@@ -188,7 +188,7 @@ void ascii_output(void)
 
 	}
 	sequence++;
-	send_string("\r\n");
+	send_string("\n");
 
 
 }
