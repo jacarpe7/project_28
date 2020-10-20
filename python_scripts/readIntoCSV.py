@@ -16,9 +16,9 @@ serialPort.readline()
 
 # change range value to collect more/less data points
 for x in range(500):
-	# timer. TODO: get rid of one time component
-	f.write(x + ",")
-	# read in from device
+    # timer. TODO: get rid of one time component
+    f.write('%d' % x + ",")
+    # read in from device
     f.write(serialPort.readline().decode('utf-8'))
 
 serialPort.close()
