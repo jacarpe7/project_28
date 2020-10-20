@@ -19,4 +19,37 @@ Resources:
 
 ![](https://i.imgur.com/6UeLRco.jpg)
 
+**Part 2**. Accessing the Data Visualizer:
 
+1. *tools->Data Visualizer*
+
+![](https://i.imgur.com/2NLMbv0.jpg)
+
+2. Connect to your device (COM port reliant).
+
+![](https://i.imgur.com/p3Bknur.jpg)
+
+3. Depending the device the display will be different, for us it should look something like this:
+    - *tabs at the top indicate the various viewports: Basic (current), Graph, Advanced, All*
+
+![](https://i.imgur.com/zWvBMCU.jpg)
+
+4. Take a look at the Graph tab, it will display the data visually.
+
+![](https://i.imgur.com/RgJinDI.jpg)
+
+5.The advanced data tab displays an extended versions of the basic data tab.
+
+![](https://i.imgur.com/oyYFs1Q.jpg)
+
+6. The all data tab condenses the advanced data and graph tabs into one viewport.
+
+7. From here you will want to reference *ExportingDataQT7Proj1.md* for further information on how to export the data.
+
+**Part 3**. Project configuration:
+
+1. *Project -> Re-configure Atmel Start Project*
+
+![](https://i.imgur.com/H7a86GU.jpg)
+
+2. This will take you to *Atmel Start* where you can make changes to your project skeleton. See *Atmel Start Project Creation Guide.md*
