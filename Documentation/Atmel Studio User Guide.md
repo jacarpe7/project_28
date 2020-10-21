@@ -46,10 +46,25 @@ Resources:
 
 7. From here you will want to reference *ExportingDataQT7Proj1.md* for further information on how to export the data.
 
-**Part 3**. Project configuration:
+**Part 3**. Project Re-configuration:
 
 1. *Project -> Re-configure Atmel Start Project*
 
 ![](https://i.imgur.com/H7a86GU.jpg)
 
 2. This will take you to *Atmel Start* where you can make changes to your project skeleton. See *Atmel Start Project Creation Guide.md*
+
+
+**Part 4**. Usefull Customization Options:
+
+1. *Tools -> Customize*: choose what components you want to display in the view port.
+
+![](https://i.imgur.com/O2yeWr3.jpg)
+
+2. *Tools -> Options*: featurs a ton of customizable options for the developer environment along with a few notable sections like *Projects* which houses project configurations and *Live Watch* which is the configuration for logged data output.
+
+![](https://i.imgur.com/To08mUU.jpg)
+
+3. *Tools -> Import and Export Settings*: Gives the ability to export/import your current settings in Atmel. Also features the ability to *reset* the settings back to the factory default for Atmel.
+
+![](https://i.imgur.com/bis59p4.jpg)
