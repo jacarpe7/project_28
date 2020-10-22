@@ -1,0 +1,3 @@
+## Data collection for machine learning model training
+
+There is a sample Excel file for reviewing the output of proximity right swiping the slider of the QT7 board called slider-right-swipe-data.xlsx. I've highlighted areas that show the signature of a swipe, which is a maximum value above threshold at each sensor progressing through sensor2, sensor3, and sensor4. Within folders are CSVs of single actions for ML training.
