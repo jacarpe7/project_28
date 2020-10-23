@@ -2,7 +2,7 @@ import serial
 
 # This script uses the hardware build in folder qt7-ascii-out-dylan
 
-# Need to define port according to your setup
+# Need to define port according to your setup. Typical port name - Windows: 'COM3'  Mac: '/dev/tty.usbmodem12345'
 serialPort = serial.Serial(port='COM3',baudrate=38400,bytesize=8,timeout=2,stopbits=serial.STOPBITS_ONE)
 
 # define sample object to hold data
