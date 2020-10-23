@@ -148,50 +148,49 @@ void send_string(char *str_ptr)
 
 void ascii_output(void)
 {
-	
+
 	static uint8_t	sequence = 0;
 	int16_t			touch_signal,touch_reference,touch_delta,comp_caps;
 	uint8_t			channel_index,touch_state;
-	
-	
-	send_string("0x55 ");
-	sprintf(tx_data,"seq:%04d\r\n",sequence);
+
+
+	sprintf(tx_data,"%04d,",sequence);
 	send_string(tx_data);
-	
+
 	for(channel_index = 0;channel_index <DEF_NUM_CHANNELS;channel_index++ )
 	{
 		// tx channel id
-		sprintf(tx_data,"ch:%04d ",channel_index);
-		send_string(tx_data);
+		// sprintf(tx_data,"ch:%04d ",channel_index);
+		// send_string(tx_data);
 		touch_signal = get_sensor_node_signal(channel_index);
-		
+
 		// tx signal value
-		sprintf(tx_data,"sig:%04d ",touch_signal);
-		send_string(tx_data);
-		
+		// sprintf(tx_data,"sig:%04d ",touch_signal);
+		// send_string(tx_data);
+
 		// tx reference
 		touch_reference = get_sensor_node_reference(channel_index);
-		sprintf(tx_data,"ref:%04d ",touch_reference);
-		send_string(tx_data);
-		
+		// sprintf(tx_data,"ref:%04d ",touch_reference);
+		// send_string(tx_data);
+
 		// tx delta
 		touch_delta = touch_signal - touch_reference;
-		sprintf(tx_data,"del:%04d ",touch_delta);
+		sprintf(tx_data,"%04d,",touch_delta);
 		send_string(tx_data);
-		
-		
+
+
 		// transmit state
-		
-		touch_state = get_sensor_state(channel_index) & 0x80;
-		if(touch_state)
-			send_string("on\r\n");
-		else send_string("off\r\n");
-				
+
+		// touch_state = get_sensor_state(channel_index) & 0x80;
+		// if(touch_state)
+		// 	send_string("on\r\n");
+		// else send_string("off\r\n");
+
 	}
 	sequence++;
-	send_string("0xAA \r\n");
-	
-	
+	send_string("\n");
+
+
 }
 
 
