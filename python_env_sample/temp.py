@@ -18,7 +18,7 @@ train_dataset_fp = tf.keras.utils.get_file(fname=os.path.basename(train_dataset_
 
 print("Local copy of the dataset file: {}".format(train_dataset_fp))
 
-!head -n5 {train_dataset_fp}
+#head -n5 {train_dataset_fp}
 
 column_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'species']
 
@@ -51,3 +51,41 @@ plt.scatter(features['petal_length'],
 plt.xlabel("Petal length")
 plt.ylabel("Sepal length")
 plt.show()
+
+def pack_features_vector(features, labels):
+  """Pack the features into a single array."""
+  features = tf.stack(list(features.values()), axis=1)
+  return features, labels
+
+train_dataset = train_dataset.map(pack_features_vector)
+
+features, labels = next(iter(train_dataset))
+
+print(features[:5])
+
+model = tf.keras.Sequential([
+  tf.keras.layers.Dense(10, activation=tf.nn.relu, input_shape=(4,)),  # input shape required
+  tf.keras.layers.Dense(10, activation=tf.nn.relu),
+  tf.keras.layers.Dense(3)
+])
+
+predictions = model(features)
+predictions[:5]
+
+tf.nn.softmax(predictions[:5])
+
+print("Prediction: {}".format(tf.argmax(predictions, axis=1)))
+print("    Labels: {}".format(labels))
+
+loss_object = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+
+def loss(model, x, y, training):
+  # training=training is needed only if there are layers with different
+  # behavior during training versus inference (e.g. Dropout).
+  y_ = model(x, training=training)
+
+  return loss_object(y_true=y, y_pred=y_)
+
+
+l = loss(model, features, labels, training=False)
+print("Loss test: {}".format(l))
