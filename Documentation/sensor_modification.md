@@ -2,28 +2,28 @@ Preliminary Sensor Modification Documentation
 
 1. Click on Qtouch.
 
-![pic1](https://ibb.co/XFxpRH2/1.png)
+![pic1](https://i.ibb.co/XFxpRH2/1.png)
 
 2. Make sure Sensors is selected (if applicable).
 
-![pic2](https://ibb.co/JrQMbGF/2.png)
+![pic2](https://i.ibb.co/JrQMbGF/2.png)
 
 3. Decide on which category of sensor you would like to add and click the down arrow by it. (for gestures, you probably want to choose the 2D Surface.)
 
-![pic3](https://ibb.co/QnP7ySR/3.png)
+![pic3](https://i.ibb.co/QnP7ySR/3.png)
 
 4. Select the number of channels (not sure on this one), technology (I think we’d choose Mutualcap because it allows x and y sensing), and the gesture type (one or two finger).
 
-![pic4](https://ibb.co/JvPP9Ck/4.png)
+![pic4](https://i.ibb.co/JvPP9Ck/4.png)
 
 5. Click Add in the same drop down menu.
 
-![pic5](https://ibb.co/bF8MG7L/5.png)
+![pic5](https://i.ibb.co/bF8MG7L/5.png)
 
 6. Click to move the sensor where you’d like it.
 
 7. You can combine sensors to create a lump sensor (click and drag selection to combine), however, this does not appear to be necessary for the 2D Surface, where the channels take care of that.
 
-![pic6](https://ibb.co/TcKTgcc/6.png)
+![pic6](https://i.ibb.co/TcKTgcc/6.png)
 
 8. Need to check with Bob to determine how the size of this thing works and if it can be configured or if it just takes up the whole thing.
