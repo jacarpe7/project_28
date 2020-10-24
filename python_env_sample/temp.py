@@ -27,3 +27,27 @@ label_name = column_names[-1]
 
 print("Features: {}".format(feature_names))
 print("Label: {}".format(label_name))
+
+class_names = ['Iris setosa', 'Iris versicolor', 'Iris virginica']
+
+batch_size = 32
+
+train_dataset = tf.data.experimental.make_csv_dataset(
+    train_dataset_fp,
+    batch_size,
+    column_names=column_names,
+    label_name=label_name,
+    num_epochs=1)
+
+features, labels = next(iter(train_dataset))
+
+print(features)
+
+plt.scatter(features['petal_length'],
+            features['sepal_length'],
+            c=labels,
+            cmap='viridis')
+
+plt.xlabel("Petal length")
+plt.ylabel("Sepal length")
+plt.show()
