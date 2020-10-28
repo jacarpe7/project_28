@@ -123,12 +123,12 @@ uint8_t data_tx_mode = ASCII_OUTPUT;
 
 void datastreamer_output(void)
 {
-	
+
 	if(data_tx_mode == ASCII_OUTPUT)
 		ascii_output();
 	else byte_output();
-		
-		
+
+
 }
 
 char tx_data[80];
@@ -136,14 +136,14 @@ char tx_data[80];
 
 void send_string(char *str_ptr)
 {
-	
+
 	char *tx_ptr;
-	
+
 	tx_ptr = str_ptr;
-	
+
 	while(*tx_ptr)
 	 datastreamer_transmit((uint8_t)(*tx_ptr++));
-	 
+
 }
 
 void ascii_output(void)
@@ -251,7 +251,7 @@ void byte_output(void)
 
 #if (ACQ_MODULE_AUTOTUNE_OUTPUT == 1)
 #if (DEF_PTC_CAL_OPTION == CAL_AUTO_TUNE_CSD)
-		// CSD 
+		// CSD
 		u8temp_output = qtlib_acq_set1.qtm_acq_node_config[count_bytes_out].node_csd;
 		datastreamer_transmit(u8temp_output);
 #else
@@ -281,7 +281,7 @@ void byte_output(void)
 	for (count_bytes_out = 0u; count_bytes_out < qtm_scroller_control1.qtm_scroller_group_config->num_scrollers;
 	     count_bytes_out++) {
 
-		// Slider State 
+		// Slider State
 		u8temp_output = qtm_scroller_control1.qtm_scroller_data[count_bytes_out].scroller_status;
 		if (0u != (u8temp_output & 0x01)) {
 			datastreamer_transmit(0x01);
@@ -289,24 +289,24 @@ void byte_output(void)
 			datastreamer_transmit(0x00);
 		}
 
-		// Slider Delta 
+		// Slider Delta
 		u16temp_output = qtm_scroller_control1.qtm_scroller_data[count_bytes_out].contact_size;
 		datastreamer_transmit((uint8_t)u16temp_output);
 		datastreamer_transmit((uint8_t)(u16temp_output >> 8u));
 
-		// Slider Threshold 
+		// Slider Threshold
 		u16temp_output = qtm_scroller_control1.qtm_scroller_config[count_bytes_out].contact_min_threshold;
 		datastreamer_transmit((uint8_t)u16temp_output);
 		datastreamer_transmit((uint8_t)(u16temp_output >> 8u));
 
-		// filtered position 
+		// filtered position
 		u16temp_output = qtm_scroller_control1.qtm_scroller_data[count_bytes_out].position;
 		datastreamer_transmit((uint8_t)(u16temp_output & 0x00FFu));
 		datastreamer_transmit((uint8_t)((u16temp_output & 0xFF00u) >> 8u));
 	}
-	
-	
-*/	
+
+
+*/
 
 /*
 #if (FREQ_HOP_AUTO_MODULE_OUTPUT == 1)
@@ -318,8 +318,8 @@ void byte_output(void)
 	}
 #endif
 */
-		
-		
+
+
 	/* Other Debug Parameters */
 	datastreamer_transmit(module_error_code);
 
