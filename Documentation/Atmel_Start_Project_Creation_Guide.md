@@ -53,3 +53,7 @@ Supported Features for QT Library Configuration:
 **Step 8.** Export to Atmel Studio: 
 
 ![](https://i.imgur.com/d1m072C.png)
+
+**Step 9.**  For further information:
+
+[Atmel Studio User Guide](Atmel_Studio_User_Guide.md)
