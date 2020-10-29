@@ -44,7 +44,7 @@ Resources:
 
 6. The all data tab condenses the advanced data and graph tabs into one viewport.
 
-7. From here you will want to reference *ExportingDataQT7Proj1.md* for further information on how to export the data.
+7. From here you will want to reference [Exporting data via QTouch Data Visualizer in Atmel Studio](Atmel_Start_Project_Creation_Guide.md) for further information on how to export the data.
 
 **Part 3**. Project Re-configuration:
 
