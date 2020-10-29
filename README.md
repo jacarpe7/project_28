@@ -22,7 +22,7 @@ QT7 Xplained Pro extension board</br>
 3. Now that software is loaded onto the device, ensure you have the latest version of python installed</br>
 4. Run the following command in terminal;
 ```terminal
-pip install pyserial
+python -m pip install --user numpy scipy matplotlib ipython jupyter pandas sympy nose pyserial
 ```
 5. If using Mac, find serial port below. If on windows, keep python code set to port 3. 
 ```Mac port for AVR128DA48
@@ -47,5 +47,7 @@ Joshua Carpenter</br>
 Kelly Petrone</br>
 Michael Frederic</br>
 Russell Smith</br>
-</br>
+
+**Resources**</br>
+https://realpython.com/linear-regression-in-python/
 </br>
