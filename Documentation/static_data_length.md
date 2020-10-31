@@ -1,0 +1,1 @@
+After doing a few test runs, it appears that most gestures on the touch device can be included within about 30-40 data points.  To be safe, I believe that we should do 50 data points per gesture.  This will be easy to translate to a static value (Python should do it for us with its arrays).
