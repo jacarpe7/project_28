@@ -5,3 +5,26 @@
 qt7-proj1/Debug
 AVR128-rawblink/Debug
 qt7-dig-gain4/Debug
+
+#Mac stuff
+**/.DS_Store
+
+#IntelliJ 
+.idea/
+out/
+
+#Eclipse
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
