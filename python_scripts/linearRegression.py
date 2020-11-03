@@ -4,14 +4,30 @@ from numpy import genfromtxt
 
 my_data = genfromtxt('rs-01.csv', delimiter=',')
 
+#extracts data from sensors, comparing each sensor to the previous
 x = np.array(my_data[:,1]).reshape(-1,1)
 y = np.array(my_data[:,2])
 
-#print(x)
-#print(y)
+x2 = np.array(my_data[:,2]).reshape(-1,1)
+y2 = np.array(my_data[:,3])
 
+x3 = np.array(my_data[:,3]).reshape(-1,1)
+y3 = np.array(my_data[:,4])
+
+x4 = np.array(my_data[:,4]).reshape(-1,1)
+y4 = np.array(my_data[:,5])
+
+#Creates Linear Regression model for each sensor 
 model = LinearRegression().fit(x,y)
 
+sensor2 = LinearRegression().fit(x2,y2)
+
+sensor3 = LinearRegression().fit(x3,y3)
+
+sensor4 = LinearRegression().fit(x4,y4)
+
+
+#scores model, intercept, coefficient, and prediction
 r_sq = model.score(x,y)
 
 print('coefficient of determination', r_sq)
