@@ -14,6 +14,9 @@ b_width = 8
 b_ht = 4
 pin_count = 0
 
+pin_valid = False
+pin_cleared = False
+
 class atm:
     
     def __init__(self, root):
@@ -68,18 +71,18 @@ class atm:
         button_4R.grid(row=3,column=0,padx=b_pad,pady=b_pad)
         
         # Create buttons for num pad and add to center frame grid
-        button_num_1 = Button(numpad_frame,text = "1",width=b_width,height=b_ht,command=lambda: input_pin("1"))
-        button_num_2 = Button(numpad_frame,text = "2",width=b_width,height=b_ht,command=lambda: input_pin("2"))
-        button_num_3 = Button(numpad_frame,text = "3",width=b_width,height=b_ht,command=lambda: input_pin("3"))
-        button_num_4 = Button(numpad_frame,text = "4",width=b_width,height=b_ht,command=lambda: input_pin("4"))
-        button_num_5 = Button(numpad_frame,text = "5",width=b_width,height=b_ht,command=lambda: input_pin("5"))
-        button_num_6 = Button(numpad_frame,text = "6",width=b_width,height=b_ht,command=lambda: input_pin("6"))
-        button_num_7 = Button(numpad_frame,text = "7",width=b_width,height=b_ht,command=lambda: input_pin("7"))
-        button_num_8 = Button(numpad_frame,text = "8",width=b_width,height=b_ht,command=lambda: input_pin("8"))
-        button_num_9 = Button(numpad_frame,text = "9",width=b_width,height=b_ht,command=lambda: input_pin("9"))
-        button_num_0 = Button(numpad_frame,text = "0",width=b_width,height=b_ht,command=lambda: input_pin("0"))
+        button_num_1 = Button(numpad_frame,text = "1",width=b_width,height=b_ht,command=lambda: input_num("1"))
+        button_num_2 = Button(numpad_frame,text = "2",width=b_width,height=b_ht,command=lambda: input_num("2"))
+        button_num_3 = Button(numpad_frame,text = "3",width=b_width,height=b_ht,command=lambda: input_num("3"))
+        button_num_4 = Button(numpad_frame,text = "4",width=b_width,height=b_ht,command=lambda: input_num("4"))
+        button_num_5 = Button(numpad_frame,text = "5",width=b_width,height=b_ht,command=lambda: input_num("5"))
+        button_num_6 = Button(numpad_frame,text = "6",width=b_width,height=b_ht,command=lambda: input_num("6"))
+        button_num_7 = Button(numpad_frame,text = "7",width=b_width,height=b_ht,command=lambda: input_num("7"))
+        button_num_8 = Button(numpad_frame,text = "8",width=b_width,height=b_ht,command=lambda: input_num("8"))
+        button_num_9 = Button(numpad_frame,text = "9",width=b_width,height=b_ht,command=lambda: input_num("9"))
+        button_num_0 = Button(numpad_frame,text = "0",width=b_width,height=b_ht,command=lambda: input_num("0"))
         button_num_enter = Button(numpad_frame,text = "Enter",width=b_width,height=b_ht,bg='green')
-        button_num_clear = Button(numpad_frame,text = "Clear",width=b_width,height=b_ht,bg='yellow')
+        button_num_clear = Button(numpad_frame,text = "Clear",width=b_width,height=b_ht,bg='yellow',command=clear)
         button_num_cancel = Button(numpad_frame,text = "Cancel",width=b_width,height=b_ht,bg='red')
         
         button_num_1.grid(row=0,column=0, padx=12,pady=8)
@@ -97,17 +100,30 @@ class atm:
         button_num_cancel.grid(row=2,column=3, padx=12,pady=8)
     
 # Define function for entering the PIN from the numeric keypad
-def input_pin(num):
+def input_num(num):
     root.main_lcd.config(state=NORMAL)
-    global pin_count
-    if pin_count == 0:
+    global pin_count, pin_cleared
+    if pin_count == 0 and not pin_cleared:
         root.main_lcd.insert(END, "\n\n" + num)
     elif pin_count < 4 :
         root.main_lcd.insert(END, num)
     pin_count = pin_count + 1
     root.main_lcd.config(state=DISABLED)
 
-    
+# Define function for the 'Clear' button
+def clear():
+    root.main_lcd.config(state=NORMAL)
+    global pin_valid, pin_count, pin_cleared
+    if not pin_valid and pin_count > 0:
+        root.main_lcd.delete("end-1l", END)
+        root.main_lcd.insert(END, "\n")
+        root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
+        root.main_lcd.tag_add("center", "1.0", "end")
+        pin_count = 0
+        pin_cleared = True
+    root.main_lcd.config(state=DISABLED)
+
+# Entry point to initiate the program for execution    
 if __name__ == '__main__':
     root = Tk()
     gui = atm(root)
