@@ -34,14 +34,14 @@ class Input(ctypes.Structure):
 
 # Functions for key press controls
 
-def PressKey(hexKeyCode):
+def PressKeyWin(hexKeyCode):
     extra = ctypes.c_ulong(0)
     ii_ = Input_I()
     ii_.ki = KeyBdInput( 0, hexKeyCode, 0x0008, 0, ctypes.pointer(extra) )
     x = Input( ctypes.c_ulong(1), ii_ )
     ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
 
-def ReleaseKey(hexKeyCode):
+def ReleaseKeyWin(hexKeyCode):
     extra = ctypes.c_ulong(0)
     ii_ = Input_I()
     ii_.ki = KeyBdInput( 0, hexKeyCode, 0x0008 | 0x0002, 0, ctypes.pointer(extra) )
@@ -49,14 +49,15 @@ def ReleaseKey(hexKeyCode):
     ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
 
 
-# main function to call. 
-
-
 #TODO: ADD observable to update key depress and release. 
 #hexcode will be the hexcode that determines the key being pressed. 
 # Key inputs can be found here: http://www.flint.jp/misc/?q=dik&lang=en
-def KeyPress(hexcode, observable):
+def KeyPress(hexcode, observable, OS):
     
-    PressKey(hexcode) # To press Q use 0x10
+    if(OS == "Windows"):
+        PressKeyWin(hexcode) # To press Q use 0x10
+        
+        ReleaseKeyWin(hexcode)
     
-    ReleaseKey(hexcode) 
+    
+
