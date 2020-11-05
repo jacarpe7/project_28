@@ -12,10 +12,10 @@ from tkinter import Tk, Frame, Button, Text, SUNKEN, DISABLED, NORMAL, END
 b_pad = 15
 b_width = 8
 b_ht = 4
-pin_count = 0
 
 pin_valid = False
-pin_cleared = False
+pin_code = ""
+correct_pin = "4589"
 
 class atm:
     
@@ -54,7 +54,7 @@ class atm:
         root.main_lcd = Text(center_frame,height=23,width=70,background="black",foreground="green")
         root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
         root.main_lcd.insert("1.0", "\n\n\n\nWelcome to the ASU ATM System")
-        root.main_lcd.insert(END, "\n\nEnter PIN to continue...")
+        root.main_lcd.insert(END, "\n\nEnter PIN to continue...\n\n")
         root.main_lcd.tag_add("center", "1.0", "end")
         root.main_lcd.grid(row=0, column=0,padx=5,pady=5)
         root.main_lcd.config(state=DISABLED)
@@ -81,7 +81,7 @@ class atm:
         button_num_8 = Button(numpad_frame,text = "8",width=b_width,height=b_ht,command=lambda: input_num("8"))
         button_num_9 = Button(numpad_frame,text = "9",width=b_width,height=b_ht,command=lambda: input_num("9"))
         button_num_0 = Button(numpad_frame,text = "0",width=b_width,height=b_ht,command=lambda: input_num("0"))
-        button_num_enter = Button(numpad_frame,text = "Enter",width=b_width,height=b_ht,bg='green')
+        button_num_enter = Button(numpad_frame,text = "Enter",width=b_width,height=b_ht,bg='green',command=enter)
         button_num_clear = Button(numpad_frame,text = "Clear",width=b_width,height=b_ht,bg='yellow',command=clear)
         button_num_cancel = Button(numpad_frame,text = "Cancel",width=b_width,height=b_ht,bg='red')
         
@@ -102,26 +102,38 @@ class atm:
 # Define function for entering the PIN from the numeric keypad
 def input_num(num):
     root.main_lcd.config(state=NORMAL)
-    global pin_count, pin_cleared
-    if pin_count == 0 and not pin_cleared:
-        root.main_lcd.insert(END, "\n\n" + num)
-    elif pin_count < 4 :
+    global pin_code
+    if len(pin_code) < 4 :
         root.main_lcd.insert(END, num)
-    pin_count = pin_count + 1
+        pin_code = pin_code + num
     root.main_lcd.config(state=DISABLED)
 
 # Define function for the 'Clear' button
 def clear():
     root.main_lcd.config(state=NORMAL)
-    global pin_valid, pin_count, pin_cleared
-    if not pin_valid and pin_count > 0:
+    global pin_valid, pin_code, pin_cleared
+    if not pin_valid:
         root.main_lcd.delete("end-1l", END)
         root.main_lcd.insert(END, "\n")
         root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
         root.main_lcd.tag_add("center", "1.0", "end")
-        pin_count = 0
+        pin_code = ""
         pin_cleared = True
     root.main_lcd.config(state=DISABLED)
+    
+# Define function for the 'Enter' button
+def enter():
+    root.main_lcd.config(state=NORMAL)
+    global pin_valid, pin_code, correct_pin
+    if pin_code == correct_pin and not pin_valid:
+        print("Correct pin entered")
+        pin_valid = True
+    else:
+        root.main_lcd.delete("end-1l", END)
+        root.main_lcd.insert(END, "\nInvalid PIN")
+        root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
+        root.main_lcd.tag_add("center", "1.0", "end")
+
 
 # Entry point to initiate the program for execution    
 if __name__ == '__main__':
