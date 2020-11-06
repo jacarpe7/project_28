@@ -2,6 +2,9 @@ import serial
 
 # This script uses the hardware build in folder qt7-ascii-out-dylan
 
+
+print("How many gesture records would you like to make? ")
+amount = input();
 # Need to define port according to your setup. Typical port name - Windows: 'COM3'  Mac: '/dev/tty.usbmodem12345'
 serialPort = serial.Serial(port='COM3',baudrate=38400,bytesize=8,timeout=2,stopbits=serial.STOPBITS_ONE)
 
@@ -18,8 +21,9 @@ class Row:
 # array to hold objects
 list = []
 
+for (int index = 0; i < amount; i++)
 # setup filewriting to CSV
-filename = "stream.csv"
+filename = "stream%s.csv" % index
 f = open(filename, "w")
 headers = "time,delta0,delta1,delta2,delta3,delta4\n"
 f.write(headers)
