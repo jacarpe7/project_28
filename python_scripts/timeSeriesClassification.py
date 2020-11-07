@@ -23,7 +23,7 @@ df1.shape, df2.shape
 
 path = 'MovementAAL/dataset/MovementAAL_RSS_'
 sequences = list()
-for i in range (1,59):
+for i in range (1,56):
     file_path = path + str(i) + '.csv'
     print(file_path)
     df = pd.read_csv(file_path, header=0)
@@ -57,20 +57,19 @@ final_seq = np.stack(new_seq)
 
 #truncate the sequence to length 60
 from keras.preprocessing import sequence
-seq_len = 90
+seq_len = 80
 final_seq=sequence.pad_sequences(final_seq, maxlen=seq_len, padding='post', dtype='float', truncating='post')
-
 
 train = [final_seq[i] for i in range(len(groups)) if (groups[i]==2)]
 validation = [final_seq[i] for i in range(len(groups)) if groups[i]==1]
-test = [final_seq[i] for i in range(len(groups)) if groups[i]==3]
+#test = [final_seq[i] for i in range(len(groups)) if groups[i]==3]
 
 train_target = [targets[i] for i in range(len(groups)) if (groups[i]==2)]
 validation_target = [targets[i] for i in range(len(groups)) if groups[i]==1]
-test_target = [targets[i] for i in range(len(groups)) if groups[i]==3]
+#test_target = [targets[i] for i in range(len(groups)) if groups[i]==3]
 train = np.array(train)
 validation = np.array(validation)
-test = np.array(test)
+#test = np.array(test)
 
 train_target = np.array(train_target)
 train_target = (train_target+1)/2
