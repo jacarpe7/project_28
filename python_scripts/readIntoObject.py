@@ -5,6 +5,9 @@ import serial
 
 print("How many gesture records would you like to make? ")
 amount = int(input())
+
+print("What would you like the files to be called?")
+fname = str(input())
 # Need to define port according to your setup. Typical port name - Windows: 'COM3'  Mac: '/dev/tty.usbmodem12345'
 serialPort = serial.Serial(port='COM3',baudrate=38400,bytesize=8,timeout=2,stopbits=serial.STOPBITS_ONE)
 
