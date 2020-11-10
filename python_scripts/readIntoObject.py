@@ -26,7 +26,7 @@ list = []
 
 for index in range(amount):
     # setup filewriting to CSV
-    filename = "stream%s.csv" % index
+    filename = fname + "%s.csv" % index
     f = open(filename, "w")
     headers = "time,delta0,delta1,delta2,delta3,delta4\n"
     f.write(headers)
