@@ -126,13 +126,17 @@ def enter():
     root.main_lcd.config(state=NORMAL)
     global pin_valid, pin_code, correct_pin
     if pin_code == correct_pin and not pin_valid:
-        print("Correct pin entered")
         pin_valid = True
-    else:
+        root.main_lcd.delete("1.0", END)
+        root.main_lcd.insert("1.0", "\nWithdrawal Funds\n\n\nDeposit Funds\n\n\nCheck Account Balance")
+        root.main_lcd.tag_configure("left", justify='left', font="fixedsys 20")
+        root.main_lcd.tag_add("left", "1.0", "end")
+    elif pin_code != correct_pin:
         root.main_lcd.delete("end-1l", END)
         root.main_lcd.insert(END, "\nInvalid PIN")
         root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
         root.main_lcd.tag_add("center", "1.0", "end")
+    root.main_lcd.config(state=DISABLED)
 
 
 # Entry point to initiate the program for execution    
