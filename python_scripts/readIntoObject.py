@@ -2,10 +2,11 @@ import serial
 
 # This script uses the hardware build in folder qt7-ascii-out-dylan
 
-
+# Asks user how many recordings to make
 print("How many gesture records would you like to make? ")
 amount = int(input())
 
+# Asks what the file should be called
 print("What would you like the files to be called?")
 fname = str(input())
 # Need to define port according to your setup. Typical port name - Windows: 'COM3'  Mac: '/dev/tty.usbmodem12345'
@@ -34,6 +35,7 @@ for index in range(amount):
     # discard first line
     serialPort.readline()
     
+    # values to be compared, once one hits 40, recording will start
     val0 = 0
     val1 = 0
     val2 = 0
