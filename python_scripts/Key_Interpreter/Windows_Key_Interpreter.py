@@ -1,7 +1,6 @@
 import ctypes, time
-from rx.subject import BehaviorSubject
+from rx.subject import AsyncSubject
 SendInput = ctypes.windll.user32.SendInput
-
 # C struct redefinitions for hardware control
 PUL = ctypes.POINTER(ctypes.c_ulong)
 class KeyBdInput(ctypes.Structure):
@@ -36,13 +35,16 @@ class Input(ctypes.Structure):
 # Functions for key press controls
 
 def PressKeyWin(hexKeyCode):
+    global lastKey
+    lastKey = hexKeyCode
     extra = ctypes.c_ulong(0)
     ii_ = Input_I()
     ii_.ki = KeyBdInput( 0, hexKeyCode, 0x0008, 0, ctypes.pointer(extra) )
     x = Input( ctypes.c_ulong(1), ii_ )
     ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
 
-def ReleaseKeyWin(hexKeyCode):
+def ReleaseKeyWin():
+    hexKeyCode = lastKey
     extra = ctypes.c_ulong(0)
     ii_ = Input_I()
     ii_.ki = KeyBdInput( 0, hexKeyCode, 0x0008 | 0x0002, 0, ctypes.pointer(extra) )
@@ -50,19 +52,18 @@ def ReleaseKeyWin(hexKeyCode):
     ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
 
 
-#TODO: ADD observable to update key depress and release. 
 #hexcode will be the hexcode that determines the key being pressed. 
 # Key inputs can be found here: http://www.flint.jp/misc/?q=dik&lang=en
-def KeyPress(observable):
-    
+def KeyPress(observable: AsyncSubject):
     observable.subscribe(lambda key: PressKeyWin(winKeyWords[key]),
-    on_completed =  lambda key: ReleaseKeyWin(key))
+     on_next = lambda: ReleaseKeyWin(),
+     on_completed =  lambda: ReleaseKeyWin())
 
     
 #find more @https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 winKeyWords = {
-    "up":"0x26",
-    "down":"0x28",
-    "left":"0x25",
-    "right":"0x27",
-    "space":"0x20"}
+    "up":0x26,
+    "down":0x28,
+    "left":0x25,
+    "right":0x27,
+    "space":0x20}
