@@ -64,8 +64,8 @@ class atm:
         # Create buttons on right side of main LCD and add to grid
         button_1R = Button(right_frame,text = "R1",width=b_width,height=b_ht)
         button_2R = Button(right_frame,text = "R2",width=b_width,height=b_ht)
-        button_3R = Button(right_frame,text = "R3",width=b_width,height=b_ht)
-        button_4R = Button(right_frame,text = "R4",width=b_width,height=b_ht)
+        button_3R = Button(right_frame,text = "R3",width=b_width,height=b_ht,command=cancel_yes)
+        button_4R = Button(right_frame,text = "R4",width=b_width,height=b_ht,command=cancel_no)
         
         button_1R.grid(row=0,column=0,padx=b_pad,pady=b_pad)
         button_2R.grid(row=1,column=0,padx=b_pad,pady=b_pad)
@@ -151,6 +151,41 @@ def cancel():
     root.main_lcd.tag_configure("right", justify='right', font="fixedsys 20")
     root.main_lcd.insert("end", "\n\n\n\tYes\n\n\n\n\tNo")
     root.main_lcd.tag_add("right", "end-5l", END)
+    root.main_lcd.config(state=DISABLED)
+    
+# Define function for 'Cancel' = Yes
+def cancel_yes():
+    global cancel_pressed, pin_code, pin_valid
+    if cancel_pressed:
+        root.main_lcd.config(state=NORMAL)
+        root.main_lcd.delete("1.0", END)
+        root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
+        root.main_lcd.insert("1.0", "\n\n\n\nWelcome to the ASU ATM System")
+        root.main_lcd.insert(END, "\n\nEnter PIN to continue...\n\n")
+        root.main_lcd.tag_add("center", "1.0", "end")
+        root.main_lcd.config(state=DISABLED)
+        cancel_pressed = False
+        pin_valid = False
+        pin_code = ""
+        
+# Define function for 'Cancel' = No
+def cancel_no():
+    global cancel_pressed, pin_valid, pin_code
+    root.main_lcd.config(state=NORMAL)
+    if cancel_pressed and pin_valid:
+        root.main_lcd.delete("1.0", END)
+        root.main_lcd.insert("1.0", "\nWithdrawal Funds\n\n\nDeposit Funds\n\n\nCheck Account Balance")
+        root.main_lcd.tag_configure("left", justify='left', font="fixedsys 20")
+        root.main_lcd.tag_add("left", "1.0", "end")
+        cancel_pressed = False
+    elif cancel_pressed and not pin_valid:
+        root.main_lcd.delete("1.0", END)
+        root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
+        root.main_lcd.insert("1.0", "\n\n\n\nWelcome to the ASU ATM System")
+        root.main_lcd.insert(END, "\n\nEnter PIN to continue...\n\n")
+        root.main_lcd.tag_add("center", "1.0", "end")
+        pin_code = ""
+        cancel_pressed = False
     root.main_lcd.config(state=DISABLED)
 
 # Entry point to initiate the program for execution    
