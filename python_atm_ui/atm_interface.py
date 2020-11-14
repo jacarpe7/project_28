@@ -13,11 +13,18 @@ b_pad = 15
 b_width = 8
 b_ht = 4
 
+initial_screen = True
 cancel_pressed = False
 pin_valid = False
+menu_present = False
+withdrawal_prompt = False
+another_trans_prompt = False
+invalid_msg = False
+
 pin_code = ""
 correct_pin = "4589"
-acct_balance = 495.27
+amount_entered = ""
+acct_balance = 1495.27
 
 class atm:
     
@@ -42,7 +49,7 @@ class atm:
         numpad_frame.grid(row=1)
         
         # Create buttons on left side of main LCD and add to grid
-        button_1L = Button(left_frame,text = "L1",width=b_width,height=b_ht)
+        button_1L = Button(left_frame,text = "L1",width=b_width,height=b_ht,command=withdrawal)
         button_2L = Button(left_frame,text = "L2",width=b_width,height=b_ht)
         button_3L = Button(left_frame,text = "L3",width=b_width,height=b_ht)
         button_4L = Button(left_frame,text = "L4",width=b_width,height=b_ht)
@@ -64,8 +71,8 @@ class atm:
         # Create buttons on right side of main LCD and add to grid
         button_1R = Button(right_frame,text = "R1",width=b_width,height=b_ht)
         button_2R = Button(right_frame,text = "R2",width=b_width,height=b_ht)
-        button_3R = Button(right_frame,text = "R3",width=b_width,height=b_ht,command=cancel_yes)
-        button_4R = Button(right_frame,text = "R4",width=b_width,height=b_ht,command=cancel_no)
+        button_3R = Button(right_frame,text = "R3",width=b_width,height=b_ht,command=yes)
+        button_4R = Button(right_frame,text = "R4",width=b_width,height=b_ht,command=no)
         
         button_1R.grid(row=0,column=0,padx=b_pad,pady=b_pad)
         button_2R.grid(row=1,column=0,padx=b_pad,pady=b_pad)
@@ -104,89 +111,168 @@ class atm:
 # Define function for entering the PIN from the numeric keypad
 def input_num(num):
     root.main_lcd.config(state=NORMAL)
-    global pin_code
-    if len(pin_code) < 4 and not cancel_pressed:
-        root.main_lcd.insert(END, num)
-        pin_code = pin_code + num
+    global pin_code, withdrawal_prompt, amount_entered, initial_screen, \
+        another_trans_prompt, invalid_msg
+    if not invalid_msg and not another_trans_prompt:
+        if len(pin_code) < 4 and initial_screen:
+            root.main_lcd.insert(END, num)
+            pin_code = pin_code + num
+        if withdrawal_prompt and len(amount_entered) < 4:
+            root.main_lcd.insert(END, num)
+            amount_entered = amount_entered + num
     root.main_lcd.config(state=DISABLED)
 
 # Define function for the 'Clear' button
 def clear():
     root.main_lcd.config(state=NORMAL)
-    global pin_valid, pin_code
+    global pin_valid, pin_code, withdrawal_prompt, cancel_pressed, \
+        amount_entered, another_trans_prompt
     if not pin_valid and not cancel_pressed:
-        root.main_lcd.delete("end-1l", END)
-        root.main_lcd.insert(END, "\n")
-        root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
-        root.main_lcd.tag_add("center", "1.0", "end")
+        display_initial_screen()
         pin_code = ""
+    elif withdrawal_prompt and not another_trans_prompt:
+        display_withdrawal_prompt()
+        amount_entered = ""
     root.main_lcd.config(state=DISABLED)
     
 # Define function for the 'Enter' button
 def enter():
     root.main_lcd.config(state=NORMAL)
-    global pin_valid, pin_code, correct_pin
+    global pin_valid, pin_code, correct_pin, cancel_pressed, withdrawal_prompt, \
+        amount_entered, acct_balance, another_trans_prompt, invalid_msg
     if pin_code == correct_pin and not pin_valid and not cancel_pressed:
         pin_valid = True
-        root.main_lcd.delete("1.0", END)
-        root.main_lcd.insert("1.0", "\nWithdrawal Funds\n\n\nDeposit Funds\n\n\nCheck Account Balance")
-        root.main_lcd.tag_configure("left", justify='left', font="fixedsys 20")
-        root.main_lcd.tag_add("left", "1.0", "end")
+        display_main_menu()
     elif pin_code != correct_pin and not cancel_pressed:
-        root.main_lcd.delete("end-1l", END)
-        root.main_lcd.insert(END, "\nInvalid PIN, Press 'Clear'")
-        root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
-        root.main_lcd.tag_add("center", "1.0", "end")
+        display_invalid_msg("Invalid PIN")
+    elif withdrawal_prompt and len(amount_entered) > 0:
+        if int(amount_entered) % 20 != 0:
+            display_invalid_msg("Invalid entry")
+        elif int(amount_entered) > acct_balance:
+            display_invalid_msg("Insufficient funds")
+        else:
+            acct_balance = acct_balance - int(amount_entered)
+            amount_entered = ""
+            root.main_lcd.delete("1.0", END)
+            root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
+            root.main_lcd.insert("1.0", "\n\n\n\nPlease take your cash\n\n")
+            root.main_lcd.insert(END, "Another transaction?")
+            root.main_lcd.tag_add("center", "1.0", "end")
+            root.main_lcd.tag_configure("right", justify='right', font="fixedsys 20")
+            root.main_lcd.insert("end", "\n\tYes\n\n\n\n\tNo")
+            root.main_lcd.tag_add("right", "end-5l", END)
+            another_trans_prompt = True
     root.main_lcd.config(state=DISABLED)
     
 # Define function for 'Cancel' button
 def cancel():
-    global cancel_pressed
-    cancel_pressed = True
-    root.main_lcd.config(state=NORMAL)
-    root.main_lcd.delete("1.0", END)
-    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
-    root.main_lcd.insert("1.0", "\n\n\n\nCancel - Are you sure?")
-    root.main_lcd.tag_add("center", "1.0", "end")
-    root.main_lcd.tag_configure("right", justify='right', font="fixedsys 20")
-    root.main_lcd.insert("end", "\n\n\n\tYes\n\n\n\n\tNo")
-    root.main_lcd.tag_add("right", "end-5l", END)
-    root.main_lcd.config(state=DISABLED)
-    
-# Define function for 'Cancel' = Yes
-def cancel_yes():
-    global cancel_pressed, pin_code, pin_valid
-    if cancel_pressed:
+    global cancel_pressed, menu_present, another_trans_prompt, invalid_msg, initial_screen
+    if not another_trans_prompt and not invalid_msg and not initial_screen:
+        cancel_pressed = True
+        menu_present = False
         root.main_lcd.config(state=NORMAL)
         root.main_lcd.delete("1.0", END)
         root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
-        root.main_lcd.insert("1.0", "\n\n\n\nWelcome to the ASU ATM System")
-        root.main_lcd.insert(END, "\n\nEnter PIN to continue...\n\n")
+        root.main_lcd.insert("1.0", "\n\n\n\nCancel - Are you sure?")
         root.main_lcd.tag_add("center", "1.0", "end")
+        root.main_lcd.tag_configure("right", justify='right', font="fixedsys 20")
+        root.main_lcd.insert("end", "\n\n\n\tYes\n\n\n\n\tNo")
+        root.main_lcd.tag_add("right", "end-5l", END)
         root.main_lcd.config(state=DISABLED)
+    
+# Define function for 'Yes' button (R3)
+def yes():
+    global cancel_pressed, pin_code, pin_valid, amount_entered
+    root.main_lcd.config(state=NORMAL)
+    if cancel_pressed:
+        display_initial_screen()
         cancel_pressed = False
         pin_valid = False
         pin_code = ""
-        
-# Define function for 'Cancel' = No
-def cancel_no():
-    global cancel_pressed, pin_valid, pin_code
-    root.main_lcd.config(state=NORMAL)
-    if cancel_pressed and pin_valid:
-        root.main_lcd.delete("1.0", END)
-        root.main_lcd.insert("1.0", "\nWithdrawal Funds\n\n\nDeposit Funds\n\n\nCheck Account Balance")
-        root.main_lcd.tag_configure("left", justify='left', font="fixedsys 20")
-        root.main_lcd.tag_add("left", "1.0", "end")
-        cancel_pressed = False
-    elif cancel_pressed and not pin_valid:
-        root.main_lcd.delete("1.0", END)
-        root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
-        root.main_lcd.insert("1.0", "\n\n\n\nWelcome to the ASU ATM System")
-        root.main_lcd.insert(END, "\n\nEnter PIN to continue...\n\n")
-        root.main_lcd.tag_add("center", "1.0", "end")
-        pin_code = ""
-        cancel_pressed = False
+        amount_entered = ""
+    elif another_trans_prompt:
+        display_main_menu()
     root.main_lcd.config(state=DISABLED)
+        
+# Define function for 'No' button (R4)
+def no():
+    global cancel_pressed, pin_valid, pin_code, menu_present, \
+        withdrawal_prompt, amount_entered
+    root.main_lcd.config(state=NORMAL)
+    if cancel_pressed:
+        if withdrawal_prompt:
+            display_withdrawal_prompt()
+            amount_entered = ""
+        elif pin_valid:
+            display_main_menu()
+        elif not pin_valid:
+            display_initial_screen()
+            pin_code = ""
+        cancel_pressed = False
+    elif another_trans_prompt:
+        display_initial_screen()
+        pin_valid = False
+        pin_code = ""
+        amount_entered = ""
+    root.main_lcd.config(state=DISABLED)
+    
+# Define funtion to withdrawal funds from account
+def withdrawal():
+    global menu_present, withdrawal_prompt
+    if menu_present:
+        root.main_lcd.config(state=NORMAL)
+        display_withdrawal_prompt()
+        root.main_lcd.config(state=DISABLED)
+    
+# Defines function to show the main menu
+def display_main_menu():
+    global menu_present, withdrawal_prompt, another_trans_prompt, invalid_msg, initial_screen
+    initial_screen = False
+    menu_present = True
+    withdrawal_prompt = False
+    another_trans_prompt = False
+    invalid_msg = False
+    root.main_lcd.delete("1.0", END)
+    root.main_lcd.insert("1.0", "\nWithdrawal Funds\n\n\nDeposit Funds\n\n\nCheck Account Balance")
+    root.main_lcd.tag_configure("left", justify='left', font="fixedsys 20")
+    root.main_lcd.tag_add("left", "1.0", "end")
+    
+# Defines function to back to initial screen for PIN entry
+def display_initial_screen():
+    global menu_present, withdrawal_prompt, another_trans_prompt, invalid_msg, initial_screen
+    initial_screen = True
+    menu_present = False
+    withdrawal_prompt = False
+    another_trans_prompt = False
+    invalid_msg = False
+    root.main_lcd.delete("1.0", END)
+    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
+    root.main_lcd.insert("1.0", "\n\n\n\nWelcome to the ASU ATM System")
+    root.main_lcd.insert(END, "\n\nEnter PIN to continue...\n\n")
+    root.main_lcd.tag_add("center", "1.0", "end")    
+    
+# Defines function to display the withdrawal funds prompt
+def display_withdrawal_prompt():
+    global menu_present, withdrawal_prompt, another_trans_prompt, invalid_msg, initial_screen
+    initial_screen = False
+    menu_present = False
+    withdrawal_prompt = True
+    another_trans_prompt = False
+    invalid_msg = False
+    root.main_lcd.delete("1.0", END)
+    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
+    root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n")
+    root.main_lcd.insert(END, "(Multiples of $20)\n\n$ ")
+    root.main_lcd.tag_add("center", "1.0", "end")
+    
+# Define function to clear last line and display specified invalid message
+def display_invalid_msg(msg):
+    global invalid_msg
+    root.main_lcd.delete("end-1l", END)
+    root.main_lcd.insert(END, "\n" + msg + ", Press 'Clear'")
+    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
+    root.main_lcd.tag_add("center", "1.0", "end")
+    invalid_msg = True
 
 # Entry point to initiate the program for execution    
 if __name__ == '__main__':
