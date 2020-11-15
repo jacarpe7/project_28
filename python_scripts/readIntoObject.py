@@ -65,6 +65,7 @@ for index in range(amount):
     # write to CSV
     for obj in list:
         f.write(str(obj.time) + "," + str(obj.delta0) + "," + str(obj.delta1) + "," + str(obj.delta2) + "," + str(obj.delta3) + "," + str(obj.delta4) + ",\n")
-
+        
+    print("Gesture #", str(index), " recorded and written.")
 f.close()
 serialPort.close()
