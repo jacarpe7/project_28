@@ -4,10 +4,11 @@ import Quartz
 # OSX compatibility will have to be written in xcode using PyObjC
 
 def PressKeyOSX(hexKeyCode):
-    Quartz.CGEventCreateKeyboardEvent(None, hexKeyCode, True)
+    Quartz.CoreGraphics.CGEventCreateKeyboardEvent(None, hexKeyCode, True)
+
 
 def ReleaseKeyOSX(hexKeyCode):
-    Quartz.CGEventCreateKeyboardEvent(None, hexKeyCode, False)
+    Quartz.CoreGraphics.CGEventCreateKeyboardEvent(None, hexKeyCode, False)
 
 
 def KeyPress(observable):
