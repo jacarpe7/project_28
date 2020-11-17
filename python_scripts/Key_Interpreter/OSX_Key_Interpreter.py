@@ -1,25 +1,32 @@
 from rx.core import observable
 import Quartz
+from Quartz import CoreGraphics
 #TODO: implement mac OSX key interpretting.
 # OSX compatibility will have to be written in xcode using PyObjC
 
 def PressKeyOSX(hexKeyCode):
-    Quartz.CoreGraphics.CGEventCreateKeyboardEvent(None, hexKeyCode, True)
+    global lastKey
+    lastKey = hexKeyCode
+    print("prepush")
+    event = CoreGraphics.CGEventCreateKeyboardEvent(None, hexKeyCode, True)
+    CoreGraphics.CGEventPost(Quartz.CoreGraphics.kCGHIDEventTap, event)
+    print("push")
 
 
-def ReleaseKeyOSX(hexKeyCode):
-    Quartz.CoreGraphics.CGEventCreateKeyboardEvent(None, hexKeyCode, False)
-
+def ReleaseKeyOSX():
+    hexKeyCode = lastKey
+    print("prerelease")
+    event = CoreGraphics.CGEventCreateKeyboardEvent(None, hexKeyCode, False)
+    CoreGraphics.CGEventPost(Quartz.CoreGraphics.kCGHIDEventTap, event)
+    print("release")
 
 def KeyPress(observable):
     
     observable.subscribe(lambda key: PressKeyOSX(macKeyWords[key]),
-    on_completed =  lambda key: ReleaseKeyOSX(key))
+    on_next = lambda: ReleaseKeyOSX(),
+    on_completed =  lambda: ReleaseKeyOSX())
 
 #TODO: Get OSX key codes
 macKeyWords = {
-    "up":"",
-    "down":"",
-    "left":"",
-    "right":"",
-    "space":""}
+    "z":6,
+    }
