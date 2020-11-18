@@ -69,3 +69,4 @@ for index in range(amount):
     print("Gesture #", str(index), " recorded and written.")
 f.close()
 serialPort.close()
+print("All gestures recorded.  Program complete.")
