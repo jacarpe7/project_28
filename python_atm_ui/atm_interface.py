@@ -10,9 +10,9 @@ Created on Oct 28 11:36:59 2020
 from tkinter import Tk, Frame, Button, Text, SUNKEN, DISABLED, NORMAL, END
 
 # GUI constants
-b_pad = 15
-b_width = 8
-b_ht = 4
+B_PAD = 15
+B_WIDTH = 8
+B_HT = 4
 
 # boolean values for menu navigation and button enable/disable
 initial_screen = True
@@ -57,15 +57,15 @@ class Atm:
         numpad_frame.grid(row=1)
         
         # Create buttons on left side of main LCD and add to grid
-        button_1L = Button(left_frame,text = "L1",width=b_width,height=b_ht,command=withdrawal)
-        button_2L = Button(left_frame,text = "L2",width=b_width,height=b_ht,command=deposit)
-        button_3L = Button(left_frame,text = "L3",width=b_width,height=b_ht,command=account_balance)
-        button_4L = Button(left_frame,text = "L4",width=b_width,height=b_ht,command=go_back)
+        button_1L = Button(left_frame,text = "L1",width=B_WIDTH,height=B_HT,command=withdrawal)
+        button_2L = Button(left_frame,text = "L2",width=B_WIDTH,height=B_HT,command=deposit)
+        button_3L = Button(left_frame,text = "L3",width=B_WIDTH,height=B_HT,command=account_balance)
+        button_4L = Button(left_frame,text = "L4",width=B_WIDTH,height=B_HT,command=go_back)
         
-        button_1L.grid(row=0,column=0,padx=b_pad,pady=b_pad)
-        button_2L.grid(row=1,column=0,padx=b_pad,pady=b_pad)
-        button_3L.grid(row=2,column=0,padx=b_pad,pady=b_pad)
-        button_4L.grid(row=3,column=0,padx=b_pad,pady=b_pad)
+        button_1L.grid(row=0,column=0,padx=B_PAD,pady=B_PAD)
+        button_2L.grid(row=1,column=0,padx=B_PAD,pady=B_PAD)
+        button_3L.grid(row=2,column=0,padx=B_PAD,pady=B_PAD)
+        button_4L.grid(row=3,column=0,padx=B_PAD,pady=B_PAD)
         
         # Create main LCD panel and add text
         root.main_lcd = Text(center_frame,height=23,width=70,background="black",foreground="green")
@@ -77,30 +77,30 @@ class Atm:
         root.main_lcd.config(state=DISABLED)
         
         # Create buttons on right side of main LCD and add to grid
-        button_1R = Button(right_frame,text = "R1",width=b_width,height=b_ht,command=select_check_deposit)
-        button_2R = Button(right_frame,text = "R2",width=b_width,height=b_ht,command=select_cash_deposit)
-        button_3R = Button(right_frame,text = "R3",width=b_width,height=b_ht,command=yes)
-        button_4R = Button(right_frame,text = "R4",width=b_width,height=b_ht,command=no)
+        button_1R = Button(right_frame,text = "R1",width=B_WIDTH,height=B_HT,command=select_check_deposit)
+        button_2R = Button(right_frame,text = "R2",width=B_WIDTH,height=B_HT,command=select_cash_deposit)
+        button_3R = Button(right_frame,text = "R3",width=B_WIDTH,height=B_HT,command=yes)
+        button_4R = Button(right_frame,text = "R4",width=B_WIDTH,height=B_HT,command=no)
         
-        button_1R.grid(row=0,column=0,padx=b_pad,pady=b_pad)
-        button_2R.grid(row=1,column=0,padx=b_pad,pady=b_pad)
-        button_3R.grid(row=2,column=0,padx=b_pad,pady=b_pad)
-        button_4R.grid(row=3,column=0,padx=b_pad,pady=b_pad)
+        button_1R.grid(row=0,column=0,padx=B_PAD,pady=B_PAD)
+        button_2R.grid(row=1,column=0,padx=B_PAD,pady=B_PAD)
+        button_3R.grid(row=2,column=0,padx=B_PAD,pady=B_PAD)
+        button_4R.grid(row=3,column=0,padx=B_PAD,pady=B_PAD)
         
         # Create buttons for num pad and add to center frame grid
-        button_num_1 = Button(numpad_frame,text = "1",width=b_width,height=b_ht,command=lambda: input_num("1"))
-        button_num_2 = Button(numpad_frame,text = "2",width=b_width,height=b_ht,command=lambda: input_num("2"))
-        button_num_3 = Button(numpad_frame,text = "3",width=b_width,height=b_ht,command=lambda: input_num("3"))
-        button_num_4 = Button(numpad_frame,text = "4",width=b_width,height=b_ht,command=lambda: input_num("4"))
-        button_num_5 = Button(numpad_frame,text = "5",width=b_width,height=b_ht,command=lambda: input_num("5"))
-        button_num_6 = Button(numpad_frame,text = "6",width=b_width,height=b_ht,command=lambda: input_num("6"))
-        button_num_7 = Button(numpad_frame,text = "7",width=b_width,height=b_ht,command=lambda: input_num("7"))
-        button_num_8 = Button(numpad_frame,text = "8",width=b_width,height=b_ht,command=lambda: input_num("8"))
-        button_num_9 = Button(numpad_frame,text = "9",width=b_width,height=b_ht,command=lambda: input_num("9"))
-        button_num_0 = Button(numpad_frame,text = "0",width=b_width,height=b_ht,command=lambda: input_num("0"))
-        button_num_enter = Button(numpad_frame,text = "Enter",width=b_width,height=b_ht,bg='green',command=enter)
-        button_num_clear = Button(numpad_frame,text = "Clear",width=b_width,height=b_ht,bg='yellow',command=clear)
-        button_num_cancel = Button(numpad_frame,text = "Cancel",width=b_width,height=b_ht,bg='red',command=cancel)
+        button_num_1 = Button(numpad_frame,text = "1",width=B_WIDTH,height=B_HT,command=lambda: input_num("1"))
+        button_num_2 = Button(numpad_frame,text = "2",width=B_WIDTH,height=B_HT,command=lambda: input_num("2"))
+        button_num_3 = Button(numpad_frame,text = "3",width=B_WIDTH,height=B_HT,command=lambda: input_num("3"))
+        button_num_4 = Button(numpad_frame,text = "4",width=B_WIDTH,height=B_HT,command=lambda: input_num("4"))
+        button_num_5 = Button(numpad_frame,text = "5",width=B_WIDTH,height=B_HT,command=lambda: input_num("5"))
+        button_num_6 = Button(numpad_frame,text = "6",width=B_WIDTH,height=B_HT,command=lambda: input_num("6"))
+        button_num_7 = Button(numpad_frame,text = "7",width=B_WIDTH,height=B_HT,command=lambda: input_num("7"))
+        button_num_8 = Button(numpad_frame,text = "8",width=B_WIDTH,height=B_HT,command=lambda: input_num("8"))
+        button_num_9 = Button(numpad_frame,text = "9",width=B_WIDTH,height=B_HT,command=lambda: input_num("9"))
+        button_num_0 = Button(numpad_frame,text = "0",width=B_WIDTH,height=B_HT,command=lambda: input_num("0"))
+        button_num_enter = Button(numpad_frame,text = "Enter",width=B_WIDTH,height=B_HT,bg='green',command=enter)
+        button_num_clear = Button(numpad_frame,text = "Clear",width=B_WIDTH,height=B_HT,bg='yellow',command=clear)
+        button_num_cancel = Button(numpad_frame,text = "Cancel",width=B_WIDTH,height=B_HT,bg='red',command=cancel)
         
         button_num_1.grid(row=0,column=0, padx=12,pady=8)
         button_num_2.grid(row=0,column=1, padx=12,pady=8)
