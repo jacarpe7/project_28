@@ -13,6 +13,8 @@ from tkinter import Tk, Frame, Button, Text, SUNKEN, DISABLED, NORMAL, END
 B_PAD = 15
 B_WIDTH = 8
 B_HT = 4
+NUM_PAD_X = 12
+NUM_PAD_Y = 8
 
 # boolean values for menu navigation and button enable/disable
 initial_screen = True
@@ -102,19 +104,19 @@ class Atm:
         button_num_clear = Button(numpad_frame,text = "Clear",width=B_WIDTH,height=B_HT,bg='yellow',command=clear)
         button_num_cancel = Button(numpad_frame,text = "Cancel",width=B_WIDTH,height=B_HT,bg='red',command=cancel)
         
-        button_num_1.grid(row=0,column=0, padx=12,pady=8)
-        button_num_2.grid(row=0,column=1, padx=12,pady=8)
-        button_num_3.grid(row=0,column=2, padx=12,pady=8)
-        button_num_4.grid(row=1,column=0, padx=12,pady=8)
-        button_num_5.grid(row=1,column=1, padx=12,pady=8)
-        button_num_6.grid(row=1,column=2, padx=12,pady=8)
-        button_num_7.grid(row=2,column=0, padx=12,pady=8)
-        button_num_8.grid(row=2,column=1, padx=12,pady=8)
-        button_num_9.grid(row=2,column=2, padx=12,pady=8)
-        button_num_0.grid(row=3,column=1, padx=12,pady=8)
-        button_num_enter.grid(row=0,column=3, padx=12,pady=8)
-        button_num_clear.grid(row=1,column=3, padx=12,pady=8)
-        button_num_cancel.grid(row=2,column=3, padx=12,pady=8)
+        button_num_1.grid(row=0,column=0, padx=NUM_PAD_X,pady=NUM_PAD_Y)
+        button_num_2.grid(row=0,column=1, padx=NUM_PAD_X,pady=NUM_PAD_Y)
+        button_num_3.grid(row=0,column=2, padx=NUM_PAD_X,pady=NUM_PAD_Y)
+        button_num_4.grid(row=1,column=0, padx=NUM_PAD_X,pady=NUM_PAD_Y)
+        button_num_5.grid(row=1,column=1, padx=NUM_PAD_X,pady=NUM_PAD_Y)
+        button_num_6.grid(row=1,column=2, padx=NUM_PAD_X,pady=NUM_PAD_Y)
+        button_num_7.grid(row=2,column=0, padx=NUM_PAD_X,pady=NUM_PAD_Y)
+        button_num_8.grid(row=2,column=1, padx=NUM_PAD_X,pady=NUM_PAD_Y)
+        button_num_9.grid(row=2,column=2, padx=NUM_PAD_X,pady=NUM_PAD_Y)
+        button_num_0.grid(row=3,column=1, padx=NUM_PAD_X,pady=NUM_PAD_Y)
+        button_num_enter.grid(row=0,column=3, padx=NUM_PAD_X,pady=NUM_PAD_Y)
+        button_num_clear.grid(row=1,column=3, padx=NUM_PAD_X,pady=NUM_PAD_Y)
+        button_num_cancel.grid(row=2,column=3, padx=NUM_PAD_X,pady=NUM_PAD_Y)
     
 # Define function for entering the PIN from the numeric keypad
 def input_num(num):
