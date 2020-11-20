@@ -14,8 +14,11 @@ def initKeyMonitoring(observable):
     elif sys.platform.startswith('darwin'):
         
         osxKey(observable)
+    else:
+
+        linKey(observable)
     return  
-    # Linux-specific code here...
+
 
 #Windows Key Translations
 #observables must contain a key description (see interpreter files)
@@ -24,7 +27,14 @@ def winKey(observable):
     KeyPress(observable)
     return
 
-#TODO: OSX Key Translations
+#TODO: Finish debugging OSX Key Translations
 def osxKey(observable):
     from OSX_Key_Interpreter import KeyPress
+    KeyPress(observable)
+    return
+
+#TODO: Linux Key Translations
+def linKey(observable):
+    from Linux_Key_Interpreter import KeyPress
+    KeyPress(observable)
     return
