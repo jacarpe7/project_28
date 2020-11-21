@@ -35,6 +35,7 @@ for index in range(amount):
     # discard first line
     serialPort.readline()
     
+    print("Ready to record gesture.")
     # values to be compared, once one hits 40, recording will start
     val0 = 0
     val1 = 0
