@@ -1,31 +1,27 @@
 from rx.core import observable
-# from Quartz import CoreGraphics
-#TODO: implement Linux key interpretting.
+from pynput.keyboard import Key, Controller
+# This will be the easiest to detect by games. Don't use it for anything naughty like making a bot or keylogger...
+#TODO: Test linux
 
-def PressKeyLin(hexKeyCode):
+keyboard = Controller()
+
+def PressKeyLin(keyString):
     global lastKey
-    lastKey = hexKeyCode
+    lastKey = keyString
     print("prepush")
-    # event = CoreGraphics.CGEventCreateKeyboardEvent(None, hexKeyCode, True)
-    # CoreGraphics.CGEventPost(Quartz.CoreGraphics.kCGHIDEventTap, event)
+    keyboard.press(keyString)
     print("push")
 
 
 def ReleaseKeyLin():
-    hexKeyCode = lastKey
+    keyString = lastKey
     print("prerelease")
-    # event = CoreGraphics.CGEventCreateKeyboardEvent(None, hexKeyCode, False)
-    # CoreGraphics.CGEventPost(Quartz.CoreGraphics.kCGHIDEventTap, event)
+    keyboard.release(keyString)
     print("release")
 
 
 def KeyPress(observable):
     
-    observable.subscribe(lambda key: PressKeyLin(linKeyWords[key]),
+    observable.subscribe(lambda key: PressKeyLin(key),
     on_next = lambda: ReleaseKeyLin(),
     on_completed =  lambda: ReleaseKeyLin())
-
-#TODO: Get OSX key codes
-linKeyWords = {
-    "z":6,
-    }

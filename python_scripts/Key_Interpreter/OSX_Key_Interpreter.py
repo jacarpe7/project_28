@@ -1,6 +1,6 @@
 from rx.core import observable
 from Quartz import CoreGraphics
-#TODO: implement mac OSX key interpretting.
+# TODO: Test Mac OSX keyboard
 # OSX compatibility will have to be written in xcode using PyObjC
 
 def PressKeyOSX(hexKeyCode):
