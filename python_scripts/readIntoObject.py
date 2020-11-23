@@ -2,6 +2,9 @@ import serial
 
 # This script uses the hardware build in folder qt7-ascii-out-dylan
 
+# Asks if the user would like to change the threshold
+print("Would you like to change the delta threshold from the default value?")
+
 # Asks user how many recordings to make
 print("How many gesture records would you like to make? ")
 amount = int(input())
