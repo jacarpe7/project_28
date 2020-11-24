@@ -3,8 +3,13 @@ import serial
 # This script uses the hardware build in folder qt7-ascii-out-dylan
 
 # Asks if the user would like to change the threshold
-print("Would you like to change the delta threshold from the default value?")
-
+print("Would you like to change the delta threshold from the default value? Y or N")
+answer = input()
+if (answer == "Y"):
+    print("What would you like the delta to be?")
+    customThresh = int(input())
+else:
+    customThresh = 40
 # Asks user how many recordings to make
 print("How many gesture records would you like to make? ")
 amount = int(input())
@@ -48,7 +53,7 @@ for index in range(amount):
     i = 0
     
     #read in data from serial, set to 50 lines
-    while val0 < 40 and val1 < 40 and val2 < 40 and val3 < 40 and val4 < 40 :
+    while val0 < customThresh and val1 < customThresh and val2 < customThresh and val3 < customThresh and val4 < customThresh :
         parseLine = serialPort.readline().decode('utf-8').split(",")
         list.append(Row(i,parseLine[1],parseLine[2],parseLine[3],parseLine[4],parseLine[5]))
         i = i + 1
