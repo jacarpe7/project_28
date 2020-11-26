@@ -23,7 +23,7 @@ df1.shape, df2.shape
 
 path = 'MovementAAL/dataset/MovementAAL_RSS_'
 sequences = list()
-for i in range (1,56):
+for i in range (1,100):
     file_path = path + str(i) + '.csv'
     print(file_path)
     df = pd.read_csv(file_path, header=0)
@@ -50,26 +50,26 @@ for one_seq in sequences:
     last_val = one_seq[-1]
     n = to_pad - len_one_seq
    
-    to_concat = np.repeat(one_seq[-1], n).reshape(5, n).transpose()
+    to_concat = np.repeat(one_seq[-1], n).reshape(4, n).transpose()
     new_one_seq = np.concatenate([one_seq, to_concat])
     new_seq.append(new_one_seq)
 final_seq = np.stack(new_seq)
 
 #truncate the sequence to length 60
 from keras.preprocessing import sequence
-seq_len = 80
+seq_len = 60
 final_seq=sequence.pad_sequences(final_seq, maxlen=seq_len, padding='post', dtype='float', truncating='post')
 
 train = [final_seq[i] for i in range(len(groups)) if (groups[i]==2)]
 validation = [final_seq[i] for i in range(len(groups)) if groups[i]==1]
-#test = [final_seq[i] for i in range(len(groups)) if groups[i]==3]
+test = [final_seq[i] for i in range(len(groups)) if groups[i]==3]
 
 train_target = [targets[i] for i in range(len(groups)) if (groups[i]==2)]
 validation_target = [targets[i] for i in range(len(groups)) if groups[i]==1]
-#test_target = [targets[i] for i in range(len(groups)) if groups[i]==3]
+test_target = [targets[i] for i in range(len(groups)) if groups[i]==3]
 train = np.array(train)
 validation = np.array(validation)
-#test = np.array(test)
+test = np.array(test)
 
 train_target = np.array(train_target)
 train_target = (train_target+1)/2
@@ -84,6 +84,7 @@ model = Sequential()
 model.add(LSTM(256, input_shape=(seq_len, 4)))
 model.add(Dense(1, activation='sigmoid'))
 model.summary()
+print(model.summary())
 
 
 adam = Adam(lr=0.001)
@@ -93,8 +94,9 @@ model.fit(train, train_target, epochs=200, batch_size=128, callbacks=[chk], vali
 
 
 #loading the model and checking accuracy on the test data
-model = load_model('best_model.pkl')
+#model = load_model('best_model.pkl')
 
 from sklearn.metrics import accuracy_score
 test_preds = model.predict_classes(test)
 accuracy_score(test_target, test_preds)
+print(accuracy_score(test_target, test_preds))
