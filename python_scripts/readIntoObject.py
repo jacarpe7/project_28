@@ -10,6 +10,11 @@ if (answer == "Y"):
     customThresh = int(input())
 else:
     customThresh = 40
+
+print("Do you want to change the length of the recording from the default value? Y or N");
+answer = input()
+
+
 # Asks user how many recordings to make
 print("How many gesture records would you like to make? ")
 amount = int(input())
