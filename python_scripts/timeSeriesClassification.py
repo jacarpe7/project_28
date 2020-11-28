@@ -93,6 +93,17 @@ chk = ModelCheckpoint('best_model.pkl', monitor='val_accuracy', save_best_only=T
 model.compile(loss='binary_crossentropy', optimizer=adam, metrics=['accuracy'])
 model.fit(train, train_target, epochs=200, batch_size=120, callbacks=[chk], validation_data=(validation,validation_target))
 
+#pkl_filename = "sensor_model.pkl"
+#with open(pkl_filename, 'wb') as file:
+#    pickle.dump(model, file)
+#with open(pkl_filename, 'rb') as file:
+#    pickle_model = pickle.load(file)
+#loading the model and checking accuracy on the test data
+#model = load_model('best_model.pkl')
+#loading the model and checking accuracy on the test data
+model = load_model('best_model.pkl')
+
 from sklearn.metrics import accuracy_score
 test_preds = model.predict_classes(test)
+accuracy_score(test_target, test_preds)
 print(accuracy_score(test_target, test_preds))
