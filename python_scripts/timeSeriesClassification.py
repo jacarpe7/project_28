@@ -24,7 +24,7 @@ df1.shape, df2.shape
 
 path = 'MovementAAL/dataset/MovementAAL_RSS_'
 sequences = list()
-for i in range (1,100):
+for i in range (1,120):
     file_path = path + str(i) + '.csv'
     print(file_path)
     df = pd.read_csv(file_path, header=0)
@@ -58,7 +58,7 @@ final_seq = np.stack(new_seq)
 
 #truncate the sequence to length 60
 from keras.preprocessing import sequence
-seq_len = 60
+seq_len = 75
 final_seq=sequence.pad_sequences(final_seq, maxlen=seq_len, padding='post', dtype='float', truncating='post')
 
 train = [final_seq[i] for i in range(len(groups)) if (groups[i]==2)]
@@ -82,16 +82,16 @@ test_target = np.array(test_target)
 test_target = (test_target+1)/2
 
 model = Sequential()
-model.add(LSTM(256, input_shape=(seq_len, 4)))
+model.add(LSTM(120, input_shape=(seq_len, 4)))
 model.add(Dense(1, activation='sigmoid'))
 model.summary()
 print(model.summary())
 
 
 adam = Adam(lr=0.001)
-chk = ModelCheckpoint('best_model.pkl', monitor='val_acc', save_best_only=True, mode='max', verbose=1)
+chk = ModelCheckpoint('best_model.pkl', monitor='val_accuracy', save_best_only=True, mode='max', verbose=1)
 model.compile(loss='binary_crossentropy', optimizer=adam, metrics=['accuracy'])
-model.fit(train, train_target, epochs=200, batch_size=128, callbacks=[chk], validation_data=(validation,validation_target))
+model.fit(train, train_target, epochs=200, batch_size=120, callbacks=[chk], validation_data=(validation,validation_target))
 
 from sklearn.metrics import accuracy_score
 test_preds = model.predict_classes(test)
