@@ -6,6 +6,7 @@ import serial
 print("Would you like to change the delta threshold from the default value? Y or N")
 answer = input()
 if (answer == "Y"):
+    # Asks the user what they would like the delta to be
     print("What would you like the delta to be?")
     customThresh = int(input())
 else:
@@ -74,7 +75,7 @@ for index in range(amount):
             val4 = int(obj.delta4)
         
     list.clear()
-    for x in range(customLength):
+    for x in range(50):
         # parse readline() into array, can be easily placed into other objects if wanted
         parseLine = serialPort.readline().decode('utf-8').split(",")
         # time component is discarded and replaced with x variable increment; time output is 8-bit and resets after 255
