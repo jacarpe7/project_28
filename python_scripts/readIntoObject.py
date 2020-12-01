@@ -13,7 +13,11 @@ else:
 
 print("Do you want to change the length of the recording from the default value? Y or N");
 answer = input()
-
+if (answer == "Y"):
+    print("How long would you like the length to be (default is 50)?")
+    customLength = int(input())
+else:
+    customThresh = 50
 
 # Asks user how many recordings to make
 print("How many gesture records would you like to make? ")
