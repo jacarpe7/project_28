@@ -8,7 +8,7 @@ def PressKeyOSX(hexKeyCode):
     lastKey = hexKeyCode
     print("prepush")
     event = CoreGraphics.CGEventCreateKeyboardEvent(None, hexKeyCode, True)
-    CoreGraphics.CGEventPost(Quartz.CoreGraphics.kCGHIDEventTap, event)
+    CoreGraphics.CGEventPost(CoreGraphics.kCGHIDEventTap, event)
     print("push")
 
 
@@ -16,7 +16,7 @@ def ReleaseKeyOSX():
     hexKeyCode = lastKey
     print("prerelease")
     event = CoreGraphics.CGEventCreateKeyboardEvent(None, hexKeyCode, False)
-    CoreGraphics.CGEventPost(Quartz.CoreGraphics.kCGHIDEventTap, event)
+    CoreGraphics.CGEventPost(CoreGraphics.kCGHIDEventTap, event)
     print("release")
 
 
