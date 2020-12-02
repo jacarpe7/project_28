@@ -64,7 +64,9 @@
 - [ ] I use proper naming conventions
      - [ ] Constants and Enums are in all CAPS
      - [ ] Class names are in upper CamelCase
-     - [ ] Variable, Parameter, and Method names are in lower camelCase
+     - [ ] Variable, Parameter, and Method names are camelCase (Java)
+	  OR
+     - [ ] Variable, Parameter, and Method names are lowercase with words separated by underscores as necessary to improve readability (Python)
      - [ ] Non-public methods, variables, and constants are prefixed by an underscore _
 - [ ] I use exceptions properly where necessary
 - [ ] I have eliminated unused imports
