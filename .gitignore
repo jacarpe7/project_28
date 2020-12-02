@@ -29,7 +29,3 @@ local.properties
 .classpath
 .settings/
 .loadpath
-node_modules/.yarn-integrity
-.vscode/settings.json
-yarn.lock
-package.json
