@@ -1,8 +1,8 @@
 from rx.core import observable
 from Quartz import CoreGraphics
-# TODO: Test Mac OSX keyboard
-# OSX compatibility will have to be written in xcode using PyObjC
 
+# OSX Compatible key interpretter
+# Sends a key press signal
 def PressKeyOSX(hexKeyCode):
     global lastKey
     lastKey = hexKeyCode
@@ -11,7 +11,7 @@ def PressKeyOSX(hexKeyCode):
     CoreGraphics.CGEventPost(CoreGraphics.kCGHIDEventTap, event)
     print("push")
 
-
+# Sends a key release signal
 def ReleaseKeyOSX():
     hexKeyCode = lastKey
     print("prerelease")
@@ -19,16 +19,15 @@ def ReleaseKeyOSX():
     CoreGraphics.CGEventPost(CoreGraphics.kCGHIDEventTap, event)
     print("release")
 
-
+# Monitors the observable and updates the values on change
 def KeyPress(observable):
     
     observable.subscribe(lambda key: PressKeyOSX(macKeyWords[key]),
     on_next = lambda: ReleaseKeyOSX(),
     on_completed =  lambda: ReleaseKeyOSX())
 
-#TODO: Get OSX key codes
+# Translates keystrokes to CGKeyCode
 macKeyWords = {
-    "z":6,
     "a":0,
     "s":1,
     "d":2,

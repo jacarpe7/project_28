@@ -3,7 +3,7 @@ from OS_Router import initKeyMonitoring
 from rx.core import Observable
 from rx.subject import Subject
 
-#TODO: figure out why example is not responding at all
+# Example implementation of OSX key interpretter
 def main():
     key="z"
     subject_test = Subject()

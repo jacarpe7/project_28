@@ -5,14 +5,10 @@ user32 = ctypes.WinDLL('user32', use_last_error=True)
 SendInput = ctypes.windll.user32.SendInput
 
 # C struct redefinitions for hardware control
-INPUT_MOUSE    = 0
+INPUT_MOUSE = 0
 INPUT_KEYBOARD = 1
-INPUT_HARDWARE = 2
+KEYEVENTF_KEYUP = 0x0002
 
-KEYEVENTF_EXTENDEDKEY = 0x0001
-KEYEVENTF_KEYUP       = 0x0002
-KEYEVENTF_UNICODE     = 0x0004
-KEYEVENTF_SCANCODE    = 0x0008
 
 wintypes.ULONG_PTR = wintypes.WPARAM
 class KeyBdInput(ctypes.Structure):
@@ -21,11 +17,6 @@ class KeyBdInput(ctypes.Structure):
                 ("dwFlags",     wintypes.DWORD),
                 ("time",        wintypes.DWORD),
                 ("dwExtraInfo", wintypes.ULONG_PTR))
-
-class HardwareInput(ctypes.Structure):
-    _fields_ = (("uMsg",    wintypes.DWORD),
-                ("wParamL", wintypes.WORD),
-                ("wParamH", wintypes.WORD))
 
 class MouseInput(ctypes.Structure):
     _fields_ = (("dx",          wintypes.LONG),
@@ -44,21 +35,7 @@ class Input(ctypes.Structure):
     _fields_ = (("type",   wintypes.DWORD),
                 ("_input", _INPUT))
 
-
-LPINPUT = ctypes.POINTER(Input)
-
-def _check_count(result, func, args):
-    if result == 0:
-        raise ctypes.WinError(ctypes.get_last_error())
-    return args
-
-user32.SendInput.errcheck = _check_count
-user32.SendInput.argtypes = (wintypes.UINT, # nInputs
-                             LPINPUT,       # pInputs
-                             ctypes.c_int)  # cbSize
-
-# Functions for key press controls
-
+# Sends a key press signal
 def PressKeyWin(hexKeyCode):
     print("press")
     global lastKey
@@ -67,6 +44,7 @@ def PressKeyWin(hexKeyCode):
               ki=KeyBdInput(wVk=hexKeyCode))
     user32.SendInput(1, ctypes.byref(x), ctypes.sizeof(x))
 
+# Sends a key release signal
 def ReleaseKeyWin():
     print("release")
     hexKeyCode = lastKey
@@ -75,16 +53,14 @@ def ReleaseKeyWin():
                             dwFlags=KEYEVENTF_KEYUP))
     user32.SendInput(1, ctypes.byref(x), ctypes.sizeof(x))
 
-
-#hexcode will be the hexcode that determines the key being pressed. 
-# Key inputs can be found here: http://www.flint.jp/misc/?q=dik&lang=en
+# Monitors the observable and updates the values on change
 def KeyPress(observable: AsyncSubject):
     observable.subscribe(lambda key: PressKeyWin(winKeyWords[key]),
      on_next = lambda: ReleaseKeyWin(),
      on_completed =  lambda: ReleaseKeyWin())
 
     
-#find more @https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+# Translates keystrokes to hex
 winKeyWords = {
     "up":0x26,
     "down":0x28,
