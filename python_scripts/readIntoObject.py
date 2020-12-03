@@ -74,7 +74,7 @@ for index in range(amount):
             val4 = int(obj.delta4)
         
     list.clear()
-    for x in range(50):
+    for x in range(customLength):
         # parse readline() into array, can be easily placed into other objects if wanted
         parseLine = serialPort.readline().decode('utf-8').split(",")
         # time component is discarded and replaced with x variable increment; time output is 8-bit and resets after 255
