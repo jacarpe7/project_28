@@ -10,15 +10,19 @@ if (answer == "Y"):
     print("What would you like the delta to be?")
     customThresh = int(input())
 else:
+    # Default threshold
     customThresh = 40
 
+# Asks if the user would like to change the length of the recording
 print("Do you want to change the length of the recording from the default value? Y or N");
 answer = input()
 if (answer == "Y"):
+    # Asks the user what they would like the length to be
     print("How long would you like the length to be (default is 50)?")
     customLength = int(input())
 else:
-    customThresh = 50
+    # Default length
+    customLength = 50
 
 # Asks user how many recordings to make
 print("How many gesture records would you like to make? ")
@@ -62,11 +66,12 @@ for index in range(amount):
     val4 = 0
     i = 0
     
-    #read in data from serial, set to 50 lines
+    # read in data from serial, set to 50 lines
     while val0 < customThresh and val1 < customThresh and val2 < customThresh and val3 < customThresh and val4 < customThresh :
         parseLine = serialPort.readline().decode('utf-8').split(",")
         list.append(Row(i,parseLine[1],parseLine[2],parseLine[3],parseLine[4],parseLine[5]))
         i = i + 1
+        #values to compare to for threshold comparison
         for obj in list:
             val0 = int(obj.delta0)
             val1 = int(obj.delta1)
@@ -75,7 +80,8 @@ for index in range(amount):
             val4 = int(obj.delta4)
         
     list.clear()
-    for x in range(50):
+    # Loop through to gather all values
+    for x in range(customLength):
         # parse readline() into array, can be easily placed into other objects if wanted
         parseLine = serialPort.readline().decode('utf-8').split(",")
         # time component is discarded and replaced with x variable increment; time output is 8-bit and resets after 255
@@ -84,7 +90,7 @@ for index in range(amount):
     # write to CSV
     for obj in list:
         f.write(str(obj.time) + "," + str(obj.delta0) + "," + str(obj.delta1) + "," + str(obj.delta2) + "," + str(obj.delta3) + "," + str(obj.delta4) + ",\n")
-        
+    # print the file names that were recorded
     print("Gesture #", str(index), " recorded and written.")
 f.close()
 serialPort.close()
