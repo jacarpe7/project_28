@@ -15,4 +15,4 @@ from keras.callbacks import ModelCheckpoint
 
 #loading the exported pkl model and testing the accuracy score
 model = load_model('best_model.pkl')
-from sklearn.metrics import accuracy_score
+
