@@ -18,6 +18,7 @@ NUM_PAD_Y = 8
 
 # boolean values for menu navigation and button enable/disable
 initial_screen = True
+gesture_pin_screen = False
 cancel_pressed = False
 pin_valid = False
 menu_present = False
@@ -142,6 +143,9 @@ def input_num(num):
             root.main_lcd.insert(END, num)
             amount_entered = amount_entered + num
     root.main_lcd.config(state=DISABLED)
+
+#define functionality for listening to keyboard input (CONVERT TO INPUT FROM GESTURE RECOGNITION)
+def gesture_pin_select(num):
 
 # Define function for the 'Clear' button
 def clear():
@@ -312,8 +316,9 @@ def go_back():
 # Defines function to show the main menu
 def display_main_menu():
     global menu_present, withdrawal_prompt, another_trans_prompt, invalid_msg, \
-        initial_screen, deposit_options_prompt, deposit_prompt, acct_balance_displayed
+        initial_screen, gesture_pin_screen, deposit_options_prompt, deposit_prompt, acct_balance_displayed
     initial_screen = False
+    gesture_pin_screen = False
     menu_present = True
     withdrawal_prompt = False
     deposit_prompt = False
@@ -331,8 +336,9 @@ def display_main_menu():
 # Defines function to back to initial screen for PIN entry
 def display_initial_screen():
     global menu_present, withdrawal_prompt, another_trans_prompt, invalid_msg, \
-        initial_screen, deposit_options_prompt, deposit_prompt, acct_balance_displayed
+        initial_screen, gesture_pin_screen, deposit_options_prompt, deposit_prompt, acct_balance_displayed
     initial_screen = True
+    gesture_pin_screen = False
     menu_present = False
     withdrawal_prompt = False
     deposit_prompt = False
@@ -346,6 +352,32 @@ def display_initial_screen():
     root.main_lcd.insert(END, "\n\nEnter PIN to continue\n\nOR\n\nHover for gesture entry")
     root.main_lcd.tag_add("center", "1.0", "end")   
     
+# Defines function to back to initial screen for PIN entry
+def display_gesture_pin_screen():
+    global menu_present, withdrawal_prompt, another_trans_prompt, invalid_msg, \
+        initial_screen, gesture_pin_screen, deposit_options_prompt, deposit_prompt, acct_balance_displayed
+    
+    pinArray = [0,1,2,3,4,5,6,7,8,9]
+    current = pinArray[0]
+    previous = pinArray[10]
+    after = pinArray[1]
+
+    initial_screen = False
+    gesture_pin_screen = True
+    menu_present = False
+    withdrawal_prompt = False
+    deposit_prompt = False
+    another_trans_prompt = False
+    deposit_options_prompt = False
+    invalid_msg = False
+    acct_balance_displayed = False
+    root.main_lcd.delete("1.0", END)
+    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
+    root.main_lcd.insert("1.0", '\n\nWelcome to the ASU ATM System\n')
+    root.main_lcd.insert(END, "\n\nEnter PIN to continue\n\n {previous}{current}{after} \n\n← Swipe left or right →")
+    root.main_lcd.tag_add("center", "1.0", "end")
+
+
 # Define function to display the deposit options screen
 def display_deposit_options():
     global menu_present, deposit_options_prompt, deposit_prompt
