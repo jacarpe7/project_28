@@ -29,6 +29,12 @@ invalid_msg = False
 acct_balance_displayed = False
 insufficient_funds = False
 
+# variables related to gestures
+gestures_enabled = False
+HOVER = 0
+LEFT_SWIPE = 1
+RIGHT_SWIPE = 2
+
 # variables for capturing input & storing account balance
 deposit_type = ""
 pin_code = ""
@@ -72,8 +78,8 @@ class Atm:
         # Create main LCD panel and add text
         root.main_lcd = Text(center_frame,height=23,width=70,background="black",foreground="green")
         root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
-        root.main_lcd.insert("1.0", "\n\n\n\nWelcome to the ASU ATM System")
-        root.main_lcd.insert(END, "\n\nEnter PIN to continue...\n\n")
+        root.main_lcd.insert("1.0", "\n\nWelcome to the ASU ATM System\n")
+        root.main_lcd.insert(END, "\n\nEnter PIN to continue\n\nOR\n\nHover for gesture entry")
         root.main_lcd.tag_add("center", "1.0", "end")
         root.main_lcd.grid(row=0, column=0,padx=5,pady=5)
         root.main_lcd.config(state=DISABLED)
@@ -124,6 +130,11 @@ def input_num(num):
     global pin_code, withdrawal_prompt, amount_entered, initial_screen, \
         another_trans_prompt, invalid_msg, deposit_prompt
     if not invalid_msg and not another_trans_prompt:
+        if len(pin_code) == 0:
+            root.main_lcd.delete("end-5l", END)
+            root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
+            root.main_lcd.tag_add("center", "1.0", "end") 
+            root.main_lcd.insert("end", "\n\n")
         if len(pin_code) < 4 and initial_screen:
             root.main_lcd.insert(END, num)
             pin_code = pin_code + num
@@ -162,7 +173,11 @@ def enter():
         pin_valid = True
         display_main_menu()
     elif pin_code != correct_pin and not cancel_pressed:
-        display_invalid_msg("Invalid PIN")
+        message = "Invalid PIN"
+        if len(pin_code) == 0:
+            root.main_lcd.delete("end-4l", END)
+            message = "\n" + message
+        display_invalid_msg(message)
     elif withdrawal_prompt and len(amount_entered) > 0:
         if int(amount_entered) % 20 != 0:
             display_invalid_msg("Invalid entry")
@@ -327,8 +342,8 @@ def display_initial_screen():
     acct_balance_displayed = False
     root.main_lcd.delete("1.0", END)
     root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
-    root.main_lcd.insert("1.0", "\n\n\n\nWelcome to the ASU ATM System")
-    root.main_lcd.insert(END, "\n\nEnter PIN to continue...\n\n")
+    root.main_lcd.insert("1.0", "\n\nWelcome to the ASU ATM System\n")
+    root.main_lcd.insert(END, "\n\nEnter PIN to continue\n\nOR\n\nHover for gesture entry")
     root.main_lcd.tag_add("center", "1.0", "end")   
     
 # Define function to display the deposit options screen
