@@ -30,7 +30,7 @@ acct_balance_displayed = False
 insufficient_funds = False
 
 # variables related to gestures
-gestures_enabled = False
+gestures_enabled = True
 HOVER = 0
 LEFT_SWIPE = 1
 RIGHT_SWIPE = 2
@@ -312,7 +312,8 @@ def go_back():
 # Defines function to show the main menu
 def display_main_menu():
     global menu_present, withdrawal_prompt, another_trans_prompt, invalid_msg, \
-        initial_screen, deposit_options_prompt, deposit_prompt, acct_balance_displayed
+        initial_screen, deposit_options_prompt, deposit_prompt, acct_balance_displayed, \
+            gestures_enabled
     initial_screen = False
     menu_present = True
     withdrawal_prompt = False
@@ -321,12 +322,21 @@ def display_main_menu():
     deposit_options_prompt = False
     invalid_msg = False
     acct_balance_displayed = False
-    root.main_lcd.delete("1.0", END)
-    root.main_lcd.insert("1.0", "\nWithdrawal Funds")
-    root.main_lcd.insert(END, "\n\n\nDeposit Funds")
-    root.main_lcd.insert(END, "\n\n\nCheck Account Balance")
-    root.main_lcd.tag_configure("left", justify='left', font="fixedsys 20")
-    root.main_lcd.tag_add("left", "1.0", "end")
+    if gestures_enabled:
+        root.main_lcd.delete("1.0", END)
+        root.main_lcd.tag_configure("left", justify='left', font="fixedsys 20")
+        root.main_lcd.insert("1.0", "\n\n\n\n Deposit\t\t\t\t\t\tWithdrawal\n")
+        root.main_lcd.tag_add("left", "1.0", "end-1l")
+        root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20", foreground = "blue")
+        root.main_lcd.insert("end", "\n\nCheck Balance\n")
+        root.main_lcd.tag_add("center", "end-4l", END)   
+    else:
+        root.main_lcd.delete("1.0", END)
+        root.main_lcd.insert("1.0", "\nWithdrawal Funds")
+        root.main_lcd.insert(END, "\n\n\nDeposit Funds")
+        root.main_lcd.insert(END, "\n\n\nCheck Account Balance")
+        root.main_lcd.tag_configure("left", justify='left', font="fixedsys 20")
+        root.main_lcd.tag_add("left", "1.0", "end")
     
 # Defines function to back to initial screen for PIN entry
 def display_initial_screen():
