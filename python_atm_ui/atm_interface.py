@@ -21,7 +21,7 @@ NUM_PAD_X = 12
 NUM_PAD_Y = 8
 
 # boolean values for menu navigation and button enable/disable
-initial_screen = Tru
+initial_screen = True
 cancel_pressed = False
 pin_valid = False
 menu_present = False
@@ -54,7 +54,6 @@ amount_entered = ""
 acct_balance = 1000
 
 #keyboard listener 
-keyListener = Subject()
 def on_press(key):
     try:
         keyListener.on_next(key)
@@ -70,22 +69,19 @@ def on_release(key):
     if key == keyboard.Key.esc:
         # Stop listener
         return False
+ 
+keyListener = Subject()
 
+listener = keyboard.Listener(
+    on_press=on_press,
+    on_release=on_release)
 
-with keyboard.Listener(
-        on_press=on_press,
-        on_release=on_release) as listener:
-    listener.join()
 class Atm:
     
     def __init__(self, root):
         self.root = root    
         root.title("ASU Capstone ATM Simulator")
         root.geometry("800x800")
-
-        keyListener.subscribe(
-            lambda x: print("Now sending the key: {x} \n as a observable.")
-        )
 
         # Create the main frames for the various sections on the UI
         left_frame = Frame(root,width=150,height=500)
@@ -169,7 +165,10 @@ class Atm:
         button_num_enter.grid(row=0,column=3, padx=NUM_PAD_X,pady=NUM_PAD_Y)
         button_num_clear.grid(row=1,column=3, padx=NUM_PAD_X,pady=NUM_PAD_Y)
         button_num_cancel.grid(row=2,column=3, padx=NUM_PAD_X,pady=NUM_PAD_Y)
-    
+    listener.start()       
+
+
+
 # Define function for entering the PIN from the numeric keypad
 def input_num(num):
     root.main_lcd.config(state=NORMAL)
@@ -189,53 +188,46 @@ def input_num(num):
     root.main_lcd.config(state=DISABLED)
 
 def pin_iterator(key):
-    if key == 'right':
-        if current > 8:
+    global pinArray, current, previous, after
+    if key == keyboard.Key.right:
+        if current >= 8:
             current = pinArray[0]
-            after = pinArray[1]
-            previous = pinArray[9]
-        elif after > 8:
-            current = pinArray[9]
+        elif after >= 8:
             after = pinArray[0]
-            previous = pinArray[8]
-        elif previous > 8:
-            current = pinArray[1]
-            after = pinArray[9]
+        elif previous >= 9:
             previous = pinArray[0]
         else:
             current +=1
             after +=1
             previous +=1
 
-    elif key == 'left':
-        if current < 1:
+    elif key == keyboard.Key.left:
+        if current <= 1:
             current = pinArray[9]
-            after = pinArray[0]
-            previous = pinArray[8]
-        elif after < 1:
-            current = pinArray[8]
+
+        elif after <= 1:
             after = pinArray[9]
-            previous = pinArray[7]
-        elif previous < 1:
-            current = pinArray[0]
-            after = pinArray[1]
+
+        elif previous <= 1:
             previous = pinArray[9]
         else:
             current -=1
             after -=1
             previous -=1
     
-    elif key == 'down':
-        pin += current
+    elif key == keyboard.Key.down:
+        input_num(current)
 
-    elif key == 'enter':
+    elif key == keyboard.Key.enter:
         enter()
 
-    elif key == 'backspace':
+    elif key == keyboard.Key.backspace:
         clear()
 
-    elif key == 'escape':
+    elif key == keyboard.Key.escape:
         cancel()
+
+    return current
 # Define function for the 'Clear' button
 def clear():
     root.main_lcd.config(state=NORMAL)
@@ -446,13 +438,13 @@ def display_initial_screen():
     if gestures_enabled:
         #subscribes to the key
         keyListener.subscribe(
-            lambda x: pin_iterator(x))
+            lambda x: print(pin_iterator(x))
         )
 
         root.main_lcd.delete("1.0", END)
         root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
         root.main_lcd.insert("1.0", '\n\nWelcome to the ASU ATM System\n')
-        root.main_lcd.insert(END, '\n\nEnter PIN to continue\n\n {previous}{current}{after} \n\n← Swipe left or right →')
+        root.main_lcd.insert(END, '\n\nEnter PIN to continue\n\n {}{}{} \n\n← Swipe left or right →'.format(previous, current, after))
         root.main_lcd.tag_add("center", "1.0", "end")
     else:
         root.main_lcd.delete("1.0", END)
@@ -523,6 +515,7 @@ def display_another_trans_prompt():
     root.main_lcd.insert("end", "\n\tYes\n\n\n\n\tNo")
     root.main_lcd.tag_add("right", "end-5l", END)
     another_trans_prompt = True
+
 
 # Entry point to initiate the program for execution    
 if __name__ == '__main__':
