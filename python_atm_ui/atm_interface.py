@@ -77,7 +77,15 @@ class Atm:
         
         # Create main LCD panel and add text
         root.main_lcd = Text(center_frame,height=23,width=70,background="black",foreground="green")
-        root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
+        
+        # Create config tags for main_lcd
+        root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20", foreground = "green")
+        root.main_lcd.tag_configure("left", justify='left', font="fixedsys 20", foreground = "green")
+        root.main_lcd.tag_configure("right", justify='right', font="fixedsys 20", foreground = "green")
+        root.main_lcd.tag_configure("left_selected", justify='left', font="fixedsys 20", foreground = "blue")
+        root.main_lcd.tag_configure("right_selected", justify='right', font="fixedsys 20", foreground = "blue")
+        root.main_lcd.tag_configure("center_selected", justify='center', font="fixedsys 20", foreground = "blue")
+        
         root.main_lcd.insert("1.0", "\n\nWelcome to the ASU ATM System\n")
         root.main_lcd.insert(END, "\n\nEnter PIN to continue\n\nOR\n\nHover for gesture entry")
         root.main_lcd.tag_add("center", "1.0", "end")
@@ -132,7 +140,6 @@ def input_num(num):
     if not invalid_msg and not another_trans_prompt:
         if len(pin_code) == 0:
             root.main_lcd.delete("end-5l", END)
-            root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
             root.main_lcd.tag_add("center", "1.0", "end") 
             root.main_lcd.insert("end", "\n\n")
         if len(pin_code) < 4 and initial_screen:
@@ -188,14 +195,12 @@ def enter():
             acct_balance = round(acct_balance - int(amount_entered), 2)
             amount_entered = ""
             root.main_lcd.delete("1.0", END)
-            root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
             root.main_lcd.insert("1.0", "\n\n\n\nPlease take your cash\n\n")
             display_another_trans_prompt()
     elif deposit_prompt and len(amount_entered) > 0:
         acct_balance = round(acct_balance + int(amount_entered), 2)
         amount_entered = ""
         root.main_lcd.delete("1.0", END)
-        root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
         root.main_lcd.insert("1.0", "\n\n\n\nDeposit successful\n\n")
         display_another_trans_prompt()
     root.main_lcd.config(state=DISABLED)
@@ -203,19 +208,22 @@ def enter():
 # Define function for 'Cancel' button
 def cancel():
     global cancel_pressed, menu_present, another_trans_prompt, invalid_msg, \
-        initial_screen, acct_balance_displayed
+        initial_screen, acct_balance_displayed, gestures_enabled
     if not another_trans_prompt and not invalid_msg and not initial_screen:
         cancel_pressed = True
         menu_present = False
         root.main_lcd.config(state=NORMAL)
         root.main_lcd.delete("1.0", END)
-        root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
         root.main_lcd.insert("1.0", "\n\n\n\nCancel - Are you sure?")
         root.main_lcd.tag_add("center", "1.0", "end")
-        root.main_lcd.tag_configure("right", justify='right', font="fixedsys 20")
-        root.main_lcd.insert("end", "\n\n\n\tYes\n\n\n\n\tNo")
-        root.main_lcd.tag_add("right", "end-5l", END)
-        root.main_lcd.config(state=DISABLED)
+        if gestures_enabled:
+            root.main_lcd.insert("end", "\n\n\n\t\tYes\t\t\t\tNo")
+            root.main_lcd.tag_add("left", "end-1l", "end-3c")
+            root.main_lcd.tag_add("left_selected", "end-3c", "end")
+        else:
+            root.main_lcd.insert("end", "\n\n\n\tYes\n\n\n\n\tNo")
+            root.main_lcd.tag_add("right", "end-5l", END)
+            root.main_lcd.config(state=DISABLED)
     
 # Define function for 'Yes' button (R3)
 def yes():
@@ -324,18 +332,15 @@ def display_main_menu():
     acct_balance_displayed = False
     if gestures_enabled:
         root.main_lcd.delete("1.0", END)
-        root.main_lcd.tag_configure("left", justify='left', font="fixedsys 20")
         root.main_lcd.insert("1.0", "\n\n\n\n Deposit\t\t\t\t\t\tWithdrawal\n")
         root.main_lcd.tag_add("left", "1.0", "end-1l")
-        root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20", foreground = "blue")
         root.main_lcd.insert("end", "\n\nCheck Balance\n")
-        root.main_lcd.tag_add("center", "end-4l", END)   
+        root.main_lcd.tag_add("center_selected", "end-4l", END)   
     else:
         root.main_lcd.delete("1.0", END)
         root.main_lcd.insert("1.0", "\nWithdrawal Funds")
         root.main_lcd.insert(END, "\n\n\nDeposit Funds")
         root.main_lcd.insert(END, "\n\n\nCheck Account Balance")
-        root.main_lcd.tag_configure("left", justify='left', font="fixedsys 20")
         root.main_lcd.tag_add("left", "1.0", "end")
     
 # Defines function to back to initial screen for PIN entry
@@ -351,7 +356,6 @@ def display_initial_screen():
     invalid_msg = False
     acct_balance_displayed = False
     root.main_lcd.delete("1.0", END)
-    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
     root.main_lcd.insert("1.0", "\n\nWelcome to the ASU ATM System\n")
     root.main_lcd.insert(END, "\n\nEnter PIN to continue\n\nOR\n\nHover for gesture entry")
     root.main_lcd.tag_add("center", "1.0", "end")   
@@ -363,10 +367,8 @@ def display_deposit_options():
     deposit_prompt = False
     deposit_options_prompt = True
     root.main_lcd.delete("1.0", END)
-    root.main_lcd.tag_configure("right", justify='right', font="fixedsys 20")
     root.main_lcd.insert("1.0", "\n\tDeposit Check\n\n\n\tDeposit Cash\n")
     root.main_lcd.tag_add("right", "1.0", "end-1l")
-    root.main_lcd.tag_configure("left", justify='left', font="fixedsys 20")
     root.main_lcd.insert("end", "\n\n\n\n\n\n\n\n\n\nGo Back")
     root.main_lcd.tag_add("left", "end-2l", END)
     
@@ -377,7 +379,6 @@ def display_withdrawal_prompt():
     withdrawal_prompt = True
     invalid_msg = False
     root.main_lcd.delete("1.0", END)
-    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
     root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n")
     root.main_lcd.insert(END, "(Multiples of $20)\n\n$ ")
     root.main_lcd.tag_add("center", "1.0", "end")
@@ -389,7 +390,6 @@ def display_deposit_prompt():
     deposit_options_prompt = False
     invalid_msg = False
     root.main_lcd.delete("1.0", END)
-    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
     root.main_lcd.insert("1.0", "\n\n\n\nEnter " + deposit_type + " deposit amount:\n")
     root.main_lcd.insert(END, "\n$ ")
     root.main_lcd.tag_add("center", "1.0", "end")
@@ -400,11 +400,9 @@ def display_acct_balance():
     acct_balance_displayed = True
     menu_present = False
     root.main_lcd.delete("1.0", END)
-    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
     root.main_lcd.insert("1.0", "\n\n\nYour account balance is:\n")
     root.main_lcd.insert(END, "\n$ " + str(acct_balance) + "\n")
     root.main_lcd.tag_add("center", "1.0", "end-1l")
-    root.main_lcd.tag_configure("left", justify='left', font="fixedsys 20")
     root.main_lcd.insert("end", "\n\n\n\n\n\n\n\nGo Back")
     root.main_lcd.tag_add("left", "end-2l", END)
     
@@ -413,7 +411,6 @@ def display_invalid_msg(msg):
     global invalid_msg
     root.main_lcd.delete("end-1l", END)
     root.main_lcd.insert(END, "\n" + msg + ", Press 'Clear'")
-    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
     root.main_lcd.tag_add("center", "1.0", "end")
     invalid_msg = True
     
@@ -422,7 +419,6 @@ def display_another_trans_prompt():
     global another_trans_prompt
     root.main_lcd.insert(END, "Another transaction?")
     root.main_lcd.tag_add("center", "1.0", "end")
-    root.main_lcd.tag_configure("right", justify='right', font="fixedsys 20")
     root.main_lcd.insert("end", "\n\tYes\n\n\n\n\tNo")
     root.main_lcd.tag_add("right", "end-5l", END)
     another_trans_prompt = True
