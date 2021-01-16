@@ -17,9 +17,13 @@ class Row:
 
 # array to hold objects
 list = []
+<<<<<<< HEAD
 # array to hold arrays
 bigList = []
 #index for printing
+=======
+bigList = []
+>>>>>>> d442761937487b163b77e13c0f9c6bbf7dfed496
 index  = 0
 while(1):
     
@@ -56,7 +60,10 @@ while(1):
         
     index = index + 1
     print("Gesture #", str(index), " recorded and written.")
+<<<<<<< HEAD
     #add list to the larger structure
+=======
+>>>>>>> d442761937487b163b77e13c0f9c6bbf7dfed496
     bigList.append(list)
 
 serialPort.close()
