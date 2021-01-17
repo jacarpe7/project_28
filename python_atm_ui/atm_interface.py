@@ -40,10 +40,10 @@ LEFT_SWIPE = 1
 RIGHT_SWIPE = 2
 
 # pin values for gestures
-pinArray = [0,1,2,3,4,5,6,7,8,9]
-current = pinArray[0]
-previous = pinArray[9]
-after = pinArray[1]
+global current, previous, previous
+current = 0
+previous = 9
+after = 1
 
 
 # variables for capturing input & storing account balance
@@ -188,45 +188,45 @@ def input_num(num):
     root.main_lcd.config(state=DISABLED)
 
 def pin_iterator(key):
-    global pinArray, current, previous, after
-    if key == keyboard.Key.right:
-        if current >= 8:
-            current = pinArray[0]
-        elif after >= 8:
-            after = pinArray[0]
-        elif previous >= 9:
-            previous = pinArray[0]
-        else:
-            current +=1
-            after +=1
-            previous +=1
+    global current, previous, after
+    if key is keyboard.Key.right:
+        current +=1
+        after +=1
+        previous +=1
+        if current is 10:
+            current = 0
+        elif after is 10:
+            after = 0
+        elif previous is 10:
+            previous = 0
+        gesture_pin_menu()
 
-    elif key == keyboard.Key.left:
-        if current <= 1:
-            current = pinArray[9]
+    elif key is keyboard.Key.left:
+        current -=1
+        after -=1
+        previous -=1
+        if current is -1:
+            current = 9
 
-        elif after <= 1:
-            after = pinArray[9]
+        elif after is -1:
+            after = 9
 
-        elif previous <= 1:
-            previous = pinArray[9]
-        else:
-            current -=1
-            after -=1
-            previous -=1
+        elif previous is -1:
+            previous = 9
+        gesture_pin_menu()
     
-    elif key == keyboard.Key.down:
+    elif key is keyboard.Key.down:
         input_num(current)
 
-    elif key == keyboard.Key.enter:
+    elif key is keyboard.Key.enter:
         enter()
 
-    elif key == keyboard.Key.backspace:
+    elif key is keyboard.Key.backspace:
         clear()
 
-    elif key == keyboard.Key.escape:
+    elif key is keyboard.Key.escape:
         cancel()
-
+    
     return current
 # Define function for the 'Clear' button
 def clear():
@@ -425,7 +425,7 @@ def display_main_menu():
 def display_initial_screen():
     global menu_present, withdrawal_prompt, another_trans_prompt, invalid_msg, \
         initial_screen, deposit_options_prompt, deposit_prompt, acct_balance_displayed, \
-            gestures_enabled, pinArray, current, previous, after
+            gestures_enabled, current, previous, after
 
     initial_screen = True
     menu_present = False
@@ -437,21 +437,36 @@ def display_initial_screen():
     acct_balance_displayed = False
     if gestures_enabled:
         #subscribes to the key
+        gesture_pin_menu()
         keyListener.subscribe(
-            lambda x: print(pin_iterator(x))
-        )
+            lambda x:print(pin_iterator(x)))
 
-        root.main_lcd.delete("1.0", END)
-        root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
-        root.main_lcd.insert("1.0", '\n\nWelcome to the ASU ATM System\n')
-        root.main_lcd.insert(END, '\n\nEnter PIN to continue\n\n {}{}{} \n\n← Swipe left or right →'.format(previous, current, after))
-        root.main_lcd.tag_add("center", "1.0", "end")
     else:
         root.main_lcd.delete("1.0", END)
         root.main_lcd.insert("1.0", "\n\nWelcome to the ASU ATM System\n")
         root.main_lcd.insert(END, "\n\nEnter PIN to continue\n\nOR\n\nHover for gesture entry")
         root.main_lcd.tag_add("center", "1.0", "end")   
-    
+
+def gesture_pin_menu():
+    global menu_present, withdrawal_prompt, another_trans_prompt, invalid_msg, \
+        initial_screen, deposit_options_prompt, deposit_prompt, acct_balance_displayed, \
+            gestures_enabled, current, previous, after
+
+    initial_screen = True
+    menu_present = False
+    withdrawal_prompt = False
+    deposit_prompt = False
+    another_trans_prompt = False
+    deposit_options_prompt = False
+    invalid_msg = False
+    acct_balance_displayed = False
+    root.main_lcd.config(state=NORMAL)
+    root.main_lcd.delete("1.0", END)
+    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
+    root.main_lcd.insert("1.0", '\n\nWelcome to the ASU ATM System\n')
+    root.main_lcd.insert(END, '\n\nEnter PIN to continue\n\n {}{}{} \n\n← Swipe left or right →'.format(previous, current, after))
+    root.main_lcd.tag_add("center", "1.0", "end")
+    root.main_lcd.config(state=DISABLED)
 
 # Define function to display the deposit options screen
 def display_deposit_options():
