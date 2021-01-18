@@ -40,7 +40,7 @@ LEFT_SWIPE = 1
 RIGHT_SWIPE = 2
 
 # pin values for gestures
-global current, previous, previous
+global current, previous, after
 current = 0
 previous = 9
 after = 1
@@ -75,8 +75,11 @@ def on_release(key):
         # Stop listener
         return False
  
+#observable declaration, SEE IMPLEMENTATION IN PIN MENU FOR EXAMPLE
 keyListener = Subject()
 
+#pynumpt keyboard listening subscription, this is what is monitoring key strokes
+#Will need to remove when back-end data is ready.
 listener = keyboard.Listener(
     on_press=on_press,
     on_release=on_release)
@@ -498,8 +501,8 @@ def display_initial_screen():
     invalid_msg = False
     acct_balance_displayed = False
     if gestures_enabled:
-        #subscribes to the key
         gesture_pin_menu()
+        #subscribes to the key, currently printing the key press for debugging purposes.
         keyListener.subscribe(
             lambda x:print(pin_iterator(x)))
 
