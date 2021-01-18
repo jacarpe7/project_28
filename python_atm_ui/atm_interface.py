@@ -45,6 +45,11 @@ current = 0
 previous = 9
 after = 1
 
+# Main Menu options constants
+selected = None
+DEPOSIT = 0
+CHECK_BAL = 1
+WITHDRAWAL = 2
 
 # variables for capturing input & storing account balance
 deposit_type = ""
@@ -399,7 +404,7 @@ def go_back():
 def display_main_menu():
     global menu_present, withdrawal_prompt, another_trans_prompt, invalid_msg, \
         initial_screen, deposit_options_prompt, deposit_prompt, acct_balance_displayed, \
-            gestures_enabled
+            gestures_enabled, selected
     initial_screen = False
     menu_present = True
     withdrawal_prompt = False
@@ -410,10 +415,16 @@ def display_main_menu():
     acct_balance_displayed = False
     if gestures_enabled:
         root.main_lcd.delete("1.0", END)
+        clear_tags()
         root.main_lcd.insert("1.0", "\n\n\n\n Deposit\t\t\t\t\t\tWithdrawal\n")
         root.main_lcd.tag_add("left", "1.0", "end-1l")
         root.main_lcd.insert("end", "\n\nCheck Balance\n")
-        root.main_lcd.tag_add("center_selected", "end-4l", END)   
+        root.main_lcd.tag_add("center_selected", "end-4l", "end-1l") 
+        root.main_lcd.insert("end", "\n\n← Swipe left or right →")
+        root.main_lcd.tag_add("center", "end-1l", END) 
+        selected = CHECK_BAL
+        keyListener.subscribe(
+            lambda x:print(main_menu_select_gestures(x)))
     else:
         root.main_lcd.delete("1.0", END)
         root.main_lcd.insert("1.0", "\nWithdrawal Funds")
@@ -421,6 +432,57 @@ def display_main_menu():
         root.main_lcd.insert(END, "\n\n\nCheck Account Balance")
         root.main_lcd.tag_add("left", "1.0", "end")
     
+def main_menu_select_gestures(key):
+    global selected
+    if key is keyboard.Key.right:
+        if selected == DEPOSIT or selected == CHECK_BAL:
+            selected = selected + 1
+    if key is keyboard.Key.left:
+        if selected == CHECK_BAL or selected == WITHDRAWAL:
+            selected = selected - 1
+    if key is keyboard.Key.enter:
+        if selected == DEPOSIT:
+            deposit()
+        if selected == WITHDRAWAL:
+            withdrawal()
+        if selected == CHECK_BAL:
+            acct_balance()
+            
+    root.main_lcd.delete("1.0", END)
+    clear_tags()
+    if selected == DEPOSIT:
+        root.main_lcd.tag_add("left_selected", "1.0", "1.0+12c")
+        root.main_lcd.tag_add("left", "1.0+13c", "1.0+28c")
+        root.main_lcd.tag_add("center", "1.0", END)
+        root.main_lcd.insert("1.0", "\n\n\n\n Deposit\t\t\t\t\t\tWithdrawal\n")
+        root.main_lcd.insert("end", "\n\nCheck Balance\n")
+        root.main_lcd.insert("end", "\n\n← Swipe left or right →")
+        print(selected)
+    if selected == CHECK_BAL:
+        root.main_lcd.tag_add("left", "1.0", "end-1l")
+        root.main_lcd.tag_add("center_selected", "end-4l", "end-1l")
+        root.main_lcd.tag_add("center", "end-1l", END) 
+        root.main_lcd.insert("1.0", "\n\n\n\n Deposit\t\t\t\t\t\tWithdrawal\n")
+        root.main_lcd.insert("end", "\n\nCheck Balance\n")
+        root.main_lcd.insert("end", "\n\n← Swipe left or right →")
+        print(selected)
+    if selected == WITHDRAWAL:
+        root.main_lcd.tag_add("left", "1.0", "1.0+12c")
+        root.main_lcd.tag_add("left_selected", "1.0+13c", "1.0+28c")
+        root.main_lcd.tag_add("center", "1.0", END)
+        root.main_lcd.insert("1.0", "\n\n\n\n Deposit\t\t\t\t\t\tWithdrawal\n")
+        root.main_lcd.insert("end", "\n\nCheck Balance\n")
+        root.main_lcd.insert("end", "\n\n← Swipe left or right →")
+        print(selected)
+        
+def clear_tags():
+    root.main_lcd.tag_remove("left", "1.0", "end")
+    root.main_lcd.tag_remove("right", "1.0", "end")
+    root.main_lcd.tag_remove("center", "1.0", "end")
+    root.main_lcd.tag_remove("left_selected", "1.0", "end")
+    root.main_lcd.tag_remove("right_selected", "1.0", "end")
+    root.main_lcd.tag_remove("center_selected", "1.0", "end")
+        
 # Defines function to back to initial screen for PIN entry
 def display_initial_screen():
     global menu_present, withdrawal_prompt, another_trans_prompt, invalid_msg, \
