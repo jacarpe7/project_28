@@ -30,6 +30,7 @@ while(1):
     # setup filewriting to CSV
     fname = "def"
     filename = fname + ".csv" #% index
+    #if first go through, write to file, otherwise append
     if (index == 1):
         f = open(filename, "w")
     else :
@@ -74,6 +75,7 @@ while(1):
         f.write(str(obj.time) + "," + str(obj.delta0) + "," + str(obj.delta1) + "," + str(obj.delta2) + "," + str(obj.delta3) + "," + str(obj.delta4) + ",\n")
         
     print("Gesture #", str(index), " recorded and written.")
+    #index for print out
     index = index + 1
     f.close()
 serialPort.close()
