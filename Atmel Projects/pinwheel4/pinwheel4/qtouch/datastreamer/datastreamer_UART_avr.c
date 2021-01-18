@@ -149,29 +149,29 @@ void ascii_output(void)
 	int16_t			touch_signal,touch_reference,touch_delta,comp_caps;
 	uint8_t			channel_index,touch_state;
 
-
-	sprintf(tx_data,"%04d,",sequence);
-	send_string(tx_data);
+	// debugging - sequence not incrementing properly, but is likely unnecessary
+	//sprintf(tx_data,"%05d,",sequence);
+	//send_string(tx_data);
 
 	for(channel_index = 0;channel_index <DEF_NUM_CHANNELS;channel_index++ )
-	{
+	{	
 		// tx channel id
-		// sprintf(tx_data,"ch:%04d ",channel_index);
+		// sprintf(tx_data,"ch:%05d ",channel_index);
 		// send_string(tx_data);
 		touch_signal = get_sensor_node_signal(channel_index);
 
 		// tx signal value
-		// sprintf(tx_data,"sig:%04d ",touch_signal);
-		// send_string(tx_data);
+		sprintf(tx_data,"sig:%05d ",touch_signal);
+		send_string(tx_data);
 
 		// tx reference
 		touch_reference = get_sensor_node_reference(channel_index);
-		// sprintf(tx_data,"ref:%04d ",touch_reference);
-		// send_string(tx_data);
+		sprintf(tx_data,"ref:%05d ",touch_reference);
+		send_string(tx_data);
 
 		// tx delta
 		touch_delta = touch_signal - touch_reference;
-		sprintf(tx_data,"%04d,",touch_delta);
+		sprintf(tx_data,"%05d,",touch_delta);
 		send_string(tx_data);
 
 
@@ -183,7 +183,7 @@ void ascii_output(void)
 		// else send_string("off\r\n");
 
 	}
-	sequence++;
+	//sequence++;
 	send_string("\n");
 
 
@@ -209,9 +209,6 @@ void byte_output(void)
 		}
 	}
 */
-
-
-
 
 	// Start token
 	datastreamer_transmit(0x55);
