@@ -45,8 +45,9 @@ current = 0
 previous = 9
 after = 1
 
-# Main Menu options constants
-selected = None
+# Gesture menu selection constants
+cancel_selection = False
+main_menu_selection = None
 DEPOSIT = 0
 CHECK_BAL = 1
 WITHDRAWAL = 2
@@ -306,10 +307,37 @@ def cancel():
             root.main_lcd.insert("end", "\n\n\n\t\tYes\t\t\t\tNo")
             root.main_lcd.tag_add("left", "end-1l", "end-3c")
             root.main_lcd.tag_add("left_selected", "end-3c", "end")
+            keyListener.subscribe(
+                lambda x:print(cancel_gestures(x)))
         else:
             root.main_lcd.insert("end", "\n\n\n\tYes\n\n\n\n\tNo")
             root.main_lcd.tag_add("right", "end-5l", END)
             root.main_lcd.config(state=DISABLED)
+
+# Define function for cancelling via gestures
+def cancel_gestures(key):
+    global cancel_pressed, cancel_selection
+    if cancel_pressed:
+        if key is keyboard.Key.right and cancel_selection:
+            root.main_lcd.delete("1.0", END)
+            clear_tags()
+            root.main_lcd.insert("1.0", "\n\n\n\nCancel - Are you sure?\n\n\n\t\tYes\t\t\t\tNo")
+            root.main_lcd.tag_add("center", "1.0", "end")
+            root.main_lcd.tag_add("left", "end-1l", "end-3c")
+            root.main_lcd.tag_add("left_selected", "end-3c", "end")
+            cancel_selection = False
+        if key is keyboard.Key.left and not cancel_selection:
+            root.main_lcd.delete("1.0", END)
+            clear_tags()
+            root.main_lcd.insert("1.0", "\n\n\n\nCancel - Are you sure?\n\n\n\t\tYes\t\t\t\tNo")
+            root.main_lcd.tag_add("center", "1.0", "end")
+            root.main_lcd.tag_add("left_selected", "7.0", "7.0+6c")
+            root.main_lcd.tag_add("left", "end-3c", "end")
+            cancel_selection = True
+        if key is keyboard.Key.enter and cancel_selection:
+            yes()
+        if key is keyboard.Key.enter and not cancel_selection:
+            no()
     
 # Define function for 'Yes' button (R3)
 def yes():
@@ -407,7 +435,7 @@ def go_back():
 def display_main_menu():
     global menu_present, withdrawal_prompt, another_trans_prompt, invalid_msg, \
         initial_screen, deposit_options_prompt, deposit_prompt, acct_balance_displayed, \
-            gestures_enabled, selected
+            gestures_enabled, main_menu_selection
     initial_screen = False
     menu_present = True
     withdrawal_prompt = False
@@ -419,13 +447,11 @@ def display_main_menu():
     if gestures_enabled:
         root.main_lcd.delete("1.0", END)
         clear_tags()
-        root.main_lcd.insert("1.0", "\n\n\n\n Deposit\t\t\t\t\t\tWithdrawal\n")
+        root.main_lcd.insert("1.0", "\n\n\n\n Deposit\t\t\t\t\t\tWithdrawal\n\n\nCheck Balance\n\n\n← Swipe left or right →")
         root.main_lcd.tag_add("left", "1.0", "end-1l")
-        root.main_lcd.insert("end", "\n\nCheck Balance\n")
         root.main_lcd.tag_add("center_selected", "end-4l", "end-1l") 
-        root.main_lcd.insert("end", "\n\n← Swipe left or right →")
         root.main_lcd.tag_add("center", "end-1l", END) 
-        selected = CHECK_BAL
+        main_menu_selection = CHECK_BAL
         keyListener.subscribe(
             lambda x:print(main_menu_select_gestures(x)))
     else:
@@ -436,47 +462,42 @@ def display_main_menu():
         root.main_lcd.tag_add("left", "1.0", "end")
     
 def main_menu_select_gestures(key):
-    global selected
-    if key is keyboard.Key.right:
-        if selected == DEPOSIT or selected == CHECK_BAL:
-            selected = selected + 1
-    if key is keyboard.Key.left:
-        if selected == CHECK_BAL or selected == WITHDRAWAL:
-            selected = selected - 1
-    if key is keyboard.Key.enter:
-        if selected == DEPOSIT:
-            deposit()
-        if selected == WITHDRAWAL:
-            withdrawal()
-        if selected == CHECK_BAL:
-            acct_balance()
-            
-    root.main_lcd.delete("1.0", END)
-    clear_tags()
-    if selected == DEPOSIT:
-        root.main_lcd.tag_add("left_selected", "1.0", "1.0+12c")
-        root.main_lcd.tag_add("left", "1.0+13c", "1.0+28c")
-        root.main_lcd.tag_add("center", "1.0", END)
+    global menu_present, main_menu_selection
+    if menu_present:
+        if key is keyboard.Key.right:
+            if main_menu_selection == DEPOSIT or main_menu_selection == CHECK_BAL:
+                main_menu_selection = main_menu_selection + 1
+        if key is keyboard.Key.left:
+            if main_menu_selection == CHECK_BAL or main_menu_selection == WITHDRAWAL:
+                main_menu_selection = main_menu_selection - 1
+        if key is keyboard.Key.enter:
+            if main_menu_selection == DEPOSIT:
+                deposit()
+            if main_menu_selection == WITHDRAWAL:
+                withdrawal()
+            if main_menu_selection == CHECK_BAL:
+                acct_balance()
+                
+        root.main_lcd.delete("1.0", END)
+        clear_tags()
+        if main_menu_selection == DEPOSIT:
+            root.main_lcd.tag_add("left_selected", "1.0", "1.0+12c")
+            root.main_lcd.tag_add("left", "1.0+13c", "1.0+28c")
+            root.main_lcd.tag_add("center", "1.0", END)
+
+        if main_menu_selection == CHECK_BAL:
+            root.main_lcd.tag_add("left", "1.0", "end-1l")
+            root.main_lcd.tag_add("center_selected", "end-4l", "end-1l")
+            root.main_lcd.tag_add("center", "end-1l", END) 
+
+        if main_menu_selection == WITHDRAWAL:
+            root.main_lcd.tag_add("left", "1.0", "1.0+12c")
+            root.main_lcd.tag_add("left_selected", "1.0+13c", "1.0+28c")
+            root.main_lcd.tag_add("center", "1.0", END)
+
         root.main_lcd.insert("1.0", "\n\n\n\n Deposit\t\t\t\t\t\tWithdrawal\n")
         root.main_lcd.insert("end", "\n\nCheck Balance\n")
         root.main_lcd.insert("end", "\n\n← Swipe left or right →")
-        print(selected)
-    if selected == CHECK_BAL:
-        root.main_lcd.tag_add("left", "1.0", "end-1l")
-        root.main_lcd.tag_add("center_selected", "end-4l", "end-1l")
-        root.main_lcd.tag_add("center", "end-1l", END) 
-        root.main_lcd.insert("1.0", "\n\n\n\n Deposit\t\t\t\t\t\tWithdrawal\n")
-        root.main_lcd.insert("end", "\n\nCheck Balance\n")
-        root.main_lcd.insert("end", "\n\n← Swipe left or right →")
-        print(selected)
-    if selected == WITHDRAWAL:
-        root.main_lcd.tag_add("left", "1.0", "1.0+12c")
-        root.main_lcd.tag_add("left_selected", "1.0+13c", "1.0+28c")
-        root.main_lcd.tag_add("center", "1.0", END)
-        root.main_lcd.insert("1.0", "\n\n\n\n Deposit\t\t\t\t\t\tWithdrawal\n")
-        root.main_lcd.insert("end", "\n\nCheck Balance\n")
-        root.main_lcd.insert("end", "\n\n← Swipe left or right →")
-        print(selected)
         
 def clear_tags():
     root.main_lcd.tag_remove("left", "1.0", "end")
