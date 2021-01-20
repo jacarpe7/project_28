@@ -547,11 +547,15 @@ def gesture_pin_menu():
     invalid_msg = False
     acct_balance_displayed = False
     root.main_lcd.config(state=NORMAL)
+    clear_tags()
     root.main_lcd.delete("1.0", END)
-    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
-    root.main_lcd.insert("1.0", '\n\nWelcome to the ASU ATM System\n')
-    root.main_lcd.insert(END, '\n\nEnter PIN to continue\n\n {}{}{} \n\n← Swipe left or right →'.format(previous, current, after))
-    root.main_lcd.tag_add("center", "1.0", "end")
+    root.main_lcd.insert("end", "\n\n{}\n".format(current))
+    root.main_lcd.insert("1.0", "\n\t↓ Swipe down to select a # ↓\n\n\n\t\t  {}\t\t\t\t{}\n" .format(previous, after))
+    root.main_lcd.insert("end", "\n\n← Swipe left or right →")
+    
+    root.main_lcd.tag_add("left", "1.0", "end-1l")
+    root.main_lcd.tag_add("center_selected", "end-4l", "end-1l")
+    root.main_lcd.tag_add("center", "end-1l", END) 
     root.main_lcd.config(state=DISABLED)
 
 # Define function to display the deposit options screen
