@@ -11,7 +11,7 @@ import serial
 ##fname = str(input())
 # Need to define port according to your setup. Typical port name - Windows: 'COM3'  Mac: '/dev/tty.usbmodem12345'
 serialPort = serial.Serial(port='COM3',baudrate=38400,bytesize=8,timeout=2,stopbits=serial.STOPBITS_ONE)
-
+print("File will save to def.csv")
 # define sample object to hold data
 class Row:
     def __init__(row, time, delta0, delta1, delta2, delta3, delta4):
