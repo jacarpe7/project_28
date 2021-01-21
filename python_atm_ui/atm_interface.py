@@ -4,7 +4,7 @@ This generates a basic ATM interface for use in
 proximity sensor gesture recognition.
 
 Created on Oct 28 11:36:59 2020
-@author: Josh Carpenter
+@author: Josh Carpenter, Michael Frederic
 """
 
 from tkinter import Tk, Frame, Button, Text, SUNKEN, DISABLED, NORMAL, END
@@ -34,7 +34,7 @@ acct_balance_displayed = False
 insufficient_funds = False
 
 # variables related to gestures
-gestures_enabled = True
+gestures_enabled = False
 HOVER = 0
 LEFT_SWIPE = 1
 RIGHT_SWIPE = 2
@@ -239,58 +239,60 @@ def pin_iterator(key):
     return current
 # Define function for the 'Clear' button
 def clear():
-    root.main_lcd.config(state=NORMAL)
     global pin_valid, pin_code, withdrawal_prompt, cancel_pressed, \
-        amount_entered, another_trans_prompt, insufficient_funds
-    if not pin_valid and not cancel_pressed:
-        display_initial_screen()
-        pin_code = ""
-    elif withdrawal_prompt and not another_trans_prompt:
-        if insufficient_funds:
-            display_main_menu()
-            insufficient_funds = False
-        else:
-            display_withdrawal_prompt()
-        amount_entered = ""
-    elif deposit_prompt and not another_trans_prompt:
-        display_deposit_prompt()
-        amount_entered = ""
-    root.main_lcd.config(state=DISABLED)
+        amount_entered, another_trans_prompt, insufficient_funds, gestures_enabled
+    if not gestures_enabled:
+        root.main_lcd.config(state=NORMAL)
+        if not pin_valid and not cancel_pressed:
+            display_initial_screen()
+            pin_code = ""
+        elif withdrawal_prompt and not another_trans_prompt:
+            if insufficient_funds:
+                display_main_menu()
+                insufficient_funds = False
+            else:
+                display_withdrawal_prompt()
+            amount_entered = ""
+        elif deposit_prompt and not another_trans_prompt:
+            display_deposit_prompt()
+            amount_entered = ""
+        root.main_lcd.config(state=DISABLED)
     
 # Define function for the 'Enter' button
 def enter():
-    root.main_lcd.config(state=NORMAL)
     global pin_valid, pin_code, correct_pin, cancel_pressed, withdrawal_prompt, \
         amount_entered, acct_balance, another_trans_prompt, invalid_msg, \
-        deposit_prompt, insufficient_funds
-    if pin_code == correct_pin and not pin_valid and not cancel_pressed:
-        pin_valid = True
-        display_main_menu()
-    elif pin_code != correct_pin and not cancel_pressed:
-        message = "Invalid PIN"
-        if len(pin_code) == 0:
-            root.main_lcd.delete("end-4l", END)
-            message = "\n" + message
-        display_invalid_msg(message)
-    elif withdrawal_prompt and len(amount_entered) > 0:
-        if int(amount_entered) % 20 != 0:
-            display_invalid_msg("Invalid entry")
-        elif int(amount_entered) > acct_balance:
-            display_invalid_msg("Insufficient funds")
-            insufficient_funds = True
-        else:
-            acct_balance = round(acct_balance - int(amount_entered), 2)
+        deposit_prompt, insufficient_funds, gestures_enabled
+    if not gestures_enabled:
+        root.main_lcd.config(state=NORMAL)
+        if pin_code == correct_pin and not pin_valid and not cancel_pressed:
+            pin_valid = True
+            display_main_menu()
+        elif pin_code != correct_pin and not cancel_pressed:
+            message = "Invalid PIN"
+            if len(pin_code) == 0:
+                root.main_lcd.delete("end-4l", END)
+                message = "\n" + message
+            display_invalid_msg(message)
+        elif withdrawal_prompt and len(amount_entered) > 0:
+            if int(amount_entered) % 20 != 0:
+                display_invalid_msg("Invalid entry")
+            elif int(amount_entered) > acct_balance:
+                display_invalid_msg("Insufficient funds")
+                insufficient_funds = True
+            else:
+                acct_balance = round(acct_balance - int(amount_entered), 2)
+                amount_entered = ""
+                root.main_lcd.delete("1.0", END)
+                root.main_lcd.insert("1.0", "\n\n\n\nPlease take your cash\n\n")
+                display_another_trans_prompt()
+        elif deposit_prompt and len(amount_entered) > 0:
+            acct_balance = round(acct_balance + int(amount_entered), 2)
             amount_entered = ""
             root.main_lcd.delete("1.0", END)
-            root.main_lcd.insert("1.0", "\n\n\n\nPlease take your cash\n\n")
+            root.main_lcd.insert("1.0", "\n\n\n\nDeposit successful\n\n")
             display_another_trans_prompt()
-    elif deposit_prompt and len(amount_entered) > 0:
-        acct_balance = round(acct_balance + int(amount_entered), 2)
-        amount_entered = ""
-        root.main_lcd.delete("1.0", END)
-        root.main_lcd.insert("1.0", "\n\n\n\nDeposit successful\n\n")
-        display_another_trans_prompt()
-    root.main_lcd.config(state=DISABLED)
+        root.main_lcd.config(state=DISABLED)
     
 # Define function for 'Cancel' button
 def cancel():
@@ -498,7 +500,8 @@ def main_menu_select_gestures(key):
         root.main_lcd.insert("1.0", "\n\n\n\n Deposit\t\t\t\t\t\tWithdrawal\n")
         root.main_lcd.insert("end", "\n\nCheck Balance\n")
         root.main_lcd.insert("end", "\n\n← Swipe left or right →")
-        
+
+# Defines a function to remove all tags from the main_lcd
 def clear_tags():
     root.main_lcd.tag_remove("left", "1.0", "end")
     root.main_lcd.tag_remove("right", "1.0", "end")
@@ -531,7 +534,15 @@ def display_initial_screen():
         root.main_lcd.delete("1.0", END)
         root.main_lcd.insert("1.0", "\n\nWelcome to the ASU ATM System\n")
         root.main_lcd.insert(END, "\n\nEnter PIN to continue\n\nOR\n\nHover for gesture entry")
-        root.main_lcd.tag_add("center", "1.0", "end")   
+        root.main_lcd.tag_add("center", "1.0", "end")  
+        keyListener.subscribe(
+            lambda x:print(enable_gestures(x))) 
+
+def enable_gestures(key):
+    global gestures_enabled
+    if key is keyboard.Key.enter:
+        gestures_enabled = True
+        display_initial_screen()
 
 def gesture_pin_menu():
     global menu_present, withdrawal_prompt, another_trans_prompt, invalid_msg, \
