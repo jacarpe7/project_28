@@ -225,7 +225,8 @@ def pin_iterator(key):
         gesture_pin_menu()
     
     elif key is keyboard.Key.down:
-        input_num(current)
+        input_num(str(current))
+        gesture_pin_menu()
 
     elif key is keyboard.Key.enter:
         enter()
@@ -562,7 +563,7 @@ def gesture_pin_menu():
     root.main_lcd.delete("1.0", END)
     root.main_lcd.insert("end", "\n\n{}\n".format(current))
     root.main_lcd.insert("1.0", "\n\t↓ Swipe down to select a # ↓\n\n\n\t\t  {}\t\t\t\t{}\n" .format(previous, after))
-    root.main_lcd.insert("end", "\n\n← Swipe left or right →")
+    root.main_lcd.insert("end", "\n{}\n← Swipe left or right →" .format(pin_code))
     
     root.main_lcd.tag_add("left", "1.0", "end-1l")
     root.main_lcd.tag_add("center_selected", "end-4l", "end-1l")
