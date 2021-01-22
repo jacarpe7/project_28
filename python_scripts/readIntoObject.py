@@ -11,6 +11,7 @@ import serial
 ##fname = str(input())
 # Need to define port according to your setup. Typical port name - Windows: 'COM3'  Mac: '/dev/tty.usbmodem12345'
 serialPort = serial.Serial(port='COM3',baudrate=38400,bytesize=8,timeout=2,stopbits=serial.STOPBITS_ONE)
+#notification of file name for ease of use when importing
 print("File will save to def.csv")
 # define sample object to hold data
 class Row:
