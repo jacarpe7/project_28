@@ -10,18 +10,20 @@ serialPort.readline()
 
 i = 0
 
-while i < 2:
+while i < 10:
      parseLine = serialPort.readline().decode('utf-8').split(",")
      # remove time value, alternatively we can reprogram the microcontroller to not output it
      
      print(parseLine)
 
-     # parseLine.pop(0) # to omit time/sequence value
+     deltas = [str(parseLine[3]), str(parseLine[7]), str(parseLine[11]), str(parseLine[15])]
+
+     print(deltas)
 
      # convert string array to int array
-     map(int, parseLine)
+     map(int, deltas)
      # grab max delta value
-     max_value = max(parseLine)
+     max_value = max(deltas)
      # if max delta value exceeds threshold, read in data to get gesture 'data signature'
      if int(max_value) > 35:
         filename = "stream_" + str(i) + ".csv"
@@ -30,7 +32,7 @@ while i < 2:
         f.write(headers)
         for x in range(50):
             parseLine = serialPort.readline().decode('utf-8').split(",")
-            f.write(str(parseLine[0]) + "," + str(parseLine[1]) + "," + str(parseLine[2]) + "," + str(parseLine[3]) + "," + str(parseLine[4]) + "," + str(parseLine[5]) + "," + str(parseLine[6]) + "," + str(parseLine[7]) + "," + str(parseLine[8]) + "," + str(parseLine[9]) + "," + str(parseLine[10]) + "," + str(parseLine[11]) + str(parseLine[12]) + str(parseLine[13]) + str(parseLine[14]) + str(parseLine[15]) + "\n")
+            f.write(str(parseLine[0]) + "," + str(parseLine[1]) + "," + str(parseLine[2]) + "," + deltas[0] + "," + str(parseLine[4]) + "," + str(parseLine[5]) + "," + str(parseLine[6]) + "," + deltas[1] + "," + str(parseLine[8]) + "," + str(parseLine[9]) + "," + str(parseLine[10]) + "," + deltas[2] + "," + str(parseLine[12]) + "," + str(parseLine[13]) + "," + str(parseLine[14]) + "," + deltas[3] + "\n")
             # f.write(str(parseLine[0]) + "," + str(parseLine[1]) + "," + str(parseLine[2]) + "," + str(parseLine[3]) + "," + str(parseLine[4]) + "," + str(parseLine[5]) + "," + str(parseLine[6]) + "," + str(parseLine[7]) + "\n")
             
         i += 1

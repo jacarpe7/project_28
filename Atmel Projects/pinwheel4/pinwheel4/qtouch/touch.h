@@ -87,19 +87,19 @@ extern "C" {
  */
 #define NODE_0_PARAMS                                                                                                  \
 	{                                                                                                                  \
-		Y(18) | Y(23) | Y(6) | Y(17), Y(4), 0, PRSC_DIV_SEL_12, NODE_GAIN(GAIN_1, GAIN_4), FILTER_LEVEL_16             \
+		Y(18) | Y(23) | Y(6) | Y(17), Y(4), 0, PRSC_DIV_SEL_12, NODE_GAIN(GAIN_1, GAIN_8), FILTER_LEVEL_16             \
 	}
 #define NODE_1_PARAMS                                                                                                  \
 	{                                                                                                                  \
-		Y(18) | Y(4) | Y(6) | Y(17), Y(23), 0, PRSC_DIV_SEL_12, NODE_GAIN(GAIN_1, GAIN_4), FILTER_LEVEL_16             \
+		Y(18) | Y(4) | Y(6) | Y(17), Y(23), 0, PRSC_DIV_SEL_12, NODE_GAIN(GAIN_1, GAIN_8), FILTER_LEVEL_16             \
 	}
 #define NODE_2_PARAMS                                                                                                  \
 	{                                                                                                                  \
-		Y(18) | Y(4) | Y(23) | Y(17), Y(6), 0, PRSC_DIV_SEL_12, NODE_GAIN(GAIN_1, GAIN_4), FILTER_LEVEL_16             \
+		Y(18) | Y(4) | Y(23) | Y(17), Y(6), 0, PRSC_DIV_SEL_12, NODE_GAIN(GAIN_1, GAIN_8), FILTER_LEVEL_16             \
 	}
 #define NODE_3_PARAMS                                                                                                  \
 	{                                                                                                                  \
-		Y(18) | Y(4) | Y(23) | Y(6), Y(17), 0, PRSC_DIV_SEL_12, NODE_GAIN(GAIN_1, GAIN_4), FILTER_LEVEL_16             \
+		Y(18) | Y(4) | Y(23) | Y(6), Y(17), 0, PRSC_DIV_SEL_12, NODE_GAIN(GAIN_1, GAIN_8), FILTER_LEVEL_16             \
 	}
 
 /**********************************************************/
