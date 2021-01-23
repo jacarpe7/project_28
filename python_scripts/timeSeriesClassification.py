@@ -12,6 +12,7 @@ from keras.layers import LSTM
 from keras.optimizers import Adam
 from keras.models import load_model
 from keras.callbacks import ModelCheckpoint
+import pprint
 import os
 
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
@@ -22,8 +23,7 @@ sequences = list()
 
 for i in range (1,9):
     file_path = path + str(i) + '.csv'
-    print(file_path)
-    df = pd.read_csv(file_path, header=0)
+    df = pd.read_csv(file_path, header=0, usecols=["time", "delta0", "delta1", "delta2", "delta3"])
     values = df.values
     sequences.append(values)
 
@@ -31,11 +31,8 @@ path = 'MovementAAL/new_dataset/stream_000'
 
 for i in range(10, 59):
     file_path = path + str(i) + '.csv'
-    print(file_path)
-    df = pd.read_csv(file_path, header=0)
-    values = df.values
+    df = pd.read_csv(file_path, header=0, usecols=["time", "delta0", "delta1", "delta2", "delta3"])
     sequences.append(values)
-
 
 
 #target values
@@ -59,10 +56,6 @@ for one_seq in sequences:
     len_one_seq = len(one_seq)
     last_val = one_seq[-1]
     n = to_pad - len_one_seq
-
-    print('len_one_seq:' + str(len_one_seq))
-    print('last val:' + str(last_val))
-    print('n:' + str(n))
    
     to_concat = np.repeat(one_seq[-1], n).reshape(5, n).transpose()
     new_one_seq = np.concatenate([one_seq, to_concat])
@@ -71,7 +64,7 @@ final_seq = np.stack(new_seq)
 
 #truncate the sequence to length 60
 from keras.preprocessing import sequence
-seq_len = 75
+seq_len = 30
 final_seq=sequence.pad_sequences(final_seq, maxlen=seq_len, padding='post', dtype='float', truncating='post')
 
 #Training data based on group 2
@@ -79,19 +72,19 @@ train = [final_seq[i] for i in range(len(groups)) if (groups[i]==2)]
 #validation data based on group 1
 validation = [final_seq[i] for i in range(len(groups)) if groups[i]==1]
 #test data based on group 3
-test = [final_seq[i] for i in range(len(groups)) if groups[i]==3]
+#test = [final_seq[i] for i in range(len(groups)) if groups[i]==3]
 
 #train target based on group 2
 train_target = [targets[i] for i in range(len(groups)) if (groups[i]==2)]
 #validation target based on group 1
 validation_target = [targets[i] for i in range(len(groups)) if groups[i]==1]
 #test target based on group 3
-test_target = [targets[i] for i in range(len(groups)) if groups[i]==3]
+#test_target = [targets[i] for i in range(len(groups)) if groups[i]==3]
 
 #creating np.arrays for each dataset
 train = np.array(train)
 validation = np.array(validation)
-test = np.array(test)
+#test = np.array(test)
 
 #training target data
 train_target = np.array(train_target)
@@ -102,12 +95,12 @@ validation_target = np.array(validation_target)
 validation_target = (validation_target+1)/2
 
 #test data and target test
-test_target = np.array(test_target)
-test_target = (test_target+1)/2
+##test_target = np.array(test_target)
+#test_target = (test_target+1)/2
 
 #adding the LSTM to the model and printing the summary
 model = Sequential()
-model.add(LSTM(120, input_shape=(seq_len, 4)))
+model.add(LSTM(120, input_shape=(seq_len, 5)))
 model.add(Dense(1, activation='sigmoid'))
 model.summary()
 print(model.summary())
@@ -116,4 +109,4 @@ print(model.summary())
 adam = Adam(lr=0.001)
 chk = ModelCheckpoint('best_model.pkl', monitor='val_accuracy', save_best_only=True, mode='max', verbose=1)
 model.compile(loss='binary_crossentropy', optimizer=adam, metrics=['accuracy'])
-model.fit(train, train_target, epochs=200, batch_size=120, callbacks=[chk], validation_data=(validation,validation_target))
+model.fit(train, train_target, epochs=120, batch_size=120, callbacks=[chk], validation_data=(validation,validation_target))
