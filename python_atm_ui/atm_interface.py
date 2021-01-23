@@ -40,10 +40,12 @@ LEFT_SWIPE = 1
 RIGHT_SWIPE = 2
 
 # pin values for gestures
-global current, previous, after
 current = 0
 previous = 9
 after = 1
+# bool to identify if pin screen is already listening
+pin_completed: bool = False
+
 
 # Gesture menu selection constants
 cancel_selection = False
@@ -198,76 +200,87 @@ def input_num(num):
 
 def pin_iterator(key):
     global current, previous, after
-    if key is keyboard.Key.right:
-        current +=1
-        after +=1
-        previous +=1
-        if current is 10:
-            current = 0
-        elif after is 10:
-            after = 0
-        elif previous is 10:
-            previous = 0
-        gesture_pin_menu()
+    #this prevents menu changes until figuring out better way to cancel listener.
+    if pin_completed is False:
+        if key is keyboard.Key.right:
+            current +=1
+            after +=1
+            previous +=1
+            if current is 10:
+                current = 0
+            elif after is 10:
+                after = 0
+            elif previous is 10:
+                previous = 0
+            gesture_pin_menu()
 
-    elif key is keyboard.Key.left:
-        current -=1
-        after -=1
-        previous -=1
-        if current is -1:
-            current = 9
+        elif key is keyboard.Key.left:
+            current -=1
+            after -=1
+            previous -=1
+            if current is -1:
+                current = 9
 
-        elif after is -1:
-            after = 9
+            elif after is -1:
+                after = 9
 
-        elif previous is -1:
-            previous = 9
-        gesture_pin_menu()
-    
-    elif key is keyboard.Key.down:
-        input_num(str(current))
-        gesture_pin_menu()
+            elif previous is -1:
+                previous = 9
+            gesture_pin_menu()
+        
+        elif key is keyboard.Key.down:
+            input_num(str(current))
+            gesture_pin_menu()
 
-    elif key is keyboard.Key.enter:
-        enter()
+        elif key is keyboard.Key.enter:
+            enter()
+            
 
-    elif key is keyboard.Key.backspace:
-        clear()
+        elif key is keyboard.Key.backspace:
+            clear()
+            
+            
 
-    elif key is keyboard.Key.escape:
-        cancel()
-    
+        elif key is keyboard.Key.escape:
+            cancel()
+            
+  
     return current
+
 # Define function for the 'Clear' button
 def clear():
     global pin_valid, pin_code, withdrawal_prompt, cancel_pressed, \
         amount_entered, another_trans_prompt, insufficient_funds, gestures_enabled
-    if not gestures_enabled:
-        root.main_lcd.config(state=NORMAL)
-        if not pin_valid and not cancel_pressed:
+    
+    root.main_lcd.config(state=NORMAL)
+    if not pin_valid and not cancel_pressed:
+        if gestures_enabled is False:
             display_initial_screen()
-            pin_code = ""
-        elif withdrawal_prompt and not another_trans_prompt:
-            if insufficient_funds:
-                display_main_menu()
-                insufficient_funds = False
-            else:
-                display_withdrawal_prompt()
-            amount_entered = ""
-        elif deposit_prompt and not another_trans_prompt:
-            display_deposit_prompt()
-            amount_entered = ""
-        root.main_lcd.config(state=DISABLED)
+        pin_code = ""
+        if gestures_enabled is True:
+            gesture_pin_menu()
+    elif withdrawal_prompt and not another_trans_prompt:
+        if insufficient_funds:
+            display_main_menu()
+            insufficient_funds = False
+        else:
+            display_withdrawal_prompt()
+        amount_entered = ""
+    elif deposit_prompt and not another_trans_prompt:
+        display_deposit_prompt()
+        amount_entered = ""
+    root.main_lcd.config(state=DISABLED)
     
 # Define function for the 'Enter' button
 def enter():
     global pin_valid, pin_code, correct_pin, cancel_pressed, withdrawal_prompt, \
-        amount_entered, acct_balance, another_trans_prompt, invalid_msg, \
-        deposit_prompt, insufficient_funds, gestures_enabled
-    if not gestures_enabled:
-        root.main_lcd.config(state=NORMAL)
+        amount_entered, acct_balance, another_trans_prompt, invalid_msg, keyListener, \
+        deposit_prompt, insufficient_funds, gestures_enabled, pin_completed
+    root.main_lcd.config(state=NORMAL)
+    if pin_completed is False:
         if pin_code == correct_pin and not pin_valid and not cancel_pressed:
             pin_valid = True
+            pin_completed = True
             display_main_menu()
         elif pin_code != correct_pin and not cancel_pressed:
             message = "Invalid PIN"
@@ -293,7 +306,7 @@ def enter():
             root.main_lcd.delete("1.0", END)
             root.main_lcd.insert("1.0", "\n\n\n\nDeposit successful\n\n")
             display_another_trans_prompt()
-        root.main_lcd.config(state=DISABLED)
+    root.main_lcd.config(state=DISABLED)
     
 # Define function for 'Cancel' button
 def cancel():
@@ -515,7 +528,7 @@ def clear_tags():
 def display_initial_screen():
     global menu_present, withdrawal_prompt, another_trans_prompt, invalid_msg, \
         initial_screen, deposit_options_prompt, deposit_prompt, acct_balance_displayed, \
-            gestures_enabled, current, previous, after
+            gestures_enabled, current, previous, after, listenIt
 
     initial_screen = True
     menu_present = False
@@ -526,10 +539,14 @@ def display_initial_screen():
     invalid_msg = False
     acct_balance_displayed = False
     if gestures_enabled:
-        gesture_pin_menu()
-        #subscribes to the key, currently printing the key press for debugging purposes.
-        keyListener.subscribe(
-            lambda x:print(pin_iterator(x)))
+        if gestures_enabled and pin_completed is False:
+            gesture_pin_menu()
+            #subscribes to the key, currently printing the key press for debugging purposes.
+            listenIt = keyListener.subscribe(
+                lambda x:print(pin_iterator(x)))
+        #this will prevent double listeners (its a redundant check post pin completion)
+        else:
+            listenIt.dispose()
 
     else:
         root.main_lcd.delete("1.0", END)
