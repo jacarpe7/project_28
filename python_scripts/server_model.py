@@ -17,26 +17,13 @@ import os
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 #loading raw data
-path = 'MovementAAL/new_dataset/stream_0000'
+path = 'MovementAAL/new_dataset/stream_'
 sequences = list()
-
-for i in range (1,9):
+for i in range (1,120):
     file_path = path + str(i) + '.csv'
-    print(file_path)
     df = pd.read_csv(file_path, header=0)
     values = df.values
     sequences.append(values)
-
-path = 'MovementAAL/new_dataset/stream_000'
-
-for i in range(10, 59):
-    file_path = path + str(i) + '.csv'
-    print(file_path)
-    df = pd.read_csv(file_path, header=0)
-    values = df.values
-    sequences.append(values)
-
-
 
 #target values
 targets = pd.read_csv('MovementAAL/new_dataset/MovementAAL_target.csv')
@@ -49,22 +36,17 @@ groups = groups.values[:,1]
 len_sequences = []
 for one_seq in sequences:
     len_sequences.append(len(one_seq))
-print(pd.Series(len_sequences).describe())
 
 
 #Padding the sequence with the values in last row to max length
-to_pad = 30
+to_pad = 119
 new_seq = []
 for one_seq in sequences:
     len_one_seq = len(one_seq)
     last_val = one_seq[-1]
     n = to_pad - len_one_seq
-
-    print('len_one_seq:' + str(len_one_seq))
-    print('last val:' + str(last_val))
-    print('n:' + str(n))
    
-    to_concat = np.repeat(one_seq[-1], n).reshape(5, n).transpose()
+    to_concat = np.repeat(one_seq[-1], n).reshape(4, n).transpose()
     new_one_seq = np.concatenate([one_seq, to_concat])
     new_seq.append(new_one_seq)
 final_seq = np.stack(new_seq)
@@ -110,10 +92,14 @@ model = Sequential()
 model.add(LSTM(120, input_shape=(seq_len, 4)))
 model.add(Dense(1, activation='sigmoid'))
 model.summary()
-print(model.summary())
 
 
-adam = Adam(lr=0.001)
-chk = ModelCheckpoint('best_model.pkl', monitor='val_accuracy', save_best_only=True, mode='max', verbose=1)
-model.compile(loss='binary_crossentropy', optimizer=adam, metrics=['accuracy'])
-model.fit(train, train_target, epochs=200, batch_size=120, callbacks=[chk], validation_data=(validation,validation_target))
+#loading the exported pkl model and testing the accuracy score
+model = load_model('best_model.pkl')
+from sklearn.metrics import accuracy_score
+test_preds = model.predict_classes(test)
+print(test)
+print(test_preds)
+print(test_target)
+accuracy_score(test_target, test_preds)
+print(accuracy_score(test_target, test_preds))
