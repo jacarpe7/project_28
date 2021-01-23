@@ -1,6 +1,8 @@
 # SER 401 Capstone Project 2020-2021
 ### Project 28 - Proximity Sensing in a Post-COVID World
 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jacarpe7/project_28/US-161?filepath=python_scripts%2Fml_model_generation.ipynb)
+
 **Required Software & Tools**</br>
 [AtmelStudio7](https://www.microchip.com/images/default-source/avr-support/atmel-studio-7/atmelstudio7__google_291x202-min.jpg?sfvrsn=c1ad339d_1)</br>
 [Atmel Start](https://start.atmel.com/)</br>
