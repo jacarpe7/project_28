@@ -1,0 +1,15 @@
+name: project_28
+channels:
+  - defaults
+dependencies:
+  - pandas
+  - jupyter
+  - bottleneck
+  - numexpr
+  - tensorflow
+  - matplotlib
+  - keras
+  - numpy
+  - scikit-learn
+  - scipy
+prefix: /opt/anaconda3/envs/project_28
