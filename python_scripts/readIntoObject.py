@@ -3,15 +3,16 @@ import serial
 # This script uses the hardware build in folder qt7-ascii-out-dylan
 
 # Asks user how many recordings to make
-print("How many gesture records would you like to make? ")
-amount = int(input())
+#print("How many gesture records would you like to make? ")
+#amount = int(input())
 
 # Asks what the file should be called
-print("What would you like the files to be called?")
-fname = str(input())
+#print("What would you like the files to be called?")
+##fname = str(input())
 # Need to define port according to your setup. Typical port name - Windows: 'COM3'  Mac: '/dev/tty.usbmodem12345'
 serialPort = serial.Serial(port='COM3',baudrate=38400,bytesize=8,timeout=2,stopbits=serial.STOPBITS_ONE)
-
+#notification of file name for ease of use when importing
+print("File will save to def.csv")
 # define sample object to hold data
 class Row:
     def __init__(row, time, delta0, delta1, delta2, delta3, delta4):
@@ -25,12 +26,19 @@ class Row:
 # array to hold objects
 list = []
 
-for index in range(amount):
+index = 1
+while(1):
     # setup filewriting to CSV
-    filename = fname + "%s.csv" % index
-    f = open(filename, "w")
+    fname = "def"
+    filename = fname + ".csv" #% index
+    #if first go through, write to file, otherwise append
+    if (index == 1):
+        f = open(filename, "w")
+    else :
+        f = open(filename, "a")
+        
     headers = "time,delta0,delta1,delta2,delta3,delta4\n"
-    f.write(headers)
+    #f.write(headers)
     
     # discard first line
     serialPort.readline()
@@ -68,6 +76,8 @@ for index in range(amount):
         f.write(str(obj.time) + "," + str(obj.delta0) + "," + str(obj.delta1) + "," + str(obj.delta2) + "," + str(obj.delta3) + "," + str(obj.delta4) + ",\n")
         
     print("Gesture #", str(index), " recorded and written.")
-f.close()
+    #index for print out
+    index = index + 1
+    f.close()
 serialPort.close()
 print("All gestures recorded.  Program complete.")
