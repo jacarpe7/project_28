@@ -605,11 +605,38 @@ def display_withdrawal_prompt():
     menu_present = False
     withdrawal_prompt = True
     invalid_msg = False
-    root.main_lcd.delete("1.0", END)
-    root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n")
-    root.main_lcd.insert(END, "(Multiples of $20)\n\n$ ")
-    root.main_lcd.tag_add("center", "1.0", "end")
+    if gestures_enabled is True:
+        root.main_lcd.delete("1.0", END)
+        root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n")
+        root.main_lcd.insert(END, "(Multiples of $20)\n\n$ ")
+        root.main_lcd.tag_add("center", "1.0", "end")
+        keyListener.subscribe(
+            lambda x:print(increment_amount(x)))
+    else:    
+        root.main_lcd.delete("1.0", END)
+        root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n")
+        root.main_lcd.insert(END, "(Multiples of $20)\n\n$ ")
+        root.main_lcd.tag_add("center", "1.0", "end")
     
+def increment_amount(key):
+    #TODO: Implement incrementation and updating of the value by 20 dollar increments
+    global amount_entered
+
+    amount_entered = '0'
+
+
+def display_gesture_withdrawal_prompt():
+    global menu_present, withdrawal_prompt, invalid_msg
+    menu_present = False
+    withdrawal_prompt = True
+    invalid_msg = False
+    if gestures_enabled is True:
+        root.main_lcd.delete("1.0", END)
+        root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n")
+        root.main_lcd.insert(END, "← Swipe Left/Right to incriment $20.00's →\n\n$ ")
+        root.main_lcd.tag_add("center", "1.0", "end")
+
+
 # Defines function to display the deposit funds prompt
 def display_deposit_prompt():
     global invalid_msg, deposit_options_prompt, deposit_prompt, deposit_type
