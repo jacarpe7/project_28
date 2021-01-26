@@ -157,18 +157,18 @@ void ascii_output(void)
 	for(channel_index = 0;channel_index <DEF_NUM_CHANNELS;channel_index++ )
 	{
 		// tx channel id
-		sprintf(tx_data,"%02d,",channel_index);
-		send_string(tx_data);
+		//sprintf(tx_data,"%02d,",channel_index);
+		//send_string(tx_data);
 		touch_signal = get_sensor_node_signal(channel_index);
 
 		// tx signal value
-		sprintf(tx_data,"%06d,",touch_signal);
-		send_string(tx_data);
+		//sprintf(tx_data,"%06d,",touch_signal);
+		//send_string(tx_data);
 
 		// tx reference
 		touch_reference = get_sensor_node_reference(channel_index);
-		sprintf(tx_data,"%06d,",touch_reference);
-		send_string(tx_data);
+		//sprintf(tx_data,"%06d,",touch_reference);
+		//send_string(tx_data);
 
 		// tx delta
 		touch_delta = touch_signal - touch_reference;
