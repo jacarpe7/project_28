@@ -621,18 +621,19 @@ def display_withdrawal_prompt():
 def increment_amount(key):
     #TODO: Implement incrementation and updating of the value by 20 dollar increments
     global amount_entered
+    increment_value = 20
 
-    amount_entered = '0'
+    amount_entered = string(int(amount_entered) + increment_value)
 
 
 def display_gesture_withdrawal_prompt():
-    global menu_present, withdrawal_prompt, invalid_msg
+    global menu_present, withdrawal_prompt, invalid_msg, amount_entered
     menu_present = False
     withdrawal_prompt = True
     invalid_msg = False
     if gestures_enabled is True:
         root.main_lcd.delete("1.0", END)
-        root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n")
+        root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n \t\t {}" .format(amount_entered))
         root.main_lcd.insert(END, "← Swipe Left/Right to incriment $20.00's →\n\n$ ")
         root.main_lcd.tag_add("center", "1.0", "end")
 
