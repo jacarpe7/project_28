@@ -178,7 +178,7 @@ class Atm:
         button_num_enter.grid(row=0,column=3, padx=NUM_PAD_X,pady=NUM_PAD_Y)
         button_num_clear.grid(row=1,column=3, padx=NUM_PAD_X,pady=NUM_PAD_Y,)
         button_num_cancel.grid(row=2,column=3, padx=NUM_PAD_X,pady=NUM_PAD_Y)
-
+        
         listener.start()  
         keyListener.subscribe(
             lambda x:print(navigation_gestures(x))) 
@@ -207,6 +207,21 @@ def navigation_gestures(key):
             if main_menu_selection == CHECK_BAL or main_menu_selection == WITHDRAWAL:
                 main_menu_selection = main_menu_selection - 1
                 display_main_menu()
+        if key is keyboard.Key.enter:
+            if main_menu_selection == DEPOSIT:
+                deposit_menu_selection = CASH
+                display_deposit_options()
+        return key
+    # Deposit Options menu
+    if deposit_options_prompt:
+        if key is keyboard.Key.right and deposit_menu_selection == CASH:
+            deposit_menu_selection = deposit_menu_selection + 1
+            display_deposit_options()
+        if key is keyboard.Key.left and deposit_menu_selection == CHECK:
+            deposit_menu_selection = deposit_menu_selection - 1
+            display_deposit_options()
+        if key is keyboard.Key.enter:
+            print("NEEDS IMPLEMENTED")
         return key
 
 
@@ -314,6 +329,28 @@ def display_main_menu():
         root.main_lcd.tag_add("left_selected", "1.0+13c", "1.0+28c")
         root.main_lcd.tag_add("center", "1.0", END)
     
+    root.main_lcd.config(state=DISABLED)
+
+
+# Defines function for deposit options
+def display_deposit_options():
+    global menu_present, deposit_options_prompt, deposit_prompt, deposit_menu_selection
+    menu_present = False
+    deposit_prompt = False
+    deposit_options_prompt = True
+
+    root.main_lcd.config(state=NORMAL)
+    root.main_lcd.delete("1.0", END)
+    clear_tags()
+    root.main_lcd.insert("1.0", "\n\n\n\nSelect Deposit Type:\n\n\n\t\tCash\t\t\tCheck")
+    if deposit_menu_selection == CASH:
+        root.main_lcd.tag_add("center", "1.0", "end")
+        root.main_lcd.tag_add("left_selected", "7.0", "7.0+7c")
+        root.main_lcd.tag_add("left", "end-5c", "end")
+    if deposit_menu_selection == CHECK:
+        root.main_lcd.tag_add("center", "1.0", "end")
+        root.main_lcd.tag_add("left", "7.0", "7.0+7c")
+        root.main_lcd.tag_add("left_selected", "end-6c", "end")
     root.main_lcd.config(state=DISABLED)
 
 
