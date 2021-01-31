@@ -186,7 +186,8 @@ class Atm:
 
 # Function for main entry into navigation for gestures
 def navigation_gestures(key):
-    global pin_entry_screen, menu_present, main_menu_selection, deposit_menu_selection, deposit_options_prompt \
+    global pin_entry_screen, menu_present, main_menu_selection, deposit_menu_selection, \
+        deposit_options_prompt, deposit_type
 
     # Initial screen menu
     if initial_screen:
@@ -211,6 +212,8 @@ def navigation_gestures(key):
             if main_menu_selection == DEPOSIT:
                 deposit_menu_selection = CASH
                 display_deposit_options()
+            if main_menu_selection == WITHDRAWAL:
+                display_withdrawal_prompt()
         return key
     # Deposit Options menu
     if deposit_options_prompt:
@@ -221,7 +224,20 @@ def navigation_gestures(key):
             deposit_menu_selection = deposit_menu_selection - 1
             display_deposit_options()
         if key is keyboard.Key.enter:
-            print("NEEDS IMPLEMENTED")
+            if deposit_menu_selection == CASH:
+                deposit_type = "cash"
+                display_deposit_prompt()
+            if deposit_menu_selection == CHECK:
+                deposit_type = "check"
+                display_deposit_prompt()
+        return key
+    # Deposit Menu
+    if deposit_prompt:
+        # TODO implement key listener logic for deposit
+        return key
+    # Withdrawal Menu
+    if withdrawal_prompt:
+        # TODO implement key listener logic for withdrawal
         return key
 
 
@@ -353,6 +369,36 @@ def display_deposit_options():
         root.main_lcd.tag_add("left_selected", "end-6c", "end")
     root.main_lcd.config(state=DISABLED)
 
+
+# Defines function to display the deposit funds prompt
+def display_deposit_prompt():
+    global invalid_msg, deposit_options_prompt, deposit_prompt, deposit_type
+    deposit_prompt = True
+    deposit_options_prompt = False
+    invalid_msg = False
+    root.main_lcd.config(state=NORMAL)
+    root.main_lcd.delete("1.0", END)
+    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
+    root.main_lcd.insert("1.0", "\n\n\n\nEnter " + deposit_type + " deposit amount:\n")
+    root.main_lcd.insert(END, "\n$ ")
+    root.main_lcd.tag_add("center", "1.0", "end")
+    root.main_lcd.config(state=DISABLED)
+
+
+# Defines function to display the withdrawal funds prompt
+def display_withdrawal_prompt():
+    global menu_present, withdrawal_prompt, invalid_msg
+    menu_present = False
+    withdrawal_prompt = True
+    invalid_msg = False
+    root.main_lcd.config(state=NORMAL)
+    root.main_lcd.delete("1.0", END)
+    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
+    root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n")
+    root.main_lcd.insert(END, "(Multiples of $20)\n\n$ ")
+    root.main_lcd.tag_add("center", "1.0", "end")
+    root.main_lcd.config(state=DISABLED)
+    
 
 # Defines a function to remove all tags from the main_lcd
 def clear_tags():
