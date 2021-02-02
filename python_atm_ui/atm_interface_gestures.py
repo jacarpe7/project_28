@@ -303,6 +303,8 @@ def gesture_pin_menu():
     
     root.main_lcd.tag_add("center", "1.0", "3.0")
     root.main_lcd.tag_add("left", "4.0", "end-3l")
+    root.main_lcd.tag_add("center_selected", "end-5l", "end-3l")
+    root.main_lcd.tag_add("center", "end-3l", END) 
 
 
 # Defines function to back to initial screen for PIN entry
@@ -318,12 +320,11 @@ def display_initial_screen():
     invalid_msg = False
     acct_balance_displayed = False
     root.main_lcd.delete("1.0", END)
-    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
-    root.main_lcd.insert("1.0", "\n\nWelcome to the ASU ATM System\n")
+    root.main_lcd.insert("1.0", "\n\n\n\nWelcome to the ASU ATM System\n")
     root.main_lcd.insert(END, "\n\nHover to begin")
     root.main_lcd.tag_add("center", "1.0", "end")
-    root.main_lcd.grid(row=0, column=0,padx=5,pady=5)
     root.main_lcd.config(state=DISABLED)
+
 
 # [WIP] gesture withdrawal prompt 
 def display_gesture_withdrawal_prompt():
@@ -335,6 +336,7 @@ def display_gesture_withdrawal_prompt():
     root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n \t\t {}" .format(amount_entered))
     root.main_lcd.insert(END, "← Swipe Left/Right to incriment $20.00's →\n\n$ ")
     root.main_lcd.tag_add("center", "1.0", "end")
+
 
 # Defines function to show the main menu
 def display_main_menu():
