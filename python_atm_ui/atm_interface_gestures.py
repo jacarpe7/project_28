@@ -307,6 +307,16 @@ def gesture_pin_menu():
     root.main_lcd.tag_add("center", "end-3l", END) 
     root.main_lcd.config(state=DISABLED)
 
+# [WIP] gesture withdrawal prompt 
+def display_gesture_withdrawal_prompt():
+    global menu_present, withdrawal_prompt, invalid_msg, amount_entered
+    menu_present = False
+    withdrawal_prompt = True
+    invalid_msg = False
+    root.main_lcd.delete("1.0", END)
+    root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n \t\t {}" .format(amount_entered))
+    root.main_lcd.insert(END, "← Swipe Left/Right to incriment $20.00's →\n\n$ ")
+    root.main_lcd.tag_add("center", "1.0", "end")
 
 # Defines function to show the main menu
 def display_main_menu():
