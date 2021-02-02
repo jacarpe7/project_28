@@ -133,8 +133,8 @@ class Atm:
         root.main_lcd.tag_configure("right_selected", justify='right', font="fixedsys 20", foreground = "blue")
         root.main_lcd.tag_configure("center_selected", justify='center', font="fixedsys 20", foreground = "blue")
         
-        root.main_lcd.insert("1.0", "\n\nWelcome to the ASU ATM System\n")
-        root.main_lcd.insert(END, "\n\nEnter PIN to continue\n\nOR\n\nHover to begin")
+        root.main_lcd.insert("1.0", "\n\n\n\nWelcome to the ASU ATM System\n")
+        root.main_lcd.insert(END, "\n\nHover to begin")
         root.main_lcd.tag_add("center", "1.0", "end")
         root.main_lcd.grid(row=0, column=0,padx=5,pady=5)
         root.main_lcd.config(state=DISABLED)
@@ -303,8 +303,26 @@ def gesture_pin_menu():
     
     root.main_lcd.tag_add("center", "1.0", "3.0")
     root.main_lcd.tag_add("left", "4.0", "end-3l")
-    root.main_lcd.tag_add("center_selected", "end-5l", "end-3l")
-    root.main_lcd.tag_add("center", "end-3l", END) 
+
+
+# Defines function to back to initial screen for PIN entry
+def display_initial_screen():
+    global menu_present, withdrawal_prompt, another_trans_prompt, invalid_msg, \
+        initial_screen, deposit_options_prompt, deposit_prompt, acct_balance_displayed
+    initial_screen = True
+    menu_present = False
+    withdrawal_prompt = False
+    deposit_prompt = False
+    another_trans_prompt = False
+    deposit_options_prompt = False
+    invalid_msg = False
+    acct_balance_displayed = False
+    root.main_lcd.delete("1.0", END)
+    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
+    root.main_lcd.insert("1.0", "\n\nWelcome to the ASU ATM System\n")
+    root.main_lcd.insert(END, "\n\nHover to begin")
+    root.main_lcd.tag_add("center", "1.0", "end")
+    root.main_lcd.grid(row=0, column=0,padx=5,pady=5)
     root.main_lcd.config(state=DISABLED)
 
 
