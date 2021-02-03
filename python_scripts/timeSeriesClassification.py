@@ -81,16 +81,16 @@ final_seq=sequence.pad_sequences(final_seq, maxlen=seq_len, padding='post', dtyp
 print(len(groups))
 
 #Training data based on group 2
-train = [final_seq[i] for i in range(len(groups)) if (groups[i]==2)]
+train = [final_seq[i] for i in range(len(groups)-5) if (groups[i]==2)]
 #validation data based on group 1
-validation = [final_seq[i] for i in range(len(groups)) if groups[i]==1]
+validation = [final_seq[i] for i in range(len(groups)-5) if groups[i]==1]
 #test data based on group 3
 test = [final_seq[i] for i in range(len(groups)-5) if groups[i]==3]
 
 #train target based on group 2
-train_target = [targets[i] for i in range(len(groups)) if (groups[i]==2)]
+train_target = [targets[i] for i in range(len(groups)-5) if (groups[i]==2)]
 #validation target based on group 1
-validation_target = [targets[i] for i in range(len(groups)) if groups[i]==1]
+validation_target = [targets[i] for i in range(len(groups)-5) if groups[i]==1]
 #test target based on group 3
 test_target = [targets[i] for i in range(len(groups-100)-5) if groups[i]==3]
 
