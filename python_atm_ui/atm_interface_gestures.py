@@ -45,8 +45,6 @@ previous = 9
 after = 1
 
 # Gesture menu selection constants
-cancel_selection = False
-
 main_menu_selection = None
 DEPOSIT = 0
 CHECK_BAL = 1
@@ -163,7 +161,7 @@ class Atm:
         button_num_0 = Button(numpad_frame,text = "0",width=B_WIDTH,height=B_HT)
         button_num_enter = Button(numpad_frame,text = "Enter",width=B_WIDTH,height=B_HT,bg='green')
         button_num_clear = Button(numpad_frame,text = "Clear",width=B_WIDTH,height=B_HT,bg='yellow',command=clear)
-        button_num_cancel = Button(numpad_frame,text = "Cancel",width=B_WIDTH,height=B_HT,bg='red')
+        button_num_cancel = Button(numpad_frame,text = "Cancel",width=B_WIDTH,height=B_HT,bg='red',command=cancel)
         
         button_num_1.grid(row=0,column=0, padx=NUM_PAD_X,pady=NUM_PAD_Y)
         button_num_2.grid(row=0,column=1, padx=NUM_PAD_X,pady=NUM_PAD_Y)
@@ -319,6 +317,7 @@ def display_initial_screen():
     deposit_options_prompt = False
     invalid_msg = False
     acct_balance_displayed = False
+    root.main_lcd.config(state=NORMAL)
     root.main_lcd.delete("1.0", END)
     root.main_lcd.insert("1.0", "\n\n\n\nWelcome to the ASU ATM System\n")
     root.main_lcd.insert(END, "\n\nHover to begin")
@@ -428,6 +427,18 @@ def display_withdrawal_prompt():
     root.main_lcd.insert(END, "(Multiples of $20)\n\n$ ")
     root.main_lcd.tag_add("center", "1.0", "end")
     root.main_lcd.config(state=DISABLED)
+
+
+    # Define function for 'Cancel' button
+def cancel():
+    global pin_code, pin_valid, amount_entered, current, previous, after
+    pin_valid = False
+    pin_code = ""
+    amount_entered = ""
+    current = 0
+    previous = 9
+    after = 1
+    display_initial_screen()
     
 
 # Defines a function to remove all tags from the main_lcd
