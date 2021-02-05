@@ -398,6 +398,12 @@ def display_deposit_options():
         root.main_lcd.tag_add("left_selected", "end-6c", "end")
     root.main_lcd.config(state=DISABLED)
 
+def increment_amount(key):
+    #TODO: Implement incrementation and updating of the value by 20 dollar increments
+    global amount_entered
+    increment_value = 20
+
+    amount_entered = string(int(amount_entered) + increment_value)
 
 # Defines function to display the deposit funds prompt
 def display_deposit_prompt():
