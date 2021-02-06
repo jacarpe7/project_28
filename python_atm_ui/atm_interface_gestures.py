@@ -185,7 +185,7 @@ class Atm:
 # Function for main entry into navigation for gestures
 def navigation_gestures(key):
     global pin_entry_screen, menu_present, main_menu_selection, deposit_menu_selection, \
-        deposit_options_prompt, deposit_type
+        deposit_options_prompt, deposit_type, amount_entered
 
     # Initial screen menu
     if initial_screen:
@@ -232,10 +232,40 @@ def navigation_gestures(key):
     # Deposit Menu
     if deposit_prompt:
         # TODO implement key listener logic for deposit
+        increment_value = 20
+        limit = 300
+        if key is keyboard.Key.right:
+            if amount_entered is limit:
+                return key
+            else:
+                amount_entered = str(int(amount_entered) + increment_value)
+        if key is keyboard.Key.left:
+            if amount_entered is 0 or None:
+                return key
+            else:
+                amount_entered = str(int(amount_entered) - increment_value)
+        if key is keyboard.Key.enter:
+            #TODO: PLACE NAVIGATION TO NEXT WINDOW
+            return key
         return key
     # Withdrawal Menu
     if withdrawal_prompt:
         # TODO implement key listener logic for withdrawal
+        increment_value = 20
+        limit = 300
+        if key is keyboard.Key.right:
+            if amount_entered is limit:
+                return key
+            else:
+                amount_entered = str(int(amount_entered) + increment_value)
+        if key is keyboard.Key.left:
+            if amount_entered is 0 or None:
+                return key
+            else:
+                amount_entered = str(int(amount_entered) - increment_value)
+        if key is keyboard.Key.enter:
+            #TODO: PLACE NAVIGATION TO NEXT WINDOW
+            return key
         return key
 
 
@@ -325,18 +355,6 @@ def display_initial_screen():
     root.main_lcd.config(state=DISABLED)
 
 
-# [WIP] gesture withdrawal prompt 
-def display_gesture_withdrawal_prompt():
-    global menu_present, withdrawal_prompt, invalid_msg, amount_entered
-    menu_present = False
-    withdrawal_prompt = True
-    invalid_msg = False
-    root.main_lcd.delete("1.0", END)
-    root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n \t\t {}" .format(amount_entered))
-    root.main_lcd.insert(END, "← Swipe Left/Right to incriment $20.00's →\n\n$ ")
-    root.main_lcd.tag_add("center", "1.0", "end")
-
-
 # Defines function to show the main menu
 def display_main_menu():
     global menu_present, withdrawal_prompt, another_trans_prompt, invalid_msg, \
@@ -398,12 +416,16 @@ def display_deposit_options():
         root.main_lcd.tag_add("left_selected", "end-6c", "end")
     root.main_lcd.config(state=DISABLED)
 
-def increment_amount(key):
-    #TODO: Implement incrementation and updating of the value by 20 dollar increments
-    global amount_entered
-    increment_value = 20
-
-    amount_entered = string(int(amount_entered) + increment_value)
+# [WIP] gesture withdrawal prompt 
+def display_gesture_withdrawal_prompt():
+    global menu_present, withdrawal_prompt, invalid_msg, amount_entered
+    menu_present = False
+    withdrawal_prompt = True
+    invalid_msg = False
+    root.main_lcd.delete("1.0", END)
+    root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n \t\t {}" .format(amount_entered))
+    root.main_lcd.insert(END, "← Swipe Left/Right to incriment $20.00's →\n\n$ ")
+    root.main_lcd.tag_add("center", "1.0", "end")
 
 # Defines function to display the deposit funds prompt
 def display_deposit_prompt():
