@@ -244,6 +244,7 @@ def navigation_gestures(key):
                 return key
             else:
                 amount_entered = str(int(amount_entered) - increment_value)
+                display_deposit_prompt()
         if key is keyboard.Key.enter:
             #TODO: PLACE NAVIGATION TO NEXT WINDOW
             return key
@@ -258,11 +259,13 @@ def navigation_gestures(key):
                 return key
             else:
                 amount_entered = str(int(amount_entered) + increment_value)
+                display_deposit_prompt()
         if key is keyboard.Key.left:
             if amount_entered is 0 or None:
                 return key
             else:
                 amount_entered = str(int(amount_entered) - increment_value)
+                display_deposit_prompt()
         if key is keyboard.Key.enter:
             #TODO: PLACE NAVIGATION TO NEXT WINDOW
             return key
