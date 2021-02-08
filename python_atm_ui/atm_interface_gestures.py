@@ -212,6 +212,9 @@ def navigation_gestures(key):
                 display_deposit_options()
             if main_menu_selection == WITHDRAWAL:
                 display_withdrawal_prompt()
+            if main_menu_selection == CHECK_BAL:
+                print("GOT HERE")
+                display_acct_balance()
         return key
     # Deposit Options menu
     if deposit_options_prompt:
@@ -419,6 +422,7 @@ def display_deposit_options():
         root.main_lcd.tag_add("left_selected", "end-6c", "end")
     root.main_lcd.config(state=DISABLED)
 
+
 # [WIP] gesture withdrawal prompt 
 def display_gesture_withdrawal_prompt():
     global menu_present, withdrawal_prompt, invalid_msg, amount_entered
@@ -429,6 +433,7 @@ def display_gesture_withdrawal_prompt():
     root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n \t\t {}" .format(amount_entered))
     root.main_lcd.insert(END, "← Swipe Left/Right to incriment $20.00's →\n\n$ ")
     root.main_lcd.tag_add("center", "1.0", "end")
+
 
 # Defines function to display the deposit funds prompt
 def display_deposit_prompt():
@@ -457,6 +462,23 @@ def display_withdrawal_prompt():
     root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n")
     root.main_lcd.insert(END, "(Multiples of $20)\n\n$ ")
     root.main_lcd.tag_add("center", "1.0", "end")
+    root.main_lcd.config(state=DISABLED)
+
+
+# Define function to display current account balance
+def display_acct_balance():
+    global menu_present, acct_balance_displayed, acct_balance
+    acct_balance_displayed = True
+    menu_present = False
+    root.main_lcd.config(state=NORMAL)
+    root.main_lcd.delete("1.0", END)
+    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
+    root.main_lcd.insert("1.0", "\n\n\nYour account balance is:\n")
+    root.main_lcd.insert(END, "\n$ " + str(acct_balance) + "\n")
+    root.main_lcd.tag_add("center", "1.0", "end-1l")
+    root.main_lcd.tag_configure("left", justify='left', font="fixedsys 20")
+    root.main_lcd.insert("end", "\n\n\n\n\n\n\n\nGo Back")
+    root.main_lcd.tag_add("left", "end-2l", END)
     root.main_lcd.config(state=DISABLED)
 
 
