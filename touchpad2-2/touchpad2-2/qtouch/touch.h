@@ -140,7 +140,7 @@ extern "C" {
  */
 
 
-#define PAD_THRESHOLD 30
+#define PAD_THRESHOLD 25
 
 #define DEF_NUM_SENSORS (9)
 
