@@ -213,7 +213,6 @@ def navigation_gestures(key):
             if main_menu_selection == WITHDRAWAL:
                 display_withdrawal_prompt()
             if main_menu_selection == CHECK_BAL:
-                print("GOT HERE")
                 display_acct_balance()
         return key
     # Deposit Options menu
@@ -278,6 +277,11 @@ def navigation_gestures(key):
         if key is keyboard.Key.enter:
             #TODO: PLACE NAVIGATION TO NEXT WINDOW
             return 
+        return key
+    #Check Balance screen
+    if acct_balance_displayed:
+        if key is keyboard.Key.left:
+            display_main_menu()
         return key
 
 
@@ -450,7 +454,6 @@ def display_deposit_prompt():
     invalid_msg = False
     root.main_lcd.config(state=NORMAL)
     root.main_lcd.delete("1.0", END)
-    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
     root.main_lcd.insert("1.0", "\n\n\n\nEnter " + deposit_type + " deposit amount:\n")
     root.main_lcd.insert(END, "\n$ ")
     root.main_lcd.tag_add("center", "1.0", "end")
@@ -465,7 +468,6 @@ def display_withdrawal_prompt():
     invalid_msg = False
     root.main_lcd.config(state=NORMAL)
     root.main_lcd.delete("1.0", END)
-    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
     root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n")
     root.main_lcd.insert(END, "(Multiples of $20)\n\n$ ")
     root.main_lcd.tag_add("center", "1.0", "end")
@@ -478,13 +480,9 @@ def display_acct_balance():
     menu_present = False
     root.main_lcd.config(state=NORMAL)
     root.main_lcd.delete("1.0", END)
-    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
     root.main_lcd.insert("1.0", "\n\n\nYour account balance is:\n")
-    root.main_lcd.insert(END, "\n$ " + str(acct_balance) + "\n")
-    root.main_lcd.tag_add("center", "1.0", "end-1l")
-    root.main_lcd.tag_configure("left", justify='left', font="fixedsys 20")
-    root.main_lcd.insert("end", "\n\n\n\n\n\n\n\nGo Back")
-    root.main_lcd.tag_add("left", "end-2l", END)
+    root.main_lcd.insert("end", "\n$ " + str(acct_balance) + "\n\n\n\n\n← Swipe left to go back")
+    root.main_lcd.tag_add("center", "1.0", END)
     root.main_lcd.config(state=DISABLED)
 
 
@@ -513,8 +511,9 @@ def clear_tags():
 # Define function for the 'Clear' button (to clear PIN for now)
 def clear():
     global pin_code
-    pin_code = ""
-    gesture_pin_menu()
+    if pin_entry_screen:
+        pin_code = ""
+        gesture_pin_menu()
 
 
 # Entry point to initiate the program for execution    
