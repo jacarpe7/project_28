@@ -211,7 +211,7 @@ def navigation_gestures(key):
                 deposit_menu_selection = CASH
                 display_deposit_options()
             if main_menu_selection == WITHDRAWAL:
-                display_withdrawal_prompt()
+                display_gesture_withdrawal_prompt()
             if main_menu_selection == CHECK_BAL:
                 display_acct_balance()
         return key
@@ -440,10 +440,12 @@ def display_gesture_withdrawal_prompt():
     withdrawal_prompt = True
     invalid_msg = False
     root.main_lcd.config(state=NORMAL)
-    root.main_lcd.delete("1.0", END)
-    root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n \t\t {}" .format(amount_entered))
-    root.main_lcd.insert(END, "← Swipe Left/Right to incriment $20.00's →\n\n$ ")
+    root.main_lcd.delete('1.0', END)
+    root.main_lcd.insert('1.0', '\n\nEnter Amount to Withdrawal:\n')
+    root.main_lcd.insert('4.0', "\n← Swipe Left/Right →\n\n ")
+    root.main_lcd.insert('7.0', "\n$ {}" .format(amount_entered))
     root.main_lcd.tag_add("center", "1.0", "end")
+    root.main_lcd.config(state=DISABLED)
 
 
 # Defines function to display the deposit funds prompt
