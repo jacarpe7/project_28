@@ -239,39 +239,45 @@ def navigation_gestures(key):
         limit = 300
         if key is keyboard.Key.right:
             if amount_entered is limit:
-                return key
+                return 
             else:
                 amount_entered = str(int(amount_entered) + increment_value)
         if key is keyboard.Key.left:
             if amount_entered is 0 or None:
-                return key
+                return 
             else:
                 amount_entered = str(int(amount_entered) - increment_value)
                 display_deposit_prompt()
         if key is keyboard.Key.enter:
             #TODO: PLACE NAVIGATION TO NEXT WINDOW
-            return key
-        return key
+            return 
+        return 
     # Withdrawal Menu
     if withdrawal_prompt:
         # TODO implement key listener logic for withdrawal
         increment_value = 20
-        limit = 300
+        if amount_entered is '' or None:
+            amount_entered = '0'
         if key is keyboard.Key.right:
-            if amount_entered is limit:
-                return key
+            if amount_entered == '300':
+                print(amount_entered)
+                return 
             else:
                 amount_entered = str(int(amount_entered) + increment_value)
-                display_deposit_prompt()
+                print(amount_entered + ' incrementing')
+                display_gesture_withdrawal_prompt()
         if key is keyboard.Key.left:
-            if amount_entered is 0 or None:
-                return key
+            if amount_entered == '0' or None:
+                print(amount_entered)
+                return 
             else:
                 amount_entered = str(int(amount_entered) - increment_value)
-                display_deposit_prompt()
+                print(amount_entered + ' decrementing')
+                
+                display_gesture_withdrawal_prompt()
         if key is keyboard.Key.enter:
             #TODO: PLACE NAVIGATION TO NEXT WINDOW
-            return key
+            return 
         return key
 
 
@@ -429,6 +435,7 @@ def display_gesture_withdrawal_prompt():
     menu_present = False
     withdrawal_prompt = True
     invalid_msg = False
+    root.main_lcd.config(state=NORMAL)
     root.main_lcd.delete("1.0", END)
     root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n \t\t {}" .format(amount_entered))
     root.main_lcd.insert(END, "← Swipe Left/Right to incriment $20.00's →\n\n$ ")
@@ -462,7 +469,6 @@ def display_withdrawal_prompt():
     root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n")
     root.main_lcd.insert(END, "(Multiples of $20)\n\n$ ")
     root.main_lcd.tag_add("center", "1.0", "end")
-    root.main_lcd.config(state=DISABLED)
 
 
 # Define function to display current account balance
