@@ -14,9 +14,25 @@ from keras.models import load_model
 from keras.callbacks import ModelCheckpoint
 
 #loading raw data
-path = 'MovementAAL/dataset/MovementAAL_RSS_'
+path = 'new_model/dataset-new/Null/stream_'
 sequences = list()
-for i in range (1,120):
+for i in range (100):
+    file_path = path + str(i) + '.csv'
+    print(file_path)
+    df = pd.read_csv(file_path, header=0)
+    values = df.values
+    sequences.append(values)
+
+path = 'new_model/dataset-new/LeftSwipe/stream_'
+for i in range (100):
+    file_path = path + str(i) + '.csv'
+    print(file_path)
+    df = pd.read_csv(file_path, header=0)
+    values = df.values
+    sequences.append(values)
+
+path = 'new_model/dataset-new/RightSwipe/stream_'
+for i in range (100):
     file_path = path + str(i) + '.csv'
     print(file_path)
     df = pd.read_csv(file_path, header=0)
@@ -24,11 +40,11 @@ for i in range (1,120):
     sequences.append(values)
 
 #target values
-targets = pd.read_csv('MovementAAL/dataset/MovementAAL_target.csv')
+targets = pd.read_csv('new_model/dataset-new/Movement_target.csv')
 targets = targets.values[:,1]
 
 #Loading grouping
-groups = pd.read_csv('MovementAAL/groups/MovementAAL_DatasetGroup.csv', header=0)
+groups = pd.read_csv('new_model/groups/Movement_DatasetGroup.csv', header=0)
 groups = groups.values[:,1]
 
 len_sequences = []
