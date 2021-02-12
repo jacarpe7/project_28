@@ -185,7 +185,8 @@ class Atm:
 # Function for main entry into navigation for gestures
 def navigation_gestures(key):
     global pin_entry_screen, menu_present, main_menu_selection, deposit_menu_selection, \
-        deposit_options_prompt, deposit_type, amount_entered
+        deposit_options_prompt, deposit_prompt, deposit_type, withdrawal_prompt, amount_entered, \
+        acct_balance_displayed, another_trans_prompt
 
     # Initial screen menu
     if initial_screen:
@@ -282,6 +283,11 @@ def navigation_gestures(key):
     if acct_balance_displayed:
         if key is keyboard.Key.left:
             display_main_menu()
+        return key
+    #Another transaction prompt
+    if another_trans_prompt:
+        #TODO: implement this
+        print("test")
         return key
 
 
@@ -487,6 +493,16 @@ def display_acct_balance():
     root.main_lcd.tag_add("center", "1.0", END)
     root.main_lcd.config(state=DISABLED)
 
+
+# Define funtion to display 'Another Transaction' prompt
+def display_another_trans_prompt():
+    global another_trans_prompt
+    root.main_lcd.insert(END, "Another transaction?")
+    root.main_lcd.tag_add("center", "1.0", "end")
+    root.main_lcd.tag_configure("right", justify='right', font="fixedsys 20")
+    root.main_lcd.insert("end", "\n\tYes\n\n\n\n\tNo")
+    root.main_lcd.tag_add("right", "end-5l", END)
+    another_trans_prompt = True
 
     # Define function for 'Cancel' button
 def cancel():
