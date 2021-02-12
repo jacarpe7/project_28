@@ -38,7 +38,7 @@ for i in range(10, 99):
 
 path = 'MovementAAL/new_dataset/stream_00'
 
-for i in range(100, 299):
+for i in range(100, 400):
     file_path = path + str(i) + '.csv'
     df = pd.read_csv(file_path, header=0, usecols=["delta1", "delta2", "delta3", "delta4"])
     sequences.append(values)
