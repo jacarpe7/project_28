@@ -25,7 +25,7 @@ sequences = list()
 
 for i in range (1,9):
     file_path = path + str(i) + '.csv'
-    df = pd.read_csv(file_path, header=0, usecols=["delta1", "delta2", "delta3", "delta4"])
+    df = pd.read_csv(file_path, header=0, usecols=["delta1", "delta2", "delta3", "delta4", "delta5", "delta6", "delta7", "delta8", "delta9"])
     values = df.values
     sequences.append(values)
 
@@ -33,14 +33,14 @@ path = 'MovementAAL/new_dataset/stream_000'
 
 for i in range(10, 99):
     file_path = path + str(i) + '.csv'
-    df = pd.read_csv(file_path, header=0, usecols=["delta1", "delta2", "delta3", "delta4"])
+    df = pd.read_csv(file_path, header=0, usecols=["delta1", "delta2", "delta3", "delta4", "delta5", "delta6", "delta7", "delta8", "delta9"])
     sequences.append(values)
 
 path = 'MovementAAL/new_dataset/stream_00'
 
 for i in range(100, 400):
     file_path = path + str(i) + '.csv'
-    df = pd.read_csv(file_path, header=0, usecols=["delta1", "delta2", "delta3", "delta4"])
+    df = pd.read_csv(file_path, header=0, usecols=["delta1", "delta2", "delta3", "delta4", "delta5", "delta6", "delta7", "delta8", "delta9"])
     sequences.append(values)
 
 
