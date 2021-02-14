@@ -16,7 +16,7 @@ from keras.callbacks import ModelCheckpoint
 #loading raw data
 path = 'new_model/dataset-new/Null/stream_'
 sequences = list()
-for i in range (100):
+for i in range (200):
     file_path = path + str(i) + '.csv'
     print(file_path)
     df = pd.read_csv(file_path, header=0)
