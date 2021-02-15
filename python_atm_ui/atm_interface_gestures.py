@@ -468,19 +468,6 @@ def display_deposit_prompt():
     root.main_lcd.config(state=DISABLED)
 
 
-# Defines function to display the withdrawal funds prompt
-def display_withdrawal_prompt():
-    global menu_present, withdrawal_prompt, invalid_msg
-    menu_present = False
-    withdrawal_prompt = True
-    invalid_msg = False
-    root.main_lcd.config(state=NORMAL)
-    root.main_lcd.delete("1.0", END)
-    root.main_lcd.insert("1.0", "\n\n\n\nEnter Amount to Withdrawal:\n")
-    root.main_lcd.insert(END, "(Multiples of $20)\n\n$ ")
-    root.main_lcd.tag_add("center", "1.0", "end")
-
-
 # Define function to display current account balance
 def display_acct_balance():
     global menu_present, acct_balance_displayed, acct_balance
