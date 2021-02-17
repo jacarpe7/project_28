@@ -12,6 +12,9 @@ from rx.subject import AsyncSubject
 from rx.core import Observable
 from rx.subject import Subject
 
+#DEBUG MODE - Set true to have debug comments in console.
+debug = True
+
 # GUI constants
 B_PAD = 15
 B_WIDTH = 8
@@ -70,15 +73,18 @@ transaction_message = None
 def on_press(key):
     try:
         keyListener.on_next(key)
-        print('alphanumeric key {0} pressed'.format(
-            key.char))
+        if debug:
+            print('alphanumeric key {0} pressed'.format(
+                key.char))
     except AttributeError:
-        print('special key {0} pressed'.format(
-            key))
+        if debug:
+            print('special key {0} pressed'.format(
+                key))
 
 def on_release(key):
-    print('{0} released'.format(
-        key))
+    if debug:
+        print('{0} released'.format(
+            key))
     if key == keyboard.Key.esc:
         # Stop listener
         return False
@@ -182,10 +188,13 @@ class Atm:
         button_num_clear.grid(row=1,column=3, padx=NUM_PAD_X,pady=NUM_PAD_Y,)
         button_num_cancel.grid(row=2,column=3, padx=NUM_PAD_X,pady=NUM_PAD_Y)
         
-        listener.start()  
-        keyListener.subscribe(
-            lambda x:print(navigation_gestures(x))) 
-
+        listener.start()
+        if debug:  
+            keyListener.subscribe(
+                lambda x:print(navigation_gestures(x))) 
+        else:
+            keyListener.subscribe(
+                lambda x:navigation_gestures(x))
 
 # Function for main entry into navigation for gestures
 def navigation_gestures(key):
@@ -271,19 +280,23 @@ def navigation_gestures(key):
             amount_entered = '0'
         if key is keyboard.Key.right:
             if amount_entered == '300':
-                print(amount_entered)
+                if debug:
+                    print(amount_entered)
                 return 
             else:
                 amount_entered = str(int(amount_entered) + increment_value)
-                print(amount_entered + ' incrementing')
+                if debug:
+                    print(amount_entered + ' incrementing')
                 display_gesture_withdrawal_prompt()
         if key is keyboard.Key.left:
             if amount_entered == '0' or None:
-                print(amount_entered)
+                if debug:
+                    print(amount_entered)
                 return 
             else:
                 amount_entered = str(int(amount_entered) - increment_value)
-                print(amount_entered + ' decrementing')
+                if debug:
+                    print(amount_entered + ' decrementing')
                 
                 display_gesture_withdrawal_prompt()
         if key is keyboard.Key.enter:
