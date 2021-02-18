@@ -16,7 +16,7 @@ from keras.callbacks import ModelCheckpoint
 #loading raw data
 path = 'new_model/dataset-new/Null/stream_'
 sequences = list()
-for i in range (200):
+for i in range (100):
     file_path = path + str(i) + '.csv'
     print(file_path)
     df = pd.read_csv(file_path, header=0)
@@ -24,7 +24,7 @@ for i in range (200):
     sequences.append(values)
 
 path = 'new_model/dataset-new/LeftSwipe/stream_'
-for i in range (200):
+for i in range (100):
     file_path = path + str(i) + '.csv'
     print(file_path)
     df = pd.read_csv(file_path, header=0)
@@ -32,7 +32,7 @@ for i in range (200):
     sequences.append(values)
 
 path = 'new_model/dataset-new/RightSwipe/stream_'
-for i in range (200):
+for i in range (100):
     file_path = path + str(i) + '.csv'
     print(file_path)
     df = pd.read_csv(file_path, header=0)
@@ -40,7 +40,7 @@ for i in range (200):
     sequences.append(values)
 
 path = 'new_model/dataset-new/FullActivity/stream_'
-for i in range (200):
+for i in range (100):
     file_path = path + str(i) + '.csv'
     print(file_path)
     df = pd.read_csv(file_path, header=0)
