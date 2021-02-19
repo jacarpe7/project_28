@@ -65,7 +65,7 @@ deposit_type = ""
 pin_code = ""
 correct_pin = "1234"
 amount_entered = ""
-acct_balance = 1000
+acct_balance = 280
 transaction_message = None
 
 #keyboard listener 
@@ -335,7 +335,11 @@ def navigation_gestures(key):
             if another_trans_selection == TRANS_YES:
                 display_main_menu()
         return key
-
+    # Insufficient Funds Screen
+    if insufficient_funds:
+        if key is keyboard.Key.left:
+            display_main_menu()
+            
 
 # Define method for PIN entry
 def pin_iterator(key):
@@ -547,10 +551,12 @@ def display_insufficient_funds():
     global insufficient_funds, withdrawal_prompt
     insufficient_funds = True
     withdrawal_prompt = False
-    root.main_lcd.delete("end-1l", END)
-    root.main_lcd.insert(END, "\n" + msg + ", Press 'Clear'")
-    root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20")
-    root.main_lcd.tag_add("center", "1.0", "end")
+    root.main_lcd.config(state=NORMAL)
+    root.main_lcd.delete("1.0", END)
+    root.main_lcd.insert("1.0", "\n\n\n\n\nInsufficient Funds!\n")
+    root.main_lcd.insert("end", "\n\n\n\n← Swipe left to go back")
+    root.main_lcd.tag_add("center", "1.0", END)
+    root.main_lcd.config(state=DISABLED)
 
 
     # Define function for 'Cancel' button
