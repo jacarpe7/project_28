@@ -510,8 +510,9 @@ def display_gesture_withdrawal_prompt():
 
 # [WIP] gesture withdrawal prompt 
 def display_gesture_deposit_prompt():
-    global menu_present, deposit_prompt, amount_entered
+    global menu_present, deposit_prompt, amount_entered, deposit_options_prompt
     menu_present = False
+    deposit_options_prompt = False
     deposit_prompt = True
     root.main_lcd.config(state=NORMAL)
     root.main_lcd.delete('1.0', END)
