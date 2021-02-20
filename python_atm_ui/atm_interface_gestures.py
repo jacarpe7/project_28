@@ -242,27 +242,36 @@ def navigation_gestures(key):
         if key is keyboard.Key.enter:
             if deposit_menu_selection == CASH:
                 deposit_type = "cash"
-                display_deposit_prompt()
+                display_gesture_deposit_prompt()
             if deposit_menu_selection == CHECK:
                 deposit_type = "check"
-                display_deposit_prompt()
+                display_gesture_deposit_prompt()
         return key
     # Deposit Menu
     if deposit_prompt:
-        # TODO implement key listener logic for deposit
         increment_value = 20
-        limit = 300
+        if amount_entered == '' or None:
+            amount_entered = '0'
         if key is keyboard.Key.right:
-            if amount_entered == limit:
+            if amount_entered == '300':
+                if debug:
+                    print(amount_entered)
                 return 
             else:
                 amount_entered = str(int(amount_entered) + increment_value)
+                if debug:
+                    print(amount_entered + ' incrementing')
+                display_gesture_deposit_prompt()
         if key is keyboard.Key.left:
-            if amount_entered == 0 or None:
+            if amount_entered == '0' or None:
+                if debug:
+                    print(amount_entered)
                 return 
             else:
                 amount_entered = str(int(amount_entered) - increment_value)
-                display_deposit_prompt()
+                if debug:
+                    print(amount_entered + ' decrementing')
+                display_gesture_deposit_prompt()
         if key is keyboard.Key.enter:
             acct_balance = acct_balance + int(amount_entered)
             transaction_message = "Deposit successful"
@@ -499,16 +508,16 @@ def display_gesture_withdrawal_prompt():
     root.main_lcd.tag_add("center", "1.0", "end")
     root.main_lcd.config(state=DISABLED)
 
-
-# Defines function to display the deposit funds prompt
-def display_deposit_prompt():
-    global deposit_options_prompt, deposit_prompt, deposit_type
+# [WIP] gesture withdrawal prompt 
+def display_gesture_deposit_prompt():
+    global menu_present, deposit_prompt, amount_entered
+    menu_present = False
     deposit_prompt = True
-    deposit_options_prompt = False
     root.main_lcd.config(state=NORMAL)
-    root.main_lcd.delete("1.0", END)
-    root.main_lcd.insert("1.0", "\n\n\n\nEnter " + deposit_type + " deposit amount:\n")
-    root.main_lcd.insert(END, "\n$ ")
+    root.main_lcd.delete('1.0', END)
+    root.main_lcd.insert('1.0', '\n\nEnter Amount to Deposit:\n')
+    root.main_lcd.insert('4.0', "\n← Swipe Left/Right →\n\n ")
+    root.main_lcd.insert('7.0', "\n$ {}" .format(amount_entered))
     root.main_lcd.tag_add("center", "1.0", "end")
     root.main_lcd.config(state=DISABLED)
 
