@@ -34,6 +34,7 @@ deposit_options_prompt = False
 another_trans_prompt = False
 acct_balance_displayed = False
 insufficient_funds = False
+invalid_pin_msg = False
 
 # variables related to gestures
 HOVER = 0
@@ -200,7 +201,7 @@ def navigation_gestures(key):
     global pin_entry_screen, menu_present, main_menu_selection, deposit_menu_selection, acct_balance, \
         deposit_options_prompt, deposit_prompt, deposit_type, withdrawal_prompt, amount_entered, \
         acct_balance_displayed, another_trans_prompt, another_trans_selection, transaction_message, \
-        pin_valid, pin_code, current, previous, after
+        pin_valid, pin_code, current, previous, after, invalid_pin_msg
 
     # Initial screen menu
     if initial_screen:
@@ -387,6 +388,12 @@ def pin_iterator(key):
             pin_valid = True
             main_menu_selection = CHECK_BAL
             display_main_menu()
+        if len(pin_code) == 4 and pin_code != correct_pin:
+            pin_code = ""
+            current = 0
+            previous = 9
+            after = 1
+            display_invalid_pin_msg()
 
         
 # Define function for pin entry screen
@@ -567,6 +574,11 @@ def display_insufficient_funds():
     root.main_lcd.insert("end", "\n\n\n\n← Swipe left to go back")
     root.main_lcd.tag_add("center", "1.0", END)
     root.main_lcd.config(state=DISABLED)
+
+
+# Define function to display a message when the PIN entered is incorrect
+def display_invalid_pin_msg():
+    print("invalid PIN")
 
 
     # Define function for 'Cancel' button
