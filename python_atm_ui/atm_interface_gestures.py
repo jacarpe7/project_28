@@ -277,7 +277,7 @@ def navigation_gestures(key):
             acct_balance = acct_balance + int(amount_entered)
             transaction_message = "Deposit successful"
             amount_entered = ""
-            another_trans_selection == TRANS_NO
+            another_trans_selection = TRANS_NO
             display_another_trans_prompt()
             return 
         return 
@@ -345,8 +345,8 @@ def navigation_gestures(key):
             if another_trans_selection == TRANS_YES:
                 display_main_menu()
         return key
-    # Insufficient Funds Screen
-    if insufficient_funds:
+    # Insufficient Funds and invalid PIN Screens
+    if insufficient_funds or invalid_pin_msg:
         if key is keyboard.Key.left:
             display_main_menu()
             
@@ -388,7 +388,7 @@ def pin_iterator(key):
             pin_valid = True
             main_menu_selection = CHECK_BAL
             display_main_menu()
-        if len(pin_code) == 4 and pin_code != correct_pin:
+        elif len(pin_code) == 4:
             pin_code = ""
             current = 0
             previous = 9
@@ -578,6 +578,9 @@ def display_insufficient_funds():
 
 # Define function to display a message when the PIN entered is incorrect
 def display_invalid_pin_msg():
+    global invalid_pin_msg, pin_entry_screen
+    invalid_pin_msg = True 
+    pin_entry_screen = False
     print("invalid PIN")
 
 
