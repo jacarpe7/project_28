@@ -2,7 +2,7 @@
 """
 This generates a basic ATM interface for use in 
 proximity sensor gesture recognition.
-Created on Oct 28 11:36:59 2020
+Created on Jan 27 2021
 @author: Josh Carpenter, Michael Frederic
 """
 
@@ -346,9 +346,13 @@ def navigation_gestures(key):
                 display_main_menu()
         return key
     # Insufficient Funds and invalid PIN Screens
-    if insufficient_funds or invalid_pin_msg:
+    if insufficient_funds:
         if key is keyboard.Key.left:
             display_main_menu()
+    # Invalid PIN Screen
+    if invalid_pin_msg:
+        if key is keyboard.Key.left:
+            gesture_pin_menu()
             
 
 # Define method for PIN entry
@@ -400,9 +404,10 @@ def pin_iterator(key):
 def gesture_pin_menu():
     global menu_present, withdrawal_prompt, another_trans_prompt, initial_screen, \
         deposit_options_prompt, deposit_prompt, acct_balance_displayed, \
-        current, previous, after, pin_entry_screen
-    initial_screen = False
+        current, previous, after, pin_entry_screen, invalid_pin_msg
     pin_entry_screen = True
+    initial_screen = False
+    invalid_pin_msg = False
     menu_present = False
     withdrawal_prompt = False
     deposit_prompt = False
@@ -581,7 +586,12 @@ def display_invalid_pin_msg():
     global invalid_pin_msg, pin_entry_screen
     invalid_pin_msg = True 
     pin_entry_screen = False
-    print("invalid PIN")
+    root.main_lcd.config(state=NORMAL)
+    root.main_lcd.delete("1.0", END)
+    root.main_lcd.insert("1.0", "\n\n\n\n\nIncorrect PIN!\n")
+    root.main_lcd.insert("end", "\n\n\n\n← Swipe left to try again")
+    root.main_lcd.tag_add("center", "1.0", END)
+    root.main_lcd.config(state=DISABLED)
 
 
     # Define function for 'Cancel' button
