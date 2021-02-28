@@ -1,6 +1,11 @@
 Place holder for React Native research/implementation documentation.
 
-Potential app ideas:
-    gesture based train ordering app or movie tickets? Something that needs a kiosk...
+App idea: Movie Kiosk App
+
+Justification: This is a prime example of a high contact area where multiple people would indirectly make contact.
+    Through the use of React Native we can achieve a flexible modern application that can be installed on most of the common platforms.
+    React Native and the use of Boostrap we can provide a facelift to modern kiosk browsing and provide a streamline gesture based user interface
+    interface.
+
 
 
