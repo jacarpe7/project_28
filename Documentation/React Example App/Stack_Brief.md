@@ -1,5 +1,3 @@
-Place holder for React Native research/implementation documentation.
-
 App idea: Movie Kiosk App
 
 Justification: This is a prime example of a high contact area where multiple people would indirectly make contact.
@@ -7,5 +5,4 @@ Justification: This is a prime example of a high contact area where multiple peo
     React Native and the use of Boostrap we can provide a facelift to modern kiosk browsing and provide a streamline gesture based user interface
     interface.
 
-
-
+*This is mainly a commit placeholder for reasearch.*
