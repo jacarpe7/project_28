@@ -31,10 +31,10 @@ while (1):
      parseLine = serialPort.readline().decode('utf-8').split(",")
      
      if count == 0 or count % 30 == 0:
-         baseline = [str(parseLine[1]), str(parseLine[2]), str(parseLine[3]), str(parseLine[4]), str(parseLine[5]), str(parseLine[6]), str(parseLine[7]), str(parseLine[8]), str(parseLine[9])]
+         baseline = [int(parseLine[1]), int(parseLine[2]), int(parseLine[3]), int(parseLine[4]), int(parseLine[5]), int(parseLine[6]), int(parseLine[7]), int(parseLine[8]), int(parseLine[9])]
      
      # isolate deltas for activity recognition
-     deltas = [str(parseLine[1]), str(parseLine[2]), str(parseLine[3]), str(parseLine[4]), str(parseLine[5]), str(parseLine[6]), str(parseLine[7]), str(parseLine[8]), str(parseLine[9])]
+     deltas = [str(int(parseLine[1]-baseline[0])), str(int(parseLine[2]-baseline[1])), str(int(parseLine[3]-baseline[2])), str(int(parseLine[4]-baseline[3])), str(int(parseLine[5]-baseline[4])), str(int(parseLine[6]-baseline[5])), str(int(parseLine[7]-baseline[6])), str(int(parseLine[8]-baseline[7])), str(int(parseLine[9]-baseline[8]))]
      if q < 15:
          queue.append(Row(str(parseLine[1]), str(parseLine[2]), str(parseLine[3]), str(parseLine[4]), str(parseLine[5]), str(parseLine[6]), str(parseLine[7]), str(parseLine[8]), str(parseLine[9])))
      else:
