@@ -161,7 +161,42 @@ def navigation_gestures(key):
             return key
     # PIN entry screen
     if pin_entry_screen:
-        pin_iterator(key)
+        if key is keyboard.Key.right:
+            current +=1
+            after +=1
+            previous +=1
+            if current == 10:
+                current = 0
+            elif after == 10:
+                after = 0
+            elif previous == 10:
+                previous = 0
+            gesture_pin_menu()
+        elif key is keyboard.Key.left:
+            current -=1
+            after -=1
+            previous -=1
+            if current == -1:
+                current = 9
+            elif after == -1:
+                after = 9
+            elif previous == -1:
+                previous = 9
+            gesture_pin_menu()
+        elif key is keyboard.Key.enter:
+            if len(pin_code) < 4:
+                pin_code = pin_code + str(current)
+                gesture_pin_menu()
+            if pin_code == correct_pin:
+                pin_valid = True
+                main_menu_selection = CHECK_BAL
+                display_main_menu()
+            elif len(pin_code) == 4:
+                pin_code = ""
+                current = 0
+                previous = 9
+                after = 1
+                display_invalid_pin_msg()
         return key
     # Main menu
     if menu_present:
@@ -234,7 +269,6 @@ def navigation_gestures(key):
         return 
     # Withdrawal Menu
     if withdrawal_prompt:
-        # TODO implement key listener logic for withdrawal
         increment_value = 20
         if amount_entered == '' or None:
             amount_entered = '0'
@@ -305,51 +339,6 @@ def navigation_gestures(key):
         if key is keyboard.Key.left:
             gesture_pin_menu()
             
-
-# Define method for PIN entry
-def pin_iterator(key):
-    global current, previous, after, pin_code, pin_valid, main_menu_selection
-    if key is keyboard.Key.right:
-        current +=1
-        after +=1
-        previous +=1
-        if current == 10:
-            current = 0
-        elif after == 10:
-            after = 0
-        elif previous == 10:
-            previous = 0
-        gesture_pin_menu()
-
-    elif key is keyboard.Key.left:
-        current -=1
-        after -=1
-        previous -=1
-        if current == -1:
-            current = 9
-
-        elif after == -1:
-            after = 9
-
-        elif previous == -1:
-            previous = 9
-        gesture_pin_menu()
-    
-    elif key is keyboard.Key.enter:
-        if len(pin_code) < 4:
-            pin_code = pin_code + str(current)
-            gesture_pin_menu()
-        if pin_code == correct_pin:
-            pin_valid = True
-            main_menu_selection = CHECK_BAL
-            display_main_menu()
-        elif len(pin_code) == 4:
-            pin_code = ""
-            current = 0
-            previous = 9
-            after = 1
-            display_invalid_pin_msg()
-
         
 # Define function for pin entry screen
 def gesture_pin_menu():
