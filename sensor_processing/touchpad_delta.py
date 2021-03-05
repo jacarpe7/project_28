@@ -30,6 +30,7 @@ baseline = []
 while (1):
      parseLine = serialPort.readline().decode('utf-8').split(",")
      
+     # Incrementally get a new baseline
      if count == 0 or count % 30 == 0:
          baseline = [int(parseLine[1]), int(parseLine[2]), int(parseLine[3]), int(parseLine[4]), int(parseLine[5]), int(parseLine[6]), int(parseLine[7]), int(parseLine[8]), int(parseLine[9])]
      
