@@ -98,8 +98,15 @@ listener = keyboard.Listener(
     on_press=on_press,
     on_release=on_release)
 
+
 class Atm:
-    
+    """
+    Constructor of the ATM class that creates all the GUI elements and layout:
+        -- main LCD screen
+        -- Clear and Cancel buttons
+        -- sizing, padding, and display configurations
+        -- initializes the listener
+    """
     def __init__(self, root):
         self.root = root    
         root.title("ASU Capstone ATM Simulator")
@@ -147,12 +154,20 @@ class Atm:
             keyListener.subscribe(
                 lambda x:navigation_gestures(x))
 
-# Function for main entry into navigation for gestures
+
+# Define funtion for gesture navigation
 def navigation_gestures(key):
-    global pin_entry_screen, menu_present, main_menu_selection, deposit_menu_selection, acct_balance, \
-        deposit_options_prompt, deposit_prompt, deposit_type, withdrawal_prompt, amount_entered, \
-        acct_balance_displayed, another_trans_prompt, another_trans_selection, transaction_message, \
-        pin_valid, pin_code, current, previous, after, invalid_pin_msg
+    """
+    Backbone of the program that is executed each time input is detected
+    from the listener.  All the logic is contained here such that when
+    listener input is detected it checks which screen the application is
+    currently on based on the boolean gates and from there based on which
+    input was detected the corresponding action will be executed.
+    """
+    global pin_entry_screen, menu_present, main_menu_selection, deposit_menu_selection, \
+        acct_balance, deposit_options_prompt, deposit_prompt, deposit_type, withdrawal_prompt, \
+        amount_entered, acct_balance_displayed, another_trans_prompt, another_trans_selection, \
+        transaction_message, pin_valid, pin_code, current, previous, after, invalid_pin_msg
 
     # Initial screen menu
     if initial_screen:
@@ -197,7 +212,7 @@ def navigation_gestures(key):
                 previous = 9
                 after = 1
                 display_invalid_pin_msg()
-        return key
+            return key
     # Main menu
     if menu_present:
         if key is keyboard.Key.right:
@@ -330,7 +345,7 @@ def navigation_gestures(key):
             if another_trans_selection == TRANS_YES:
                 display_main_menu()
         return key
-    # Insufficient Funds and invalid PIN Screens
+    # Insufficient Funds screen
     if insufficient_funds:
         if key is keyboard.Key.left:
             display_main_menu()
@@ -339,9 +354,12 @@ def navigation_gestures(key):
         if key is keyboard.Key.left:
             gesture_pin_menu()
             
-        
-# Define function for pin entry screen
+
+# Define method for pin entry screen.
 def gesture_pin_menu():
+    """
+    Flips boolean gates used for navigation and displays the PIN carousel.
+    """
     global menu_present, withdrawal_prompt, another_trans_prompt, initial_screen, \
         deposit_options_prompt, deposit_prompt, acct_balance_displayed, \
         current, previous, after, pin_entry_screen, invalid_pin_msg
@@ -369,6 +387,10 @@ def gesture_pin_menu():
 
 # Defines function to back to initial screen for PIN entry
 def display_initial_screen():
+    """
+    Flips boolean gates used for navigation and displays initial screen of the
+    application at launch.
+    """
     global menu_present, withdrawal_prompt, another_trans_prompt, initial_screen, \
         deposit_options_prompt, deposit_prompt, acct_balance_displayed
     initial_screen = True
@@ -388,6 +410,9 @@ def display_initial_screen():
 
 # Defines function to show the main menu
 def display_main_menu():
+    """
+    Flips boolean gates used for navigation and displays the main menu of the ATM.
+    """
     global menu_present, withdrawal_prompt, another_trans_prompt, initial_screen, \
         deposit_options_prompt, deposit_prompt, acct_balance_displayed, \
         main_menu_selection, pin_entry_screen
@@ -460,7 +485,7 @@ def display_gesture_withdrawal_prompt():
     root.main_lcd.tag_add("center", "1.0", "end")
     root.main_lcd.config(state=DISABLED)
 
-# [WIP] gesture withdrawal prompt 
+# Gesture deposit prompt 
 def display_gesture_deposit_prompt():
     global menu_present, deposit_prompt, amount_entered, deposit_options_prompt
     menu_present = False
