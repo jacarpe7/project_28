@@ -1,6 +1,6 @@
-1 swipe_left
-2 swipe_right
-3 swipe_up
-4 select
+0 swipe_left
+1 swipe_right
+2 swipe_up
+3 select
 
-Note: These values refer to encoding in features.txt files. The output is label-1 to allow for zero-offset. For example, output for swipe_left is 0.
+Note: These values refer to output values. The encoding in features.txt files is output+1.
