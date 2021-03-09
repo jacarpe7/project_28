@@ -452,6 +452,10 @@ def display_main_menu():
 
 # Defines function for deposit options
 def display_deposit_options():
+    """
+    Flips boolean gates used for navigation after the user has selected option
+    to 'Deposit' and then displays the corresponding menu to select deposit type.
+    """
     global menu_present, deposit_options_prompt, deposit_prompt, deposit_menu_selection
     menu_present = False
     deposit_prompt = False
@@ -472,8 +476,12 @@ def display_deposit_options():
     root.main_lcd.config(state=DISABLED)
 
 
-# [WIP] gesture withdrawal prompt 
+# Gesture withdrawal prompt
 def display_gesture_withdrawal_prompt():
+    """
+    Flips boolean gates used for navigation after the user has selected option
+    to 'Withdrawal' and then displays the corresponding menu to enter withdrawal amount.
+    """
     global menu_present, withdrawal_prompt, amount_entered
     menu_present = False
     withdrawal_prompt = True
@@ -487,6 +495,10 @@ def display_gesture_withdrawal_prompt():
 
 # Gesture deposit prompt 
 def display_gesture_deposit_prompt():
+    """
+    Flips boolean gates used for navigation after the user has selected deposit
+    type, and then displays the corresponding menu to enter the deposit amount.
+    """
     global menu_present, deposit_prompt, amount_entered, deposit_options_prompt
     menu_present = False
     deposit_options_prompt = False
@@ -502,6 +514,12 @@ def display_gesture_deposit_prompt():
 
 # Define function to display current account balance
 def display_acct_balance():
+    """
+    Flips boolean gates used for navigation after the user has selected option
+    to show 'Account Balance', and then displays the current balance of the
+    user's account.  Also includes an option to swipe left to go back to the 
+    main screen.
+    """
     global menu_present, acct_balance_displayed, acct_balance
     acct_balance_displayed = True
     menu_present = False
@@ -515,6 +533,12 @@ def display_acct_balance():
 
 # Define funtion to display 'Another Transaction' prompt
 def display_another_trans_prompt():
+    """
+    Flips boolean gates used for navigation after the user has completed
+    a transaction, and displays to the user an option to do another transaction,
+    or to exit and logout.  Also includes an option to swipe left to go back
+    to the main screen.
+    """
     global another_trans_prompt, deposit_prompt, withdrawal_prompt, transaction_message, another_trans_selection
     another_trans_prompt = True
     deposit_prompt = False
@@ -535,6 +559,12 @@ def display_another_trans_prompt():
 
 # Define function to display message that there are insufficient funds
 def display_insufficient_funds():
+    """
+    Flips boolean gates used for navigation after the user has attempted to
+    withdrawal more fund than the user has in his/her account, and displays
+    and message containing the same.  Also includes an option to swipe left
+    to go back to the main screen.
+    """
     global insufficient_funds, withdrawal_prompt
     insufficient_funds = True
     withdrawal_prompt = False
@@ -548,6 +578,12 @@ def display_insufficient_funds():
 
 # Define function to display a message when the PIN entered is incorrect
 def display_invalid_pin_msg():
+    """
+    Flips boolean gates used for navigation after the user has entered an
+    invalid PIN code, and displays a message containing the same.  Also
+    includes an option to swipe left to go back to the pin entry screen
+    to try again.
+    """
     global invalid_pin_msg, pin_entry_screen
     invalid_pin_msg = True 
     pin_entry_screen = False
@@ -561,6 +597,12 @@ def display_invalid_pin_msg():
 
     # Define function for 'Cancel' button
 def cancel():
+    """
+    Implementation for the 'Cancel' GUI button which logs the user out and
+    returns back to the initial screen of the program.  This was added as
+    a failsafe in case the gestures were misbehaving so that a user could
+    still exit out of their account safely.
+    """
     global pin_code, pin_valid, amount_entered, current, previous, after
     pin_valid = False
     pin_code = ""
@@ -573,6 +615,11 @@ def cancel():
 
 # Defines a function to remove all tags from the main_lcd
 def clear_tags():
+    """
+    Clears all the tags from the main LCD screen that are initialized during
+    the ATM constructor's execution.  Used in cases where it was necessary
+    to get the following screen to render properly.
+    """
     root.main_lcd.tag_remove("left", "1.0", "end")
     root.main_lcd.tag_remove("right", "1.0", "end")
     root.main_lcd.tag_remove("center", "1.0", "end")
@@ -583,6 +630,11 @@ def clear_tags():
 
 # Define function for the 'Clear' button (to clear PIN for now)
 def clear():
+    """
+    Implementation for the 'Clear' GUI button which only works on the PIN entry
+    screen and clears any digits already entered by the user so they can start
+    over.
+    """
     global pin_code
     if pin_entry_screen:
         pin_code = ""
