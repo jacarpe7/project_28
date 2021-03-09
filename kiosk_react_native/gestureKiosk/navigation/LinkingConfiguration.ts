@@ -1,5 +1,8 @@
 import * as Linking from 'expo-linking';
 
+/**
+ * Creates URL's for router
+ */
 export default {
   prefixes: [Linking.makeUrl('/')],
   config: {

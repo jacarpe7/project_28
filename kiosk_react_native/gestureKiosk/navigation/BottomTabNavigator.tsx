@@ -14,6 +14,11 @@ const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 export default function BottomTabNavigator() {
   const colorScheme = useColorScheme();
 
+  /**
+   * TODO: BOTTOM NAVIGATOR NEEDS TO BE A PROGRESS BAR BASED ON THE SELECTED TAB
+   * 
+   * TABS WILL BE movies -> seats -> checkout
+   */
   return (
     <BottomTab.Navigator
       initialRouteName="TabOne"

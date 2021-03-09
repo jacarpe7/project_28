@@ -40,7 +40,8 @@ local.properties
 
 # React Native
 kiosk_react_native/gestureKiosk/node_modules/**/*
-.expo/*
+kiosk_react_native/gestureKiosk/.expo/*
+kiosk_react_native/gestureKiosk/.expo-shared/*
 npm-debug.*
 *.jks
 *.p8
