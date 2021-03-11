@@ -3,6 +3,7 @@ from numpy import mean
 from numpy import std
 from numpy import dstack
 from pandas import read_csv
+import keras.models
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import Flatten
@@ -12,10 +13,10 @@ from keras.utils import to_categorical
 from matplotlib import pyplot
 
 model = keras.models.load_model("lstm", compile=True)
-data = list()
+
 
 # Need to define port according to your setup. Typical port name - Windows: 'COM3'  Mac: '/dev/tty.usbmodem12345'
-serialPort = serial.Serial(port='/dev/tty.usbmodem2202',baudrate=115200,bytesize=8,timeout=2,stopbits=serial.STOPBITS_ONE)
+serialPort = serial.Serial(port='COM3',baudrate=115200,bytesize=8,timeout=2,stopbits=serial.STOPBITS_ONE)
 
 class Row:
     def __init__(row, delta0, delta1, delta2, delta3, delta4, delta5, delta6, delta7, delta8):
@@ -90,6 +91,7 @@ while (1):
 
             i += 1
 
+            data = list()
             data.append(list0)
             data.append(list1)
             data.append(list2)
@@ -115,7 +117,6 @@ while (1):
             list6.clear()
             list7.clear()
             list8.clear()
-            f.close()
             q = 0
             deltas.clear()
             queue.clear()
