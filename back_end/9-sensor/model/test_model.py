@@ -14,7 +14,6 @@ from matplotlib import pyplot
 
 model = keras.models.load_model("lstm", compile=True)
 
-
 # Need to define port according to your setup. Typical port name - Windows: 'COM3'  Mac: '/dev/tty.usbmodem12345'
 serialPort = serial.Serial(port='COM3',baudrate=115200,bytesize=8,timeout=2,stopbits=serial.STOPBITS_ONE)
 
@@ -30,7 +29,6 @@ class Row:
         row.delta7 = delta7
         row.delta8 = delta8
         
-
 # discard first line
 serialPort.readline()
 
@@ -91,6 +89,7 @@ while (1):
 
             i += 1
 
+            # prepare data for model interpretation
             data = list()
             data.append(list0)
             data.append(list1)
@@ -104,6 +103,7 @@ while (1):
 
             data = dstack(data)
 
+            # model classification of activity
             output = model.predict_classes(data)
             print("Output: " + str(output))
 
