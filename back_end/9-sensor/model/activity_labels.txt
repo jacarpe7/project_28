@@ -1,0 +1,6 @@
+0 swipe_left
+1 swipe_right
+2 swipe_up
+3 select
+
+Note: These values refer to output values. The encoding in features.txt files is output+1.
