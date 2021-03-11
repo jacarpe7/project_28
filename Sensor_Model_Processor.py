@@ -7,7 +7,7 @@ import tensorflow as tf
 from tensorflow import keras
 
 # import model and display model summary
-model = tf.keras.models.load_model('/Users/Kelly/Desktop/Test/project_28/python_scripts/nine-sensor-model/lstm')
+model = tf.keras.models.load_model('/lstm_model')
 # model.summary()
 
 # Need to define port according to your setup. Typical port name - Windows: 'COM3'  Mac: '/dev/tty.usbmodem12345'
@@ -44,10 +44,10 @@ while (1):
     
     # Convert values to a vertical array
     arr = np.vstack(queue)
-    test_preds = model.predict_classes(arr)
+    prediction = model.predict_classes(arr)
 
     # Test for what result of prediction was
-    switch (test_preds[0]) {
+    switch (prediction[0]) {
         case 1: print('swipe left');
             break;
         case 2: print('swipe right');
@@ -56,7 +56,7 @@ while (1):
             break;
         case 4: print('select');
             break;
-        default: print('unknown selection {}'.format(test_preds[0]));
+        default: print('unknown selection {}'.format(prediction[0]));
             break;
     }
            
