@@ -1,0 +1,8 @@
+Activity labels need to be defined, similar to as below:
+
+0 gestureA
+1 gestureB
+2 gestureC
+3 select
+
+Note: These values refer to output values. The encoding in features.txt files is output+1.
