@@ -1,5 +1,5 @@
 import os
-import serial
+oimport serial
 import platform
 import pandas as pd
 import numpy as np
@@ -13,7 +13,7 @@ model = tf.keras.models.load_model('/lstm_model')
 # Need to define port according to your setup. Typical port name - Windows: 'COM3'  Mac: '/dev/tty.usbmodem12345'
 platform.system()
 if platform.system() == 'Windows':
-    port = '/dev/COM3'
+    port = 'COM3'
 else:
     port = '/dev/tty.usbmodem12345'
 
