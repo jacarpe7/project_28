@@ -92,7 +92,7 @@ def on_release(key):
 #observable declaration, SEE IMPLEMENTATION IN PIN MENU FOR EXAMPLE
 keyListener = Subject()
 
-#pynumpt keyboard listening subscription, this is what is monitoring key strokes
+#pynumpt keyboard listening subscription, this is monitoring key strokes
 #Will need to remove when back-end data is ready.
 listener = keyboard.Listener(
     on_press=on_press,
@@ -113,8 +113,8 @@ class Atm:
         root.geometry("650x525")
 
         # Create the main frames for the various sections on the UI
-        center_frame = Frame(root, width=400,height=500,relief=SUNKEN)
-        button_frame = Frame(root,width=800,height=250)
+        center_frame = Frame(root, width=400, height=500, relief=SUNKEN)
+        button_frame = Frame(root, width=800, height=250)
         
         # Grid layouts for the main window
         root.grid_rowconfigure(1, weight=1)
@@ -124,25 +124,34 @@ class Atm:
         button_frame.grid(row=1)
         
         # Create main LCD panel and add text
-        root.main_lcd = Text(center_frame,height=23,width=70,background="black",foreground="green")
+        root.main_lcd = Text(center_frame, height=23, width=70, \
+            background="black", foreground="green")
         
         # Create config tags for main_lcd
-        root.main_lcd.tag_configure("center", justify='center', font="fixedsys 20", foreground = "green")
-        root.main_lcd.tag_configure("left", justify='left', font="fixedsys 20", foreground = "green")
-        root.main_lcd.tag_configure("right", justify='right', font="fixedsys 20", foreground = "green")
-        root.main_lcd.tag_configure("left_selected", justify='left', font="fixedsys 20", foreground = "blue")
-        root.main_lcd.tag_configure("right_selected", justify='right', font="fixedsys 20", foreground = "blue")
-        root.main_lcd.tag_configure("center_selected", justify='center', font="fixedsys 20", foreground = "blue")
+        root.main_lcd.tag_configure("center", \
+            justify='center', font="fixedsys 20", foreground = "green")
+        root.main_lcd.tag_configure("left", \
+            justify='left', font="fixedsys 20", foreground = "green")
+        root.main_lcd.tag_configure("right", \
+            justify='right', font="fixedsys 20", foreground = "green")
+        root.main_lcd.tag_configure("left_selected", \
+            justify='left', font="fixedsys 20", foreground = "blue")
+        root.main_lcd.tag_configure("right_selected", \
+            justify='right', font="fixedsys 20", foreground = "blue")
+        root.main_lcd.tag_configure("center_selected", \
+            justify='center', font="fixedsys 20", foreground = "blue")
         
         root.main_lcd.insert("1.0", "\n\n\n\nWelcome to the ASU ATM System\n")
         root.main_lcd.insert(END, "\n\nHover to begin")
         root.main_lcd.tag_add("center", "1.0", "end")
-        root.main_lcd.grid(row=0, column=0,padx=5,pady=(25, 5))
+        root.main_lcd.grid(row=0, column=0, padx=5, pady=(25, 5))
         root.main_lcd.config(state=DISABLED)
         
         # Create buttons for num pad and add to center frame grid
-        button_clear = Button(button_frame,text = "Clear",width=B_WIDTH,height=B_HT,bg='yellow',command=clear)
-        button_cancel = Button(button_frame,text = "Cancel",width=B_WIDTH,height=B_HT,bg='red',command=cancel)
+        button_clear = Button(button_frame,text = "Clear", \
+            width=B_WIDTH, height=B_HT, bg='yellow', command=clear)
+        button_cancel = Button(button_frame,text = "Cancel", \
+            width=B_WIDTH, height=B_HT, bg='red', command=cancel)
         button_clear.grid(row=0,column=0, padx=BUTTON_X,pady=BUTTON_Y)
         button_cancel.grid(row=0,column=1, padx=BUTTON_X,pady=BUTTON_Y)
         
@@ -164,16 +173,18 @@ def navigation_gestures(key):
     currently on based on the boolean gates and from there based on which
     input was detected the corresponding action will be executed.
     """
-    global pin_entry_screen, menu_present, main_menu_selection, deposit_menu_selection, \
-        acct_balance, deposit_options_prompt, deposit_prompt, deposit_type, withdrawal_prompt, \
-        amount_entered, acct_balance_displayed, another_trans_prompt, another_trans_selection, \
-        transaction_message, pin_valid, pin_code, current, previous, after, invalid_pin_msg
+    global pin_entry_screen, menu_present, main_menu_selection, \
+        deposit_menu_selection, acct_balance, deposit_options_prompt, \
+        deposit_prompt, deposit_type, withdrawal_prompt, amount_entered, \
+        acct_balance_displayed, another_trans_prompt, another_trans_selection, \
+        transaction_message, pin_valid, pin_code, current, previous, after, \
+        invalid_pin_msg
 
     # Initial screen menu
     if initial_screen:
         if key is keyboard.Key.enter:
             gesture_pin_menu()
-            return key
+        return key
     # PIN entry screen
     if pin_entry_screen:
         if key is keyboard.Key.right:
@@ -212,7 +223,7 @@ def navigation_gestures(key):
                 previous = 9
                 after = 1
                 display_invalid_pin_msg()
-            return key
+        return key
     # Main menu
     if menu_present:
         if key is keyboard.Key.right:
@@ -257,8 +268,7 @@ def navigation_gestures(key):
         if key is keyboard.Key.right:
             if amount_entered == '300':
                 if debug:
-                    print(amount_entered)
-                return 
+                    print(amount_entered) 
             else:
                 amount_entered = str(int(amount_entered) + increment_value)
                 if debug:
@@ -267,8 +277,7 @@ def navigation_gestures(key):
         if key is keyboard.Key.left:
             if amount_entered == '0' or None:
                 if debug:
-                    print(amount_entered)
-                return 
+                    print(amount_entered) 
             else:
                 amount_entered = str(int(amount_entered) - increment_value)
                 if debug:
@@ -279,9 +288,8 @@ def navigation_gestures(key):
             transaction_message = "Deposit successful"
             amount_entered = ""
             another_trans_selection = TRANS_NO
-            display_another_trans_prompt()
-            return 
-        return 
+            display_another_trans_prompt() 
+        return key
     # Withdrawal Menu
     if withdrawal_prompt:
         increment_value = 20
@@ -349,10 +357,12 @@ def navigation_gestures(key):
     if insufficient_funds:
         if key is keyboard.Key.left:
             display_main_menu()
+        return key
     # Invalid PIN Screen
     if invalid_pin_msg:
         if key is keyboard.Key.left:
             gesture_pin_menu()
+        return key
             
 
 # Define method for pin entry screen.
@@ -360,9 +370,10 @@ def gesture_pin_menu():
     """
     Flips boolean gates used for navigation and displays the PIN carousel.
     """
-    global menu_present, withdrawal_prompt, another_trans_prompt, initial_screen, \
-        deposit_options_prompt, deposit_prompt, acct_balance_displayed, \
-        current, previous, after, pin_entry_screen, invalid_pin_msg
+    global menu_present, withdrawal_prompt, another_trans_prompt, \
+        initial_screen, deposit_options_prompt, deposit_prompt, \
+        acct_balance_displayed, current, previous, after, \
+        pin_entry_screen, invalid_pin_msg
     pin_entry_screen = True
     initial_screen = False
     invalid_pin_msg = False
@@ -376,7 +387,7 @@ def gesture_pin_menu():
     clear_tags()
     root.main_lcd.delete("1.0", END)
     root.main_lcd.insert("end", "\n\n{}\n".format(current))
-    root.main_lcd.insert("1.0", "\n↓ Hover to select a # ↓\n\n\n\t\t  {}\t\t\t\t{}\n" .format(previous, after))
+    root.main_lcd.insert("1.0", "\n↓ Hover to select a # ↓\n\n\n\t\t  {}\t\t\t\t{}\n".format(previous, after))
     root.main_lcd.insert("end", "\n" + pin_code + "\n\n← Swipe left or right →")
     
     root.main_lcd.tag_add("center", "1.0", "3.0")
@@ -391,8 +402,9 @@ def display_initial_screen():
     Flips boolean gates used for navigation and displays initial screen of the
     application at launch.
     """
-    global menu_present, withdrawal_prompt, another_trans_prompt, initial_screen, \
-        deposit_options_prompt, deposit_prompt, acct_balance_displayed
+    global menu_present, withdrawal_prompt, another_trans_prompt, \
+        initial_screen, deposit_options_prompt, deposit_prompt, \
+        acct_balance_displayed
     initial_screen = True
     menu_present = False
     withdrawal_prompt = False
@@ -411,11 +423,12 @@ def display_initial_screen():
 # Defines function to show the main menu
 def display_main_menu():
     """
-    Flips boolean gates used for navigation and displays the main menu of the ATM.
+    Flips boolean gates used for navigation and displays the
+    main menu of the ATM.
     """
-    global menu_present, withdrawal_prompt, another_trans_prompt, initial_screen, \
-        deposit_options_prompt, deposit_prompt, acct_balance_displayed, \
-        main_menu_selection, pin_entry_screen
+    global menu_present, withdrawal_prompt, another_trans_prompt, \
+        initial_screen, deposit_options_prompt, deposit_prompt, \
+        acct_balance_displayed, main_menu_selection, pin_entry_screen
     initial_screen = False
     pin_entry_screen = False
     menu_present = True
@@ -454,9 +467,11 @@ def display_main_menu():
 def display_deposit_options():
     """
     Flips boolean gates used for navigation after the user has selected option
-    to 'Deposit' and then displays the corresponding menu to select deposit type.
+    to 'Deposit' and then displays the corresponding menu to select deposit 
+    type.
     """
-    global menu_present, deposit_options_prompt, deposit_prompt, deposit_menu_selection
+    global menu_present, deposit_options_prompt, deposit_prompt, \
+        deposit_menu_selection
     menu_present = False
     deposit_prompt = False
     deposit_options_prompt = True
@@ -480,7 +495,8 @@ def display_deposit_options():
 def display_gesture_withdrawal_prompt():
     """
     Flips boolean gates used for navigation after the user has selected option
-    to 'Withdrawal' and then displays the corresponding menu to enter withdrawal amount.
+    to 'Withdrawal' and then displays the corresponding menu to enter
+    withdrawal amount.
     """
     global menu_present, withdrawal_prompt, amount_entered
     menu_present = False
@@ -496,10 +512,12 @@ def display_gesture_withdrawal_prompt():
 # Gesture deposit prompt 
 def display_gesture_deposit_prompt():
     """
-    Flips boolean gates used for navigation after the user has selected deposit
-    type, and then displays the corresponding menu to enter the deposit amount.
+    Flips boolean gates used for navigation after the user has selected 
+    deposit type, and then displays the corresponding menu to enter the
+    deposit amount.
     """
-    global menu_present, deposit_prompt, amount_entered, deposit_options_prompt
+    global menu_present, deposit_prompt, amount_entered, \
+        deposit_options_prompt
     menu_present = False
     deposit_options_prompt = False
     deposit_prompt = True
@@ -535,11 +553,12 @@ def display_acct_balance():
 def display_another_trans_prompt():
     """
     Flips boolean gates used for navigation after the user has completed
-    a transaction, and displays to the user an option to do another transaction,
-    or to exit and logout.  Also includes an option to swipe left to go back
-    to the main screen.
+    a transaction, and displays to the user an option to do another
+    transaction, or to exit and logout.  Also includes an option to swipe left
+    to go back to the main screen.
     """
-    global another_trans_prompt, deposit_prompt, withdrawal_prompt, transaction_message, another_trans_selection
+    global another_trans_prompt, deposit_prompt, withdrawal_prompt, \
+        transaction_message, another_trans_selection
     another_trans_prompt = True
     deposit_prompt = False
     withdrawal_prompt = False 
@@ -631,9 +650,9 @@ def clear_tags():
 # Define function for the 'Clear' button (to clear PIN for now)
 def clear():
     """
-    Implementation for the 'Clear' GUI button which only works on the PIN entry
-    screen and clears any digits already entered by the user so they can start
-    over.
+    Implementation for the 'Clear' GUI button which only works on the PIN 
+    entry screen and clears any digits already entered by the user so they
+    can start over.
     """
     global pin_code
     if pin_entry_screen:
