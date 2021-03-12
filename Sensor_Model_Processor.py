@@ -1,5 +1,5 @@
 import os
-oimport serial
+import serial
 import platform
 import pandas as pd
 import numpy as np
