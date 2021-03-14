@@ -23,24 +23,28 @@ serialPort = serial.Serial(port=port,baudrate=115200,bytesize=8,timeout=2,stopbi
 serialPort.readline()
 
 while (1):
-    queue = []
-    parseLine = serialPort.readline().decode('utf-8').split(",")
-    
-    # Read in first 15 lines
-    for _ in range(15):
-        queue.append(list(int(parseLine)))
-        parseLine = serialPort.readline().decode('utf-8').split(",")
-     
-    # Loop until a line contains a value greater than or equal to 20
-    while max(list(int(parseLine))) < 20:
-        parseLine = serialPort.readline().decode('utf-8').split(",")
-        queue.append(list(int(parseLine)))
-        queue.pop(0)
+    queue = [[],[],[],[],[],[],[],[],[]]
 
-    # Append next 40 lines
+    for _ in range(15):
+        parseLine = serialPort.readline().decode('utf-8').split(",")
+        for a in range(9):
+            queue[a].append(int(parseLine[a+1]))
+    
+    while deltaMax < 20:
+        parseLine = serialPort.readline().decode('utf-8').split(",")
+        # for maximum delta monitoring, omit time and newline values from parseLine
+        deltas = [parseLine[1], parseLine[2], parseLine[3], parseLine[4], parseLine[5], parseLine[6], parseLine[7], parseLine[8], parseLine[9]]
+        deltaMax = max(map(int, deltas))
+        for a in range(9):
+            queue[a].pop(0)
+            queue[a].append(int(parseLine[a+1]))
+
+    # reset deltaMax value
+    deltaMax = 0
     for x in range(40):
         parseLine = serialPort.readline().decode('utf-8').split(",")
-        queue.append(list(int(parseLine)))
+        for a in range(9):
+            queue[a].append(int(parseLine[a+1]))
     
     # Convert values to a vertical array
     arr = np.vstack(queue)
