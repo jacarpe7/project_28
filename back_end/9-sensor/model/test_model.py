@@ -3,6 +3,7 @@ import serial
 import platform
 import pandas as pd
 import numpy as np
+from numpy import dstack
 import tensorflow as tf
 from tensorflow import keras
 
@@ -22,14 +23,19 @@ serialPort = serial.Serial(port=port,baudrate=115200,bytesize=8,timeout=2,stopbi
 # discard first line
 serialPort.readline()
 
+deltaMax = 0;
+
+print("Ready for gesture testing.\n")
+
 while (1):
+    
     queue = [[],[],[],[],[],[],[],[],[]]
 
     for _ in range(15):
         parseLine = serialPort.readline().decode('utf-8').split(",")
         for a in range(9):
             queue[a].append(int(parseLine[a+1]))
-    
+
     while deltaMax < 20:
         parseLine = serialPort.readline().decode('utf-8').split(",")
         # for maximum delta monitoring, omit time and newline values from parseLine
@@ -46,22 +52,27 @@ while (1):
         for a in range(9):
             queue[a].append(int(parseLine[a+1]))
     
-    # Convert values to a vertical array
-    arr = np.vstack(queue)
-    prediction = model.predict_classes(arr)
+    testArr = list()
+    for a in range(9):
+        testArr.append(queue[a])
 
-    # Test for what result of prediction was
-    switch (prediction[0]) {
-        case 1: print('swipe left');
-            break;
-        case 2: print('swipe right');
-            break;
-        case 3: print('swipe up');
-            break;
-        case 4: print('select');
-            break;
-        default: print('unknown selection {}'.format(prediction[0]));
-            break;
-    }
+    testArr = dstack(testArr)
+
+    prediction = model.predict_classes(testArr)
+    print("Gesture prediction: " + str(prediction))
+
+    # # Test for what result of prediction was
+    # switch (prediction[0]) {
+    #     case 1: print('swipe left');
+    #         break;
+    #     case 2: print('swipe right');
+    #         break;
+    #     case 3: print('swipe up');
+    #         break;
+    #     case 4: print('select');
+    #         break;
+    #     default: print('unknown selection {}'.format(prediction[0]));
+    #         break;
+    # }
            
 serialPort.close()

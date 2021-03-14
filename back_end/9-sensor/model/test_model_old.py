@@ -47,7 +47,10 @@ i = 0
 q = 0
 queue = []
 
+print("Ready for testing")
+
 while (1):
+
     parseLine = serialPort.readline().decode('utf-8').split(",")
     deltas = [parseLine[1], parseLine[2], parseLine[3], parseLine[4], parseLine[5], parseLine[6], parseLine[7], parseLine[8], parseLine[9]]
      
