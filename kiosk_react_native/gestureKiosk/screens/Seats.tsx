@@ -7,6 +7,7 @@ import { Text, View } from '../components/Themed';
 export default function Seats() {
   return (
     <View style={styles.container}>
+      {/* PLACEHOLDER FOR GRID OF SEATS (can be squares), highlight selected seat. */}
       <Text style={styles.title}>Seats</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <EditScreenInfo path="/screens/SeatsScreen.tsx" />

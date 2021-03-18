@@ -7,6 +7,7 @@ import { Text, View } from '../components/Themed';
 export default function Checkout() {
   return (
     <View style={styles.container}>
+      {/* PLACEHOLDER FOR CHECKOUT FORM*/}
       <Text style={styles.title}>Checkout</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <EditScreenInfo path="/screens/CheckoutScreen.tsx" />

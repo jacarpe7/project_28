@@ -12,7 +12,7 @@ import { BottomTabParamList, CheckoutParamList, MoviesParamList, SeatsParamList 
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
-export default function BottomTabNavigator() {
+export default function BottomProgressTabs() {
   const colorScheme = useColorScheme();
 
   /**
@@ -65,7 +65,7 @@ function MovieNavigator() {
       <MoviesStack.Screen
         name="MoviesScreen"
         component={Movies}
-        options={{ headerTitle: 'Tab One Title' }}
+        options={{ headerTitle: 'Please select a movie...' }}
       />
     </MoviesStack.Navigator>
   );
@@ -79,7 +79,7 @@ function SeatsNavigator() {
       <SeatsStack.Screen
         name="SeatsScreen"
         component={Seats}
-        options={{ headerTitle: 'Tab Two Title' }}
+        options={{ headerTitle: 'Please select a seat...' }}
       />
     </SeatsStack.Navigator>
   );
@@ -93,7 +93,7 @@ function CheckoutNavigator() {
       <CheckoutStack.Screen
         name="CheckoutScreen"
         component={Checkout}
-        options={{ headerTitle: 'Tab Two Title' }}
+        options={{ headerTitle: 'Please enter your payment information.' }}
       />
     </CheckoutStack.Navigator>
   );

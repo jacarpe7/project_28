@@ -7,6 +7,7 @@ import { Text, View } from '../components/Themed';
 export default function Movies() {
   return (
     <View style={styles.container}>
+      {/* PLACEHOLDER FOR SLIDER IMAGES OF MOVIES TO SELECT */}
       <Text style={styles.title}>Movies</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <EditScreenInfo path="/screens/MoviesScreen.tsx" />
