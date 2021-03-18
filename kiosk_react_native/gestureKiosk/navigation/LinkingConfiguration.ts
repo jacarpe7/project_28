@@ -9,14 +9,19 @@ export default {
     screens: {
       Root: {
         screens: {
-          TabOne: {
+          Movies: {
             screens: {
-              TabOneScreen: 'one',
+              MoviesScreen: 'one',
             },
           },
-          TabTwo: {
+          Seats: {
             screens: {
-              TabTwoScreen: 'two',
+              SeatsScreen: 'two',
+            },
+          },
+          Checkout: {
+            screens: {
+              CheckoutScreen: 'three',
             },
           },
         },

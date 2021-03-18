@@ -7,7 +7,8 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import Movies from '../screens/Movies';
 import Seats from '../screens/Seats';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import Checkout from '../screens/Checkout';
+import { BottomTabParamList, CheckoutParamList, MoviesParamList, SeatsParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -21,7 +22,7 @@ export default function BottomTabNavigator() {
    */
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Movies"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
       <BottomTab.Screen
         name="Movies"
@@ -37,10 +38,9 @@ export default function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
       />
-    </BottomTab.Navigator>
           <BottomTab.Screen
           name="Checkout"
-          component={SeatsNavigator}
+          component={CheckoutNavigator}
           options={{
             tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
           }}
@@ -57,30 +57,44 @@ function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabOneStack = createStackNavigator<TabOneParamList>();
+const MoviesStack = createStackNavigator<MoviesParamList>();
 
 function MovieNavigator() {
   return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="TabOneScreen"
+    <MoviesStack.Navigator>
+      <MoviesStack.Screen
+        name="MoviesScreen"
         component={Movies}
         options={{ headerTitle: 'Tab One Title' }}
       />
-    </TabOneStack.Navigator>
+    </MoviesStack.Navigator>
   );
 }
 
-const TabTwoStack = createStackNavigator<TabTwoParamList>();
+const SeatsStack = createStackNavigator<SeatsParamList>();
 
 function SeatsNavigator() {
   return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
-        name="TabTwoScreen"
+    <SeatsStack.Navigator>
+      <SeatsStack.Screen
+        name="SeatsScreen"
         component={Seats}
         options={{ headerTitle: 'Tab Two Title' }}
       />
-    </TabTwoStack.Navigator>
+    </SeatsStack.Navigator>
+  );
+}
+
+const CheckoutStack = createStackNavigator<CheckoutParamList>();
+
+function CheckoutNavigator() {
+  return (
+    <CheckoutStack.Navigator>
+      <CheckoutStack.Screen
+        name="CheckoutScreen"
+        component={Checkout}
+        options={{ headerTitle: 'Tab Two Title' }}
+      />
+    </CheckoutStack.Navigator>
   );
 }
