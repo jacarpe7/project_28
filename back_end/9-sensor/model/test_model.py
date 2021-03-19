@@ -35,11 +35,12 @@ while (1):
         parseLine = serialPort.readline().decode('utf-8').split(",")
         for a in range(9):
             queue[a].append(int(parseLine[a+1]))
-
+            
+    deltas2 = [parseLine[1], parseLine[2], parseLine[3], parseLine[4], parseLine[5], parseLine[6], parseLine[7], parseLine[8], parseLine[9]]
     while deltaMax < 20:
         parseLine = serialPort.readline().decode('utf-8').split(",")
         # for maximum delta monitoring, omit time and newline values from parseLine
-        deltas = [parseLine[1], parseLine[2], parseLine[3], parseLine[4], parseLine[5], parseLine[6], parseLine[7], parseLine[8], parseLine[9]]
+        deltas = [deltas2[0]-parseLine[1], deltas2[1]-parseLine[2], deltas2[2]-parseLine[3], deltas2[3]-parseLine[4], deltas2[4]-parseLine[5], deltas2[5]-parseLine[6], deltas2[6]-parseLine[7], deltas2[7]-parseLine[8], deltas2[8]-parseLine[9]]
         deltaMax = max(map(int, deltas))
         for a in range(9):
             queue[a].pop(0)
