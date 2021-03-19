@@ -8,7 +8,7 @@ serialPort = serial.Serial(port='/dev/tty.usbmodem2202',baudrate=38400,bytesize=
 serialPort.readline()
 
 deltaMax = 0
-writeCounter = 51
+writeCounter = 1
 
 while (1):
     queue = [[],[],[],[],[]]
