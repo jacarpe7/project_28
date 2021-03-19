@@ -1,8 +1,5 @@
-Activity labels need to be defined, similar to as below:
+Output for gestures:
 
-0 gestureA
-1 gestureB
-2 gestureC
-3 select
-
-Note: These values refer to output values. The encoding in features.txt files is output+1.
+0 hover
+1 swipe left
+2 swipe right

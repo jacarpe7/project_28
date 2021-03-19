@@ -35,7 +35,7 @@ def load_dataset_group(group, prefix=''):
 	filepath = prefix + group + '/'
 	# load all 9 files as a single array
 	filenames = list()
-	for n in range(1,10):
+	for n in range(1,6):
 		filenames += ['sensor'+ str(n) + '-' + group + '.txt']
 
 	X = load_group(filenames, filepath)
@@ -51,10 +51,6 @@ def load_dataset(prefix=''):
 	# load all test
 	testX, testy = load_dataset_group('test', prefix)
 	print(testX.shape, testy.shape)
-
-	# zero-offset class values
-	trainy = trainy - 1
-	testy = testy - 1
 
 	# one hot encode y
 	trainy = to_categorical(trainy)
