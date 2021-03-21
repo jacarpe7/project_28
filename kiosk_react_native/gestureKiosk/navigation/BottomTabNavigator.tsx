@@ -21,6 +21,7 @@ export default function BottomProgressTabs() {
    * TABS WILL BE movies -> seats -> checkout
    */
   return (
+            // bottom screen navigation movies tabs
     <BottomTab.Navigator
       initialRouteName="Movies"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
@@ -31,12 +32,14 @@ export default function BottomProgressTabs() {
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
       />
+              // bottom screen navigation seats tabs
       <BottomTab.Screen
         name="Seats"
         component={SeatsNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
+        // bottom screen navigation checkout tabs
       />
           <BottomTab.Screen
           name="Checkout"
@@ -71,6 +74,9 @@ function MovieNavigator() {
   );
 }
 
+
+//navigator for seat stack state stored memory
+
 const SeatsStack = createStackNavigator<SeatsParamList>();
 
 function SeatsNavigator() {
@@ -87,6 +93,8 @@ function SeatsNavigator() {
 
 const CheckoutStack = createStackNavigator<CheckoutParamList>();
 
+
+//navigator for checkout param list
 function CheckoutNavigator() {
   return (
     <CheckoutStack.Navigator>
