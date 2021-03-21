@@ -36,6 +36,7 @@ while (1):
         for a in range(9):
             queue[a].append(int(parseLine[a+1]))
             
+    #variable delta that will reload itself after every gesture recording to be subtracted with
     deltas2 = [parseLine[1], parseLine[2], parseLine[3], parseLine[4], parseLine[5], parseLine[6], parseLine[7], parseLine[8], parseLine[9]]
     while deltaMax < 20:
         parseLine = serialPort.readline().decode('utf-8').split(",")
