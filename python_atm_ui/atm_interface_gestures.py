@@ -13,7 +13,7 @@ from rx.core import Observable
 from rx.subject import Subject
 
 #DEBUG MODE - Set true to have debug comments in console.
-debug = True
+debug = False
 
 # GUI constants
 B_PAD = 15
@@ -83,7 +83,7 @@ def on_press(key):
 
 def on_release(key):
     if debug:
-        print('{0} released'.format(
+        print('{0} released'.format(t
             key))
     if key == keyboard.Key.esc:
         # Stop listener
