@@ -1,0 +1,5 @@
+After doing some research, it appears that there are two primary options for building an executable.
+
+cx_Freeze, which I believe will probably end up the better option.
+
+PyInstaller, which looks easier, but I have less confidence that it will work.
