@@ -25,7 +25,7 @@ BUTTON_Y = 8
 # boolean values for menu navigation and button enable/disable
 initial_screen = True
 pin_entry_screen = False
-cancel_pressed = False
+cancel_prompt = False
 pin_valid = False
 menu_present = False
 withdrawal_prompt = False
@@ -40,6 +40,7 @@ invalid_pin_msg = False
 HOVER = 0
 LEFT_SWIPE = 1
 RIGHT_SWIPE = 2
+UP_SWIPE = 3
 
 # pin values for gestures
 global current, previous, after
@@ -60,6 +61,10 @@ CHECK = 1
 another_trans_selection = None
 TRANS_YES = 0
 TRANS_NO = 1
+
+cancel_selection = None
+CANCEL_NO = 0
+CANCEL_YES = 1
 
 # variables for capturing input & storing account balance
 deposit_type = ""
@@ -178,8 +183,33 @@ def navigation_gestures(key):
         deposit_prompt, deposit_type, withdrawal_prompt, amount_entered, \
         acct_balance_displayed, another_trans_prompt, another_trans_selection, \
         transaction_message, pin_valid, pin_code, current, previous, after, \
-        invalid_pin_msg
+        invalid_pin_msg, cancel_prompt, cancel_selection
 
+    # Cancel prompt
+    if cancel_prompt:
+        if key is keyboard.Key.left and cancel_selection == CANCEL_NO:
+            cancel_selection = CANCEL_YES
+            display_cancel_prompt()
+        if key is keyboard.Key.right and cancel_selection == CANCEL_YES:
+            cancel_selection = CANCEL_NO
+            display_cancel_prompt()
+        if key is keyboard.Key.enter:
+            if cancel_selection == CANCEL_YES:
+                cancel()
+            if cancel_selection == CANCEL_NO:
+                if menu_present:
+                    display_main_menu()
+                if pin_entry_screen:
+                    gesture_pin_menu()
+                if withdrawal_prompt:
+                    display_gesture_withdrawal_prompt()
+                if deposit_options_prompt:
+                    display_deposit_options()
+                if deposit_prompt:
+                    display_gesture_deposit_prompt()
+                if acct_balance_displayed:
+                    display_gesture_deposit_prompt()
+        return key
     # Initial screen menu
     if initial_screen:
         if key is keyboard.Key.enter:
@@ -223,6 +253,9 @@ def navigation_gestures(key):
                 previous = 9
                 after = 1
                 display_invalid_pin_msg()
+        elif key is keyboard.Key.up:
+                cancel_selection = CANCEL_NO
+                display_cancel_prompt()
         return key
     # Main menu
     if menu_present:
@@ -243,6 +276,9 @@ def navigation_gestures(key):
             if main_menu_selection == CHECK_BAL:
                 display_acct_balance()
             main_menu_selection = CHECK_BAL
+        if key is keyboard.Key.up:
+            cancel_selection = CANCEL_NO
+            display_cancel_prompt()
         return key
     # Deposit Options menu
     if deposit_options_prompt:
@@ -259,6 +295,9 @@ def navigation_gestures(key):
             if deposit_menu_selection == CHECK:
                 deposit_type = "check"
                 display_gesture_deposit_prompt()
+        if key is keyboard.Key.up:
+            cancel_selection = CANCEL_NO
+            display_cancel_prompt()
         return key
     # Deposit Menu
     if deposit_prompt:
@@ -289,6 +328,9 @@ def navigation_gestures(key):
             amount_entered = ""
             another_trans_selection = TRANS_NO
             display_another_trans_prompt() 
+        if key is keyboard.Key.up:
+            cancel_selection = CANCEL_NO
+            display_cancel_prompt()
         return key
     # Withdrawal Menu
     if withdrawal_prompt:
@@ -327,11 +369,17 @@ def navigation_gestures(key):
             else:
                 amount_entered = ""
                 display_insufficient_funds()
+        if key is keyboard.Key.up:
+            cancel_selection = CANCEL_NO
+            display_cancel_prompt()
         return key
     #Check Balance screen
     if acct_balance_displayed:
         if key is keyboard.Key.left:
             display_main_menu()
+        if key is keyboard.Key.up:
+            cancel_selection = CANCEL_NO
+            display_cancel_prompt()
         return key
     #Another transaction prompt
     if another_trans_prompt:
@@ -373,7 +421,7 @@ def gesture_pin_menu():
     global menu_present, withdrawal_prompt, another_trans_prompt, \
         initial_screen, deposit_options_prompt, deposit_prompt, \
         acct_balance_displayed, current, previous, after, \
-        pin_entry_screen, invalid_pin_msg
+        pin_entry_screen, invalid_pin_msg, cancel_prompt
     pin_entry_screen = True
     initial_screen = False
     invalid_pin_msg = False
@@ -383,6 +431,7 @@ def gesture_pin_menu():
     another_trans_prompt = False
     deposit_options_prompt = False
     acct_balance_displayed = False
+    cancel_prompt = False
     root.main_lcd.config(state=NORMAL)
     clear_tags()
     root.main_lcd.delete("1.0", END)
@@ -404,14 +453,16 @@ def display_initial_screen():
     """
     global menu_present, withdrawal_prompt, another_trans_prompt, \
         initial_screen, deposit_options_prompt, deposit_prompt, \
-        acct_balance_displayed
+        acct_balance_displayed, cancel_prompt, pin_entry_screen
     initial_screen = True
+    pin_entry_screen = False
     menu_present = False
     withdrawal_prompt = False
     deposit_prompt = False
     another_trans_prompt = False
     deposit_options_prompt = False
     acct_balance_displayed = False
+    cancel_prompt = False
     root.main_lcd.config(state=NORMAL)
     root.main_lcd.delete("1.0", END)
     root.main_lcd.insert("1.0", "\n\n\n\nWelcome to the ASU ATM System\n")
@@ -428,7 +479,8 @@ def display_main_menu():
     """
     global menu_present, withdrawal_prompt, another_trans_prompt, \
         initial_screen, deposit_options_prompt, deposit_prompt, \
-        acct_balance_displayed, main_menu_selection, pin_entry_screen
+        acct_balance_displayed, main_menu_selection, pin_entry_screen, \
+        cancel_prompt
     initial_screen = False
     pin_entry_screen = False
     menu_present = True
@@ -437,7 +489,7 @@ def display_main_menu():
     another_trans_prompt = False
     deposit_options_prompt = False
     acct_balance_displayed = False
-
+    cancel_prompt = False
     root.main_lcd.config(state=NORMAL)
     root.main_lcd.delete("1.0", END)
     clear_tags()
@@ -471,11 +523,11 @@ def display_deposit_options():
     type.
     """
     global menu_present, deposit_options_prompt, deposit_prompt, \
-        deposit_menu_selection
+        deposit_menu_selection, cancel_prompt
     menu_present = False
     deposit_prompt = False
     deposit_options_prompt = True
-
+    cancel_prompt = False
     root.main_lcd.config(state=NORMAL)
     root.main_lcd.delete("1.0", END)
     clear_tags()
@@ -498,9 +550,10 @@ def display_gesture_withdrawal_prompt():
     to 'Withdrawal' and then displays the corresponding menu to enter
     withdrawal amount.
     """
-    global menu_present, withdrawal_prompt, amount_entered
+    global menu_present, withdrawal_prompt, amount_entered, cancel_prompt
     menu_present = False
     withdrawal_prompt = True
+    cancel_prompt = False
     root.main_lcd.config(state=NORMAL)
     root.main_lcd.delete('1.0', END)
     root.main_lcd.insert('1.0', '\n\nEnter Amount to Withdrawal:\n')
@@ -517,10 +570,11 @@ def display_gesture_deposit_prompt():
     deposit amount.
     """
     global menu_present, deposit_prompt, amount_entered, \
-        deposit_options_prompt
+        deposit_options_prompt, cancel_prompt
     menu_present = False
     deposit_options_prompt = False
     deposit_prompt = True
+    cancel_prompt = False
     root.main_lcd.config(state=NORMAL)
     root.main_lcd.delete('1.0', END)
     root.main_lcd.insert('1.0', '\n\nEnter Amount to Deposit:\n')
@@ -538,9 +592,10 @@ def display_acct_balance():
     user's account.  Also includes an option to swipe left to go back to the 
     main screen.
     """
-    global menu_present, acct_balance_displayed, acct_balance
+    global menu_present, acct_balance_displayed, acct_balance, cancel_prompt
     acct_balance_displayed = True
     menu_present = False
+    cancel_prompt = False
     root.main_lcd.config(state=NORMAL)
     root.main_lcd.delete("1.0", END)
     root.main_lcd.insert("1.0", "\n\n\nYour account balance is:\n")
@@ -614,7 +669,20 @@ def display_invalid_pin_msg():
     root.main_lcd.config(state=DISABLED)
 
 
-    # Define function for 'Cancel' button
+# Define function to display cancel prompt after up swipe
+def display_cancel_prompt():
+    """
+    Flips boolean gates used for navigation after the user has swiped up
+    to cancel the current transaction, and displays a message containing
+    confirmation yes/no prompt
+    """
+    global cancel_prompt, cancel_selection
+    cancel_prompt = True
+    
+    # TODO will implement rendering next commit
+
+
+# Define function for 'Cancel' button
 def cancel():
     """
     Implementation for the 'Cancel' GUI button which logs the user out and
