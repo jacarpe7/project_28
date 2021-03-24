@@ -1,0 +1,5 @@
+Output for gestures:
+
+0 hover
+1 swipe left
+2 swipe right
