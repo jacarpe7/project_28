@@ -11,6 +11,10 @@ from keras.layers import Dropout
 from keras.layers import LSTM
 from keras.utils import to_categorical
 from matplotlib import pyplot
+from rx.core import Observable
+from rx.subject import Subject
+import atm_interface_gestures 
+
 
 model = keras.models.load_model("lstm", compile=True)
 
@@ -46,7 +50,10 @@ list8 = list()
 i = 0
 q = 0
 queue = []
-
+subject = Subject()
+output = -1
+atm_interface_gestures.main()
+atm_interface_gestures.gestureListener(output)
 while (1):
     parseLine = serialPort.readline().decode('utf-8').split(",")
     deltas = [parseLine[1], parseLine[2], parseLine[3], parseLine[4], parseLine[5], parseLine[6], parseLine[7], parseLine[8], parseLine[9]]
@@ -104,8 +111,12 @@ while (1):
             data = dstack(data)
 
             # model classification of activity
+            
+
             output = model.predict_classes(data)
             print("Output: " + str(output))
+            
+            subject.on_next(output)
 
             # clear data for next run
             list0.clear()
