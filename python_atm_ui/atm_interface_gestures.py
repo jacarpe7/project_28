@@ -678,11 +678,21 @@ def display_cancel_prompt():
     """
     global cancel_prompt, cancel_selection
     cancel_prompt = True
-    
-    # TODO will implement rendering next commit
+    root.main_lcd.config(state=NORMAL)
+    root.main_lcd.delete("1.0", END)
+    root.main_lcd.insert("1.0", "\n\n\nCancel Transaction\n\n\nAre you sure?\n\n\t\t\tYes\t\tNo")
+    if cancel_selection == CANCEL_YES:
+        root.main_lcd.tag_add("center", "1.0", "end-1l")
+        root.main_lcd.tag_add("left_selected", "8.0", "8.0+7c")
+        root.main_lcd.tag_add("left", "end-3c", "end")
+    if cancel_selection == CANCEL_NO:
+        root.main_lcd.tag_add("center", "1.0", "end-1l")
+        root.main_lcd.tag_add("left", "8.0", "8.0+7c")
+        root.main_lcd.tag_add("left_selected", "end-3c", "end")
+    root.main_lcd.config(state=DISABLED)
 
 
-    # Define function for 'Cancel' button
+# Define function for 'Cancel' button
 def cancel():
     """
     Implementation for the 'Cancel' GUI button which logs the user out and
