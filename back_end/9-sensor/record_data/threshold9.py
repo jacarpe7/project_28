@@ -1,134 +1,54 @@
 import serial
+import numpy as np
 
 # Need to define port according to your setup. Typical port name - Windows: 'COM3'  Mac: '/dev/tty.usbmodem12345'
-serialPort = serial.Serial(port='/dev/tty.usbmodem2202',baudrate=115200,bytesize=8,timeout=2,stopbits=serial.STOPBITS_ONE)
+serialPort = serial.Serial(port='/dev/tty.usbmodem2202',baudrate=115200,bytesize=8,timeout=2,stopbits=serial.STOPBITS_ONE)       
 
-class Row:
-    def __init__(row, delta0, delta1, delta2, delta3, delta4, delta5, delta6, delta7, delta8):
-        row.delta0 = delta0
-        row.delta1 = delta1
-        row.delta2 = delta2
-        row.delta3 = delta3
-        row.delta4 = delta4
-        row.delta5 = delta5
-        row.delta6 = delta6
-        row.delta7 = delta7
-        row.delta8 = delta8
-        
-
-# discard first line
+# discard first line, partial data
 serialPort.readline()
 
-#list for each sensor
-list0 = list()
-list1 = list()
-list2 = list()
-list3 = list()
-list4 = list()
-list5 = list()
-list6 = list()
-list7 = list()
-list8 = list()
-
-i = 0
-q = 0
-queue = []
+deltaMax = 0
+writeCounter = 1
 
 while (1):
-    parseLine = serialPort.readline().decode('utf-8').split(",")
-    deltas = [parseLine[1], parseLine[2], parseLine[3], parseLine[4], parseLine[5], parseLine[6], parseLine[7], parseLine[8], parseLine[9]]
-     
-    if q < 15:
-        queue.append(Row(parseLine[1], parseLine[2], parseLine[3], parseLine[4], parseLine[5], parseLine[6], parseLine[7], parseLine[8], parseLine[9]))
-        q += 1 
-     
-    else:
-        queue.pop(0)
-        queue.append(Row(parseLine[1], parseLine[2], parseLine[3], parseLine[4], parseLine[5], parseLine[6], parseLine[7], parseLine[8], parseLine[9]))
-        # convert string array to int array
-        map(int, deltas)
-        # grab max delta value
-        max_value = max(deltas)
-        # if max delta value exceeds threshold, read in data to get gesture 'data signature'
-        if int(max_value) >= 20:
-            for obj in queue:
-                list0.append(int(obj.delta0))
-                list1.append(int(obj.delta1))
-                list2.append(int(obj.delta2))
-                list3.append(int(obj.delta3))
-                list4.append(int(obj.delta4))
-                list5.append(int(obj.delta5))
-                list6.append(int(obj.delta6))
-                list7.append(int(obj.delta7))
-                list8.append(int(obj.delta8))
+    queue = [[],[],[],[],[],[],[],[],[]]
 
-            for x in range(40):
-                parseLine = serialPort.readline().decode('utf-8').split(",")
-                list0.append(int(parseLine[1]))
-                list1.append(int(parseLine[2]))
-                list2.append(int(parseLine[3]))
-                list3.append(int(parseLine[4]))
-                list4.append(int(parseLine[5]))
-                list5.append(int(parseLine[6]))
-                list6.append(int(parseLine[7]))
-                list7.append(int(parseLine[8]))
-                list8.append(int(parseLine[9]))
+    for _ in range(15):
+        parseLine = serialPort.readline().decode('utf-8').split(",")
+        for a in range(9):
+            queue[a].append(int(parseLine[a+1]))
+    
+    while deltaMax < 20:
+        parseLine = serialPort.readline().decode('utf-8').split(",")
+        # for maximum delta monitoring, omit time and newline values from parseLine
+        deltas = [parseLine[1], parseLine[2], parseLine[3], parseLine[4], parseLine[5], parseLine[6], parseLine[7], parseLine[8], parseLine[9]]
+        deltaMax = max(map(int, deltas))
+        for a in range(9):
+            queue[a].pop(0)
+            queue[a].append(int(parseLine[a+1]))
 
-            i += 1
-            
-            filename = "stream_" + str(i) + ".txt"
-            f = open(filename, "w")
-            for item in list0:
-                f.write(str(item) + " ")
+    # reset deltaMax value
+    deltaMax = 0
+    for x in range(40):
+        parseLine = serialPort.readline().decode('utf-8').split(",")
+        for a in range(9):
+            queue[a].append(int(parseLine[a+1]))
+    
+    # Convert values to a vertical array
+    arr = np.vstack(queue)
 
-            list0.clear()
-            f.write("\n")
-            for item in list1:
-                f.write(str(item) + " ")
+    # save to file
+    filename = "stream_" + str(writeCounter) + ".txt"
+    f = open(filename, "w")
+    for a in range(9):
+        for b in range(55):
+            f.write(str(queue[a][b]) + " ")
 
-            list1.clear()
-            f.write("\n")
-            for item in list2:
-                f.write(str(item) + " ")
+        f.write("\n")
 
-            list2.clear()
-            f.write("\n")
-            for item in list3:
-                f.write(str(item) + " ")
+    f.close()
+    print("stream_" + str(writeCounter) + ".txt written to file")
+    writeCounter += 1
 
-            list3.clear()
-            f.write("\n")
-            for item in list4:
-                f.write(str(item) + " ")
-
-            list4.clear()
-            f.write("\n")
-            for item in list5:
-                f.write(str(item) + " ")
-
-            list5.clear()
-            f.write("\n")
-            for item in list6:
-                f.write(str(item) + " ")
-
-            list6.clear()
-            f.write("\n")
-            for item in list7:
-                f.write(str(item) + " ")
-
-            list7.clear()
-            f.write("\n")
-            for item in list8:
-                f.write(str(item) + " ")
-
-            list8.clear()
-            f.close()
-            q = 0
-            deltas.clear()
-            queue.clear()
-            print("Gesture " + str(i) + " written to file")
-
-        else:
-            q += 1 
 
 serialPort.close()

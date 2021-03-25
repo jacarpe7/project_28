@@ -72,9 +72,11 @@ acct_balance = 280
 transaction_message = None
 
 
-def gestureListener(observable: AsyncSubject){
+def gestureListener(observable: AsyncSubject):
+    global keyListener
+
     keyListener = observable
-}
+
 
 
 class Atm:
@@ -161,7 +163,7 @@ def navigation_gestures(swipe):
     if initial_screen:
         if swipe is HOVER:
             gesture_pin_menu()
-        return key
+        return swipe
     # PIN entry screen
     if pin_entry_screen:
         if swipe is RIGHT_SWIPE:
@@ -266,7 +268,7 @@ def navigation_gestures(swipe):
             amount_entered = ""
             another_trans_selection = TRANS_NO
             display_another_trans_prompt() 
-        return key
+        return swipe
     # Withdrawal Menu
     if withdrawal_prompt:
         increment_value = 20
@@ -339,7 +341,7 @@ def navigation_gestures(swipe):
     if invalid_pin_msg:
         if swipe is LEFT_SWIPE:
             gesture_pin_menu()
-        return key
+        return swipe
             
 
 # Define method for pin entry screen.
@@ -636,9 +638,12 @@ def clear():
         pin_code = ""
         gesture_pin_menu()
 
-
-# Entry point to initiate the program for execution    
-if __name__ == '__main__':
+def main():
+    global root
     root = Tk()
     gui = Atm(root)
     root.mainloop()
+
+# Entry point to initiate the program for execution    
+if __name__ == '__main__':
+    main()
