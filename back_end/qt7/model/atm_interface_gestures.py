@@ -37,9 +37,11 @@ insufficient_funds = False
 invalid_pin_msg = False
 
 # variables related to gestures
-HOVER = 0
+HOVER = 3
 LEFT_SWIPE = 1
-RIGHT_SWIPE = 2
+RIGHT_SWIPE = 0
+UP = 2
+DOWN = 4
 
 # pin values for gestures
 global current, previous, after
@@ -69,42 +71,11 @@ amount_entered = ""
 acct_balance = 280
 transaction_message = None
 
-#gesture listener 
-def on_press(key):
-    try:
-        keyListener.on_next(key)
-        if debug:
-            print('alphanumeric key {0} pressed'.format(
-                key.char))
-    except AttributeError:
-        if debug:
-            print('special key {0} pressed'.format(
-                key))
-
-def on_release(key):
-    if debug:
-        print('{0} released'.format(
-            key))
-    if key == keyboard.Key.esc:
-        # Stop listener
-        return False
- 
-#observable declaration, SEE IMPLEMENTATION IN PIN MENU FOR EXAMPLE
-keyListener = Subject()
-
-#pynumpt keyboard listening subscription, this is monitoring key strokes
-#Will need to remove when back-end data is ready.
-listener = keyboard.Listener(
-    on_press=on_press,
-    on_release=on_release)
 
 def gestureListener(observable: AsyncSubject){
-    # obsevable.subscribe(lambda: x:)
-    # Values 
-    # 0 - swipe right 1-left 2-up 3-select 4-down (down not implemented yet)
-    # -1 default value (ignore on return)
+    keyListener = observable
 }
-#observable 
+
 
 class Atm:
     """
@@ -162,7 +133,6 @@ class Atm:
         button_clear.grid(row=0,column=0, padx=BUTTON_X,pady=BUTTON_Y)
         button_cancel.grid(row=0,column=1, padx=BUTTON_X,pady=BUTTON_Y)
         
-        listener.start()
         if debug:  
             keyListener.subscribe(
                 lambda x:print(navigation_gestures(x))) 
