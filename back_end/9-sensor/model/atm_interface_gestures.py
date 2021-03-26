@@ -11,6 +11,11 @@ from pynput import keyboard
 from rx.subject import AsyncSubject
 from rx.core import Observable
 from rx.subject import Subject
+import threading
+import time
+import multiprocessing
+from multiprocessing import Queue
+import test_model_old
 
 #DEBUG MODE - Set true to have debug comments in console.
 debug = False
@@ -71,10 +76,6 @@ amount_entered = ""
 acct_balance = 280
 transaction_message = None
 
-keyListener = AsyncSubject
-
-def gestureListener(observable: AsyncSubject):
-    keyListener = observable
 
 
 
@@ -87,6 +88,7 @@ class Atm:
         -- initializes the listener
     """
     def __init__(self, root):
+        global keyListener
         self.root = root    
         root.title("ASU Capstone ATM Simulator")
         root.geometry("650x525")
@@ -133,7 +135,7 @@ class Atm:
             width=B_WIDTH, height=B_HT, bg='red', command=cancel)
         button_clear.grid(row=0,column=0, padx=BUTTON_X,pady=BUTTON_Y)
         button_cancel.grid(row=0,column=1, padx=BUTTON_X,pady=BUTTON_Y)
-        
+
         if debug:  
             keyListener.subscribe(
                 lambda x:print(navigation_gestures(x))) 
@@ -637,12 +639,14 @@ def clear():
         pin_code = ""
         gesture_pin_menu()
 
-def main():
-    global root
-    root = Tk()
-    gui = Atm(root)
-    root.mainloop()
+
+
+    
 
 # Entry point to initiate the program for execution    
 if __name__ == '__main__':
-    main()
+    global keyListener
+    keyListener = test_model_old.main()
+    root = Tk()
+    gui = Atm(root)
+    root.mainloop()
