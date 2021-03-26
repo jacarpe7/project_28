@@ -8,6 +8,8 @@ import numpy as np
 from numpy import dstack
 import tensorflow as tf
 from tensorflow import keras
+from rx.core import Observable
+from rx.subject import Subject
 
 def main():
     # import model and display model summary
@@ -26,8 +28,11 @@ def main():
     # discard first line
     serialPort.readline()
 
+    # create Subject
+    subject = Subject()
+
     def loopChecker():
-        deltaMax = 0;
+        deltaMax = 0
         print("Ready for gesture testing.\n")
         while (1):
             
@@ -62,6 +67,8 @@ def main():
 
             prediction = model.predict_classes(testArr)
             print("Gesture prediction: " + str(prediction))
+
+            subject.on_next(prediction)
 
             # # Test for what result of prediction was
             # switch (prediction[0]) {
