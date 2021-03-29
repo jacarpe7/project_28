@@ -8,6 +8,7 @@ PyInstaller, which looks easier, but I have less confidence that it will work.
 CX_FREEZE:
 
 distutils setup script
+
 In order to make use of distutils a setup script must be created. This is called setup.py by convention, although it can have any name. It looks something like this:
 
 import sys
