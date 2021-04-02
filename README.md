@@ -14,7 +14,7 @@ VIII. [Setup and Run](#setup)
 IX. [References](#ref)  
 
 <a name="team"/>
-
+<p align="right">
 ## The Team
 Bob Martin</br>
 Dylan Johnson</br>
@@ -22,6 +22,7 @@ Joshua Carpenter</br>
 Kelly Petrone</br>
 Michael Frederic</br>
 Russell Smith</br>
+</p>
 
 <a name="headers"/>
 
