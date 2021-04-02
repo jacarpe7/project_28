@@ -3,7 +3,7 @@
 
 # The Project
 ## Table of Contents  
-I. [The Team](#team)
+I. [The Team](#team)  
 II. [The Idea](#headers)  
 III. [What Didn't Work](#emphasis)  
 IV. [What Did Work](#worked)  
