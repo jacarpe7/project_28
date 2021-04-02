@@ -16,6 +16,29 @@ AVR128DA48 Microcontroller</br>
 QT7 Xplained Pro extension board</br>
 </br>
 
+# The Project
+## Table of Contents  
+[The Idea](#headers)  
+[What Didn't Work](#emphasis)  
+[What Did Work](#worked) 
+[Final Product](#notworked) 
+[The Future](#nexttime) 
+
+<a name="headers"/>
+## Headers
+
+<a name="emphasis"/>
+## Headers
+
+<a name="worked"/>
+## Headers
+
+<a name="notworked"/>
+## Headers
+
+<a name="nexttime"/>
+## Headers
+
 **Initial Setup**</br>
 1. Download and install Atmel Studio</br>
 2. Import 'qt7-ascii-out.atsln' onto device using Atmel Studio following instructions in the video below</br>
