@@ -15,7 +15,9 @@ IX. [References](#ref)
 
 <a name="team"/>
 <p align="right">
+
 ## The Team
+
 Bob Martin</br>
 Dylan Johnson</br>
 Joshua Carpenter</br>
