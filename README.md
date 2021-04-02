@@ -1,21 +1,6 @@
 # SER 401 Capstone Project 2020-2021
 ### Project 28 - Proximity Sensing in a Post-COVID World
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jacarpe7/project_28/HEAD?filepath=python_scripts%2Fml_model_generation.ipynb)
-
-**Required Software & Tools**</br>
-[AtmelStudio7](https://www.microchip.com/images/default-source/avr-support/atmel-studio-7/atmelstudio7__google_291x202-min.jpg?sfvrsn=c1ad339d_1)</br>
-[Atmel Start](https://start.atmel.com/)</br>
-[Anaconda Toolkit](https://www.anaconda.com/products/individual)</br>
-[Python](https://www.python.org/downloads/)</br>
-</br>
-
-**Required Hardware in Use**</br>
-Curiousity Nano Touch Adapter</br>
-AVR128DA48 Microcontroller</br>
-QT7 Xplained Pro extension board</br>
-</br>
-
 # The Project
 ## Table of Contents  
 [The Team](#team)
@@ -24,6 +9,9 @@ QT7 Xplained Pro extension board</br>
 [What Did Work](#worked)  
 [Final Product](#notworked)  
 [The Future](#nexttime)  
+[Requirements](#requirements)
+[Setup and Run](#setup)
+[References](#ref)
 
 <a name="team"/>
 
@@ -76,6 +64,16 @@ Russell Smith</br>
 
 /POTENTIAL USES OF THE SENSOR AND MODEL BUILDING
 
-**Resources**</br>
-https://realpython.com/linear-regression-in-python/
-</br>
+<a name="Requirements"/>
+
+## Requirements
+
+<a name="setup"/>
+
+## Setup and Run
+
+<a name="ref"/>
+
+## References
+
+
