@@ -35,7 +35,7 @@ def load_dataset_group(group, prefix=''):
 	filepath = prefix + group + '/'
 	# load all 9 files as a single array
 	filenames = list()
-	for n in range(1,10):
+	for n in range(1,6):
 		filenames += ['sensor'+ str(n) + '-' + group + '.txt']
 
 	X = load_group(filenames, filepath)
@@ -52,10 +52,6 @@ def load_dataset(prefix=''):
 	testX, testy = load_dataset_group('test', prefix)
 	print(testX.shape, testy.shape)
 
-	# zero-offset class values
-	trainy = trainy - 1
-	testy = testy - 1
-
 	# one hot encode y
 	trainy = to_categorical(trainy)
 	testy = to_categorical(testy)
@@ -65,7 +61,7 @@ def load_dataset(prefix=''):
 
 # # fit and evaluate a model
 def evaluate_model(trainX, trainy, testX, testy):
-	verbose, epochs, batch_size = 0, 400, 100
+	verbose, epochs, batch_size = 0, 200, 100
 	n_timesteps, n_features, n_outputs = trainX.shape[1], trainX.shape[2], trainy.shape[1]
 	model = Sequential()
 	model.add(LSTM(100, input_shape=(n_timesteps,n_features)))
