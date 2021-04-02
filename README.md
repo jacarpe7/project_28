@@ -25,18 +25,23 @@ QT7 Xplained Pro extension board</br>
 [The Future](#nexttime)  
 
 <a name="headers"/>
+
 ## Headers
 
 <a name="emphasis"/>
+
 ## Headers
 
 <a name="worked"/>
+
 ## Headers
 
 <a name="notworked"/>
+
 ## Headers
 
 <a name="nexttime"/>
+
 ## Headers
 
 **Initial Setup**</br>
