@@ -38,7 +38,6 @@ Russell Smith</br>
 <a name="emphasis"/>
 
 ## What Didn't Work
-/FAILED SENSORS
   The first step of our design process involved using the QT-7 sensor pictured below. We used this to get an idea of what the data looked like coming off of the sensor. We originally though the QT-7 had the chance of being a proximity sensor for a real world application. Through thurough testing we quickly disocvered that we were unable to get accurate and consistent results. This took us back to the drawing board.
 
   // PICTURE OF QT-7
