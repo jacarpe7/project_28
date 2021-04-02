@@ -103,6 +103,10 @@ listener = keyboard.Listener(
     on_press=on_press,
     on_release=on_release)
 
+def gestureListener(observable: AsyncSubject){
+    # obsevable.subscribe(lambda: x:)
+}
+#observable 
 
 class Atm:
     """
@@ -737,9 +741,11 @@ def clear():
         pin_code = ""
         gesture_pin_menu()
 
-
-# Entry point to initiate the program for execution    
-if __name__ == '__main__':
+def main():
     root = Tk()
     gui = Atm(root)
     root.mainloop()
+
+# Entry point to initiate the program for execution    
+if __name__ == '__main__':
+    main()
