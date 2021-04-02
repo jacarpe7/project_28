@@ -3,15 +3,15 @@
 
 # The Project
 ## Table of Contents  
-[I. The Team](#team)
-[II. The Idea](#headers)  
-[III. What Didn't Work](#emphasis)  
-[IV. What Did Work](#worked)  
-[V. Final Product](#notworked)  
-[VI. The Future](#nexttime)  
-[VII. Requirements](#requirements)
-[VIII. Setup and Run](#setup)
-[IX. References](#ref)
+I. [The Team](#team)
+II. [The Idea](#headers)  
+III. [What Didn't Work](#emphasis)  
+IV. [What Did Work](#worked)  
+V. [Final Product](#notworked)  
+VI. [The Future](#nexttime)  
+VII. [Requirements](#requirements)
+VIII. [Setup and Run](#setup)
+IX. [References](#ref)
 
 <a name="team"/>
 
