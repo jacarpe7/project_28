@@ -27,6 +27,7 @@ QT7 Xplained Pro extension board</br>
 <a name="headers"/>
 
 ## The Idea
+![ASU](media/ASU-Logo.gif)![Microchip](media/Microchip-Logo.png)
 
 <a name="emphasis"/>
 
