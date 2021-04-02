@@ -20,9 +20,9 @@ QT7 Xplained Pro extension board</br>
 ## Table of Contents  
 [The Idea](#headers)  
 [What Didn't Work](#emphasis)  
-[What Did Work](#worked) 
-[Final Product](#notworked) 
-[The Future](#nexttime) 
+[What Did Work](#worked)  
+[Final Product](#notworked)  
+[The Future](#nexttime)  
 
 <a name="headers"/>
 ## Headers
