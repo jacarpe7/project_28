@@ -26,23 +26,23 @@ QT7 Xplained Pro extension board</br>
 
 <a name="headers"/>
 
-## Headers
+## The Idea
 
 <a name="emphasis"/>
 
-## Headers
+## What Didn't Work
 
 <a name="worked"/>
 
-## Headers
+## What Did Work
 
 <a name="notworked"/>
 
-## Headers
+## Final Product
 
 <a name="nexttime"/>
 
-## Headers
+## The Future
 
 **Initial Setup**</br>
 1. Download and install Atmel Studio</br>
