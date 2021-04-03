@@ -477,7 +477,8 @@ def display_initial_screen():
     cancel_prompt = False
     root.main_lcd.config(state=NORMAL)
     root.main_lcd.delete("1.0", END)
-    root.main_lcd.insert("1.0", "\n\n\n\nWelcome to the ASU ATM System\n")
+    root.main_lcd.image_create("1.0", image=asuLogo)
+    root.main_lcd.insert("2.0", "\nWelcome to the ASU ATM System\n")
     root.main_lcd.insert(END, "\n\nHover to begin")
     root.main_lcd.tag_add("center", "1.0", "end")
     root.main_lcd.config(state=DISABLED)
