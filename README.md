@@ -26,6 +26,7 @@ Michael Frederic</br>
 Russell Smith</br>
 </p>
 
+
 <a name="headers"/>
 
 ## The Idea
@@ -55,9 +56,20 @@ Russell Smith</br>
 
   After talking through several of these designs and their upsides we landed on the one below. After testing we were quickly able to apply our machine learning algorithm to the resulting sensor and able to detect hand motions at a very high accuracy. We will discuss this further later on.
   
-  // FINAL PRODUCT IMAGE
+<p align="center"><img src="media/final_sensor.jpg" width="200">
 
 /MODEL COMPARISONS
+
+  In developing a machine learning model that works best for our application there were several choices of model types. Below is a list of models that we tested prior to landing on a LSTM (Long Term Short Memory Network) model.
+
+  - Linear Regression.
+  - Logistic Regression.
+  - Decision Tree.
+  - SVM.
+  - Naive Bayes.
+  - kNN.
+  - K-Means.
+  - Random Forest.
 
 /FAILED MODEL BUILDING
 
