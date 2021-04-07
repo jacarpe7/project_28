@@ -6,15 +6,15 @@ filelist += ['demo1','demo2']
 for n in range (1,10):
 	# write files one sensor at a time
 	f = open("sensor" + str(n) + ".txt", "w")
-	for file in filelist:
+	for i in range(1,10):
 		# for using modulus
 		if (n == 9):
 			n = 0
 		
 		# a refers to the number of text files
-		for a in range (1,11):
+		for a in range (1,101):
 			# read each file
-			r = open(file + '/stream_' + str(a) + '.txt', "r")
+			r = open('ss/' + str(i) + '/stream_' + str(a) + '.txt', "r")
 			for i in range(1,10):
 				text = r.readline()
 				# only write lines that refer to the designated sensor

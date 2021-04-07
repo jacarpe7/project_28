@@ -5,7 +5,7 @@ for n in range (1,10):
 	f1 = open("sensor" + str(n) + "-train.txt", "w")
 	f2 = open("sensor" + str(n) + "-test.txt", "w")
 	# v refers to the number of lines in each sensorN text file
-	for v in range (1,21):
+	for v in range (1,901):
 		# write to train set for 3 of every 4 lines
 		if (v % 4 != 0):
 			f1.write(r.readline())
