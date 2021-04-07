@@ -58,8 +58,6 @@ Russell Smith</br>
   
 <p align="center"><img src="media/final_sensor.jpg" width="200">
 
-/MODEL COMPARISONS
-
   In developing a machine learning model that works best for our application there were several choices of model types. Below is a list of models that we tested prior to landing on a LSTM (Long Term Short Memory Network) model.
 
   - Linear Regression.
@@ -70,22 +68,30 @@ Russell Smith</br>
   - kNN.
   - K-Means.
   - Random Forest.
+  - LSTM.
 
-/FAILED MODEL BUILDING
+  In testing, below is a chart of the models compared to eachother with their accuracy rates:
 
-/FRONT END LIBRARIES FAILED
+  // IMAGE OF GRAPHS
+
+  We eventually decided on using an LSTM model due to the overall advantage in accuracy rates. Below is a more detailed explanation of what exactly a Long Term Short Memory Network is as stated by on a great breakdown by [Christopher Olah](https://colah.github.io/posts/2015-08-Understanding-LSTMs/):
+
+  > Long Short Term Memory networks – usually just called “LSTMs” – are a special kind of RNN, capable of learning long-term dependencies. They were introduced by Hochreiter & Schmidhuber (1997), and were refined and popularized by many people in following work.1 They work tremendously well on a large variety of problems, and are now widely used. LSTMs are explicitly designed to avoid the long-term dependency problem. Remembering information for long periods of time is practically their default behavior, not something they struggle to learn!
 
 <a name="worked"/>
 
 ## What Did Work
-/GOOD MODEL
 
-/FRONT END
+### Back End
+As stated above, after thorough testing and application; we landed on using an LSTM model. 
+
+### Front End Interface
+Now to discuss the front end portion of the project. To our surprise in our initial research after landing on an ATM for our final project. ATM interfaces designed today are almost identical to those that were designed decades ago. This has a lot to do with the fact that ATMs are typically coded in low level langauges like C and C++, which are easier to run on cheaper hardware due to it being more lightweight. To make our project as portable as possible, we negated bringing in a larger interface library and landed on using a built-in Python library. This allowed us to have less dependencies, create an equally lightweight project, while still upgrading from the original C and C++ ATM designs. 
 
 <a name="notworked"/>
 
 ## Final Product
-/VIDEO
+<p align="center"><img src="media/final_project_gif.gif">
 
 <a name="nexttime"/>
 
