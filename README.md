@@ -44,7 +44,7 @@ Russell Smith</br>
 ## What Didn't Work
   The first step of our design process involved using the QT-7 sensor pictured below. We used this to get an idea of what the data looked like coming off of the sensor. We originally though the QT-7 had the chance of being a proximity sensor for a real world application. Through thurough testing we quickly disocvered that we were unable to get accurate and consistent results. This took us back to the drawing board.
 
-  // PICTURE OF QT-7
+  <p align="center"><img src="media/qt-7.jpeg" width="200">
 
   After the QT-7, Bob tipped us off to a friend's company of his that designs paint that is electronically conductive and could potentially detect proximity of a user's hand. Once we realized this; the next iteration of design is the proximity sensor pictured below.
 
@@ -52,7 +52,7 @@ Russell Smith</br>
 
   When we started testing and applying Machine Learning to the data being produced from the sensor above. We quickly once again realized that the data was not accurately able to detect what direction a users hand was coming from. As the paint sensors were too close to eachother. We reached out to Bob and collectively put up a series of designs for potential sensors. Below are the results of those design mockups.
 
-  // ALL MOCK UP IMAGES
+  <p align="center"><img src="media/proposed1.png" width="150"><img src="media/proposed2.png" width="150"><img src="media/proposed3.png" width="150"><img src="media/proposed4.png" width="150"></p>
 
   After talking through several of these designs and their upsides we landed on the one below. After testing we were quickly able to apply our machine learning algorithm to the resulting sensor and able to detect hand motions at a very high accuracy. We will discuss this further later on.
   
@@ -72,7 +72,7 @@ Russell Smith</br>
 
   In testing, below is a chart of the models compared to eachother with their accuracy rates:
 
-  // IMAGE OF GRAPHS
+  <p align="center"><img src="media/model_comparison.png" width="400">
 
   We eventually decided on using an LSTM model due to the overall advantage in accuracy rates. Below is a more detailed explanation of what exactly a Long Term Short Memory Network is as stated by on a great breakdown by [Christopher Olah](https://colah.github.io/posts/2015-08-Understanding-LSTMs/):
 
