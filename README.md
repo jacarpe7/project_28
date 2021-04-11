@@ -29,7 +29,7 @@ Russell Smith</br>
 
 <a name="headers"/>
 
-## The Idea
+# The Idea
 <p align="center"><img src="media/ASU-Logo.gif" width="200"><img src="media/Microchip-Logo.png" width="200"></p>
   2020 was a huge year for humanity. Overnight there were unlimited problems being faced on a day to day basis. Whether it be social distancing, mask wearing, or quarentine. Our project had the goal to help solve one of these problems with a focus on software being developed by students at ASU, and the hardware being built and provided by Microchip.
 
@@ -41,7 +41,7 @@ Russell Smith</br>
 
 <a name="emphasis"/>
 
-## What Didn't Work
+# What Didn't Work
   The first step of our design process involved using the QT-7 sensor pictured below. We used this to get an idea of what the data looked like coming off of the sensor. We originally though the QT-7 had the chance of being a proximity sensor for a real world application. Through thurough testing we quickly disocvered that we were unable to get accurate and consistent results. This took us back to the drawing board.
 
   <p align="center"><img src="media/qt-7.jpeg" width="200">
@@ -80,7 +80,7 @@ Russell Smith</br>
 
 <a name="worked"/>
 
-## What Did Work
+# What Did Work
 
 ### Core Idea
 To restate the core idea; by using a sensitive sensor design that can detect hand proximity without physical touch; create a real world solution to eliminate the need of touching surfaces to avoid the potential cross contanimation further spreading potential virus and disease unknowingly to others. This project, focusing on the decade old design of a touch pad ATM interface.
@@ -96,11 +96,18 @@ Now to discuss the front end portion of the project. To our surprise in our init
 ## Final Product
 <p align="center"><img src="media/final_project_gif.gif">
 
+> Pictured above is the finished product, demonstrating the complete use of the proximity sensor, a Python ATM front end, a machine learning powered backend, all connected to a seemless SQL database.
+
 <a name="nexttime"/>
 
-## The Future
+# The Future
+### What is Missing?
 
-/POTENTIAL USES OF THE SENSOR AND MODEL BUILDING
+### Where can this be used?
+
+### What are other potential use cases?
+
+# Running the project
 
 <a name="Requirements"/>
 
