@@ -82,10 +82,13 @@ Russell Smith</br>
 
 ## What Did Work
 
-### Back End
-As stated above, after thorough testing and application; we landed on using an LSTM model. 
+### Core Idea
+To restate the core idea; by using a sensitive sensor design that can detect hand proximity without physical touch; create a real world solution to eliminate the need of touching surfaces to avoid the potential cross contanimation further spreading potential virus and disease unknowingly to others. This project, focusing on the decade old design of a touch pad ATM interface.
 
-### Front End Interface
+### The Back End
+As stated above, after thorough testing and application; we landed on using an LSTM model. In addition to this, we elected to use a local lightweight database to simulate a database interface with an actual bank system. In the real world, this would be wrapped in several levels of authentication. In the testing and decision to go leightweight and straightforward we considered several other options like video card detection or facial detection. One large gap to be covered is a way for a user to use an ATM without having to insert their card. With the rise of contactless cards in the United States, it is likely that soon we will see these on most ATMs regardless.
+
+### The Front End
 Now to discuss the front end portion of the project. To our surprise in our initial research after landing on an ATM for our final project. ATM interfaces designed today are almost identical to those that were designed decades ago. This has a lot to do with the fact that ATMs are typically coded in low level langauges like C and C++, which are easier to run on cheaper hardware due to it being more lightweight. To make our project as portable as possible, we negated bringing in a larger interface library and landed on using a built-in Python library. This allowed us to have less dependencies, create an equally lightweight project, while still upgrading from the original C and C++ ATM designs. 
 
 <a name="notworked"/>
