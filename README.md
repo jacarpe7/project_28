@@ -10,8 +10,7 @@ IV. [What Did Work](#worked)
 V. [Final Product](#notworked)  
 VI. [The Future](#nexttime)  
 VII. [Requirements](#requirements)  
-VIII. [Setup and Run](#setup)  
-IX. [References](#ref)  
+VIII. [Setup and Run](#setup)   
 
 <a name="team"/>
 <p align="right">
@@ -83,11 +82,13 @@ Russell Smith</br>
   <p align="center"><img src="media/model_comparison.png" width="400">
 
   We eventually decided on using an LSTM model due to the overall advantage in accuracy rates. However, our comparisons were made using data from the QT-7 device and we tested several related algorithms with data from our 9-sensor device. The accuracy of these models is noted below:
+
   | Model  | Prediction Accuracy |
   | ------ |:-------------------:|
   | LSTM   | 99.2                |
   | GRU    | 98.0                |
   | RNN    | 90.4                |
+
 
   A more detailed explanation of what exactly a Long Term Short Memory Network is as stated by on a great breakdown by [Christopher Olah](https://colah.github.io/posts/2015-08-Understanding-LSTMs/):
 
@@ -121,24 +122,24 @@ Now to discuss the front end portion of the project. To our surprise in our init
 <a name="nexttime"/>
 
 # The Future
-### What is Missing?
-
 ### Where can this be used?
-
-### What are other potential use cases?
+The use case for this project is global. Considering ATMs across the globe are still using archaic physical touch cheap hardware designs. A simple machine learning application can completely revamp the marketplace.
 
 # Running the project
 
 <a name="Requirements"/>
 
 ## Requirements
+The requirements are straightforward, on your computer you need an updated working copy of the following programs;
+1. Python 3.7+
+2. Pip
+3. 9 point sensor design 
 
 <a name="setup"/>
 
 ## Setup and Run
+Included in this repo is pip requirements file. By running the following command in your terminal;
 
-<a name="ref"/>
-
-## References
+`pip install -r pip_requirements.txt && python src/atm_interface_v1.py`
 
 
