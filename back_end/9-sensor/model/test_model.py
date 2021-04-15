@@ -13,7 +13,7 @@ from rx.subject import Subject
 
 def main():
     # import model and display model summary
-    model = tf.keras.models.load_model("lstm")
+    model = tf.keras.models.load_model("back_end/9-sensor/model/lstm")
     # model.summary()
 
     # Need to define port according to your setup. Typical port name - Windows: 'COM3'  Mac: '/dev/tty.usbmodem12345'

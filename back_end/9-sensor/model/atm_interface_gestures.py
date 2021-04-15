@@ -12,6 +12,7 @@ from rx.subject import AsyncSubject
 from rx.core import Observable
 from rx.subject import Subject
 import test_model, database_interface
+from database_interface import check_balance, check_pin, deposit
 
 #DEBUG MODE - Set true to have debug comments in console.
 debug = True
