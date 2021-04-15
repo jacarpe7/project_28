@@ -31,7 +31,7 @@ Russell Smith</br>
 
 # The Idea
 <p align="center"><img src="media/ASU-Logo.gif" width="200"><img src="media/Microchip-Logo.png" width="200"></p>
-  2020 was a huge year for humanity. Overnight there were unlimited problems being faced on a day to day basis. Whether it be social distancing, mask wearing, or quarentine. Our project had the goal to help solve one of these problems with a focus on software being developed by students at ASU, and the hardware being built and provided by Microchip.
+  2020 was a huge year for humanity. Overnight there were unlimited problems being faced on a day to day basis. Whether it be social distancing, mask wearing, or quarantine. Our project had the goal to help solve one of these problems with a focus on software being developed by students at ASU, and the hardware being built and provided by Microchip.
 
 
   With this goal in mind, we knew a large problem people faced in a time where it wasn't known how long COVID survived on physical surfaces was to help avoid touching surfaces while operating through a daily routine. The goal was to develop a sensor, and using machine learning process data from the sensor to eliminate the need for a user to physically touch surfaces that other people would also be touching.
@@ -42,7 +42,7 @@ Russell Smith</br>
 <a name="emphasis"/>
 
 # What Didn't Work
-  The first step of our design process involved using the QT-7 sensor pictured below. We used this to get an idea of what the data looked like coming off of the sensor. We originally though the QT-7 had the chance of being a proximity sensor for a real world application. Through thurough testing we quickly disocvered that we were unable to get accurate and consistent results. This took us back to the drawing board.
+  The first step of our design process involved using the QT-7 sensor pictured below. We used this to get an idea of what the data looked like coming off of the sensor. We originally though the QT-7 had the chance of being a proximity sensor for a real world application. Through thorough testing we quickly discovered that we were unable to get accurate and consistent results. The sensors on the QT-7 were too close and different gestures were not distinct enough from each other for reliable classification. This took us back to the drawing board.
 
   > QT-7 
 
@@ -54,13 +54,13 @@ Russell Smith</br>
 
   // PICTURE OF ORIGINAL PROXIMITY PAINT SENSOR
 
-  When we started testing and applying Machine Learning to the data being produced from the sensor above. We quickly once again realized that the data was not accurately able to detect what direction a users hand was coming from. As the paint sensors were too close to eachother. We reached out to Bob and collectively put up a series of designs for potential sensors. Below are the results of those design mockups.
+  When we started testing and applying Machine Learning to the data being produced from the sensor above, we were unable to get a sufficiently accurate classification model. With both the QT-7 and this new 4-sensor board, the delta values were inconsistent between sessions. Additionally, they would sometimes hold a charge and render the data processing dysfunctional as it relied on a delta threshold being exceeded. When a charge was held, the output data no longer reflected a standard gesture signature. Even when not holding a charge, though, we found the data of each gesture to be too similar to each other for accurate classification. The close proximity of the sensors and the lack of distinct gesture signatures in the output data led use to reach out to our sponsor, Bob, for a different design. Collectively, we discussed a series of designs for potential sensors. Below are the results of those design mockups.
 
   > Final Sensor Design Mockups
 
   <p align="center"><img src="media/proposed1.png" width="150"><img src="media/proposed2.png" width="150"><img src="media/proposed3.png" width="150"><img src="media/proposed4.png" width="150"></p>
 
-  After talking through several of these designs and their upsides we landed on the one below. After testing we were quickly able to apply our machine learning algorithm to the resulting sensor and able to detect hand motions at a very high accuracy. We will discuss this further later on.
+  After talking through several of these designs and their upsides we landed on the one below. After testing we were quickly able to apply a machine learning algorithm to the sensor output data and have it detect hand motions at a very high accuracy. We will discuss this further later on.
 
   > Final Sensor Design
   
@@ -82,19 +82,30 @@ Russell Smith</br>
 
   <p align="center"><img src="media/model_comparison.png" width="400">
 
-  We eventually decided on using an LSTM model due to the overall advantage in accuracy rates. Below is a more detailed explanation of what exactly a Long Term Short Memory Network is as stated by on a great breakdown by [Christopher Olah](https://colah.github.io/posts/2015-08-Understanding-LSTMs/):
+  We eventually decided on using an LSTM model due to the overall advantage in accuracy rates. However, our comparisons were made using data from the QT-7 device and we tested several related algorithms with data from our 9-sensor device. The accuracy of these models is noted below:
+  | Model  | Prediction Accuracy |
+  | ------ |:-------------------:|
+  | LSTM   | 99.2                |
+  | GRU    | 98.0                |
+  | RNN    | 90.4                |
+
+  A more detailed explanation of what exactly a Long Term Short Memory Network is as stated by on a great breakdown by [Christopher Olah](https://colah.github.io/posts/2015-08-Understanding-LSTMs/):
 
   > Long Short Term Memory networks – usually just called “LSTMs” – are a special kind of RNN, capable of learning long-term dependencies. They were introduced by Hochreiter & Schmidhuber (1997), and were refined and popularized by many people in following work.1 They work tremendously well on a large variety of problems, and are now widely used. LSTMs are explicitly designed to avoid the long-term dependency problem. Remembering information for long periods of time is practically their default behavior, not something they struggle to learn!
 
 <a name="worked"/>
 
-# What Did Work
+# What Did Work (Eventually)
 
 ### Core Idea
 To restate the core idea; by using a sensitive sensor design that can detect hand proximity without physical touch; create a real world solution to eliminate the need of touching surfaces to avoid the potential cross contanimation further spreading potential virus and disease unknowingly to others. This project, focusing on the decade old design of a touch pad ATM interface.
 
 ### The Back End
-As stated above, after thorough testing and application; we landed on using an LSTM model. In addition to this, we elected to use a local lightweight database to simulate a database interface with an actual bank system. In the real world, this would be wrapped in several levels of authentication. In the testing and decision to go leightweight and straightforward we considered several other options like video card detection or facial detection. One large gap to be covered is a way for a user to use an ATM without having to insert their card. With the rise of contactless cards in the United States, it is likely that soon we will see these on most ATMs regardless.
+As stated above, after thorough testing and application; we landed on using an LSTM model. In addition to this, we elected to use a local lightweight database to simulate a database interface with an actual bank system. In the real world, this would be wrapped in several levels of authentication. In the testing and decision to go leightweight and straightforward we considered several other options like video card detection or facial detection. One large gap to be covered is a way for a user to use an ATM without having to insert their card. With the rise of contactless cards in the United States, it is likely that soon we will see these on most ATMs regardless.  
+
+Throughout our process, great attention was paid to the sensor output data. It was important for the output data to be consistent across devices, but we also needed to attempt using differing lengths and formats to optimize the model's ability to classify gestures. For the data to be processed, a program must read in sensor output data and wait to process when a gesture is made. This was done by having the program wait for a set delta value, which depended on how each device responded to stimuli. The proper delta threshold had to be a value that rarely, if ever, was exceeded without human interaction, but also promptly was exceeded with human interaction. The length of the data also varied based on device as each device and different microcontroller builds were capable of different polling rates and overall speed of output data. The appropriate data length, which corresponds to duration of gesture, was when a gesture had been completed and sensor activity had returned to baseline. With our threshold model, though, we found that the data preceeding the threshold being broken was not considered and would likely assist with gesture classification by the prediction model. Our solution was to store previous rows in a continually updating stack which fed into the output data immediately upon the threshold being broken. This gave the output data a neutral output at the beginning and end to show the subtle data changes between neutral and human interaction.  
+  
+The machine learning model also required several specifications to be accurate. Firstly, because the data we are working with is sensor data through a brief period of time, a sequential model was determined to be appropriate. Since we were searching for classification of several different gestures, a categorical model classification would be appropriate. This meant our data would need to be more distinct as categorical classification is more challenging than a binary classification model. The data from each sensor was set to be represented by its own individual layer in building the model, rather than having the sensor output data into a single two-dimensional layer (similar to a spreadsheet). This did lead to additional data processing steps for building the model, but no changes in using the gesture recognition prediction model.
 
 ### The Front End
 Now to discuss the front end portion of the project. To our surprise in our initial research after landing on an ATM for our final project. ATM interfaces designed today are almost identical to those that were designed decades ago. This has a lot to do with the fact that ATMs are typically coded in low level langauges like C and C++, which are easier to run on cheaper hardware due to it being more lightweight. To make our project as portable as possible, we negated bringing in a larger interface library and landed on using a built-in Python library. This allowed us to have less dependencies, create an equally lightweight project, while still upgrading from the original C and C++ ATM designs. 
