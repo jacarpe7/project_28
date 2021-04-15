@@ -29,7 +29,7 @@ Russell Smith</br>
 <a name="headers"/>
 
 # The Idea
-<p align="center"><img src="media/ASU-Logo.gif" width="200"><img src="media/Microchip-Logo.png" width="200"></p>
+<p align="center"><img src="media/ASU-Logo.png" width="300"><img src="media/Microchip-Logo.png" width="200"></p>
   2020 was a huge year for humanity. Overnight there were unlimited problems being faced on a day to day basis. Whether it be social distancing, mask wearing, or quarantine. Our project had the goal to help solve one of these problems with a focus on software being developed by students at ASU, and the hardware being built and provided by Microchip.
 
 
