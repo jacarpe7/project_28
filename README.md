@@ -31,7 +31,7 @@ Russell Smith</br>
 
 # The Idea
 <p align="center"><img src="media/ASU-Logo.gif" width="200"><img src="media/Microchip-Logo.png" width="200"></p>
-  2020 was a huge year for humanity. Overnight there were unlimited problems being faced on a day to day basis. Whether it be social distancing, mask wearing, or quarentine. Our project had the goal to help solve one of these problems with a focus on software being developed by students at ASU, and the hardware being built and provided by Microchip.
+  2020 was a huge year for humanity. Overnight there were unlimited problems being faced on a day to day basis. Whether it be social distancing, mask wearing, or quarantine. Our project had the goal to help solve one of these problems with a focus on software being developed by students at ASU, and the hardware being built and provided by Microchip.
 
 
   With this goal in mind, we knew a large problem people faced in a time where it wasn't known how long COVID survived on physical surfaces was to help avoid touching surfaces while operating through a daily routine. The goal was to develop a sensor, and using machine learning process data from the sensor to eliminate the need for a user to physically touch surfaces that other people would also be touching.
@@ -42,7 +42,7 @@ Russell Smith</br>
 <a name="emphasis"/>
 
 # What Didn't Work
-  The first step of our design process involved using the QT-7 sensor pictured below. We used this to get an idea of what the data looked like coming off of the sensor. We originally though the QT-7 had the chance of being a proximity sensor for a real world application. Through thurough testing we quickly disocvered that we were unable to get accurate and consistent results. This took us back to the drawing board.
+  The first step of our design process involved using the QT-7 sensor pictured below. We used this to get an idea of what the data looked like coming off of the sensor. We originally though the QT-7 had the chance of being a proximity sensor for a real world application. Through thorough testing we quickly discovered that we were unable to get accurate and consistent results. The sensors on the QT-7 were too close and different gestures were not distinct enough from each other for reliable classification. This took us back to the drawing board.
 
   > QT-7 
 
@@ -54,13 +54,13 @@ Russell Smith</br>
 
   // PICTURE OF ORIGINAL PROXIMITY PAINT SENSOR
 
-  When we started testing and applying Machine Learning to the data being produced from the sensor above. We quickly once again realized that the data was not accurately able to detect what direction a users hand was coming from. As the paint sensors were too close to eachother. We reached out to Bob and collectively put up a series of designs for potential sensors. Below are the results of those design mockups.
+  When we started testing and applying Machine Learning to the data being produced from the sensor above. We once again discovered that the data was not accurately able to detect what direction a users hand was coming from. The close proximity of the sensors and the lack of distinct gesture signatures in the output data led use to reach out to our sponsor, Bob, for a different design. Collectively, we discussed a series of designs for potential sensors. Below are the results of those design mockups.
 
   > Final Sensor Design Mockups
 
   <p align="center"><img src="media/proposed1.png" width="150"><img src="media/proposed2.png" width="150"><img src="media/proposed3.png" width="150"><img src="media/proposed4.png" width="150"></p>
 
-  After talking through several of these designs and their upsides we landed on the one below. After testing we were quickly able to apply our machine learning algorithm to the resulting sensor and able to detect hand motions at a very high accuracy. We will discuss this further later on.
+  After talking through several of these designs and their upsides we landed on the one below. After testing we were quickly able to apply a machine learning algorithm to the sensor output data and have it detect hand motions at a very high accuracy. We will discuss this further later on.
 
   > Final Sensor Design
   
@@ -82,7 +82,14 @@ Russell Smith</br>
 
   <p align="center"><img src="media/model_comparison.png" width="400">
 
-  We eventually decided on using an LSTM model due to the overall advantage in accuracy rates. Below is a more detailed explanation of what exactly a Long Term Short Memory Network is as stated by on a great breakdown by [Christopher Olah](https://colah.github.io/posts/2015-08-Understanding-LSTMs/):
+  We eventually decided on using an LSTM model due to the overall advantage in accuracy rates. However, our comparisons were made using data from the QT-7 device and we tested several related algorithms with data from our 9-sensor device. The accuracy of these models is noted below:
+  | Model  | Prediction Accuracy |
+  | ------ |:-------------------:|
+  | LSTM   | 99.2                |
+  | GRU    | 98.0                |
+  | RNN    | 90.4                |
+
+  Below is a more detailed explanation of what exactly a Long Term Short Memory Network is as stated by on a great breakdown by [Christopher Olah](https://colah.github.io/posts/2015-08-Understanding-LSTMs/):
 
   > Long Short Term Memory networks – usually just called “LSTMs” – are a special kind of RNN, capable of learning long-term dependencies. They were introduced by Hochreiter & Schmidhuber (1997), and were refined and popularized by many people in following work.1 They work tremendously well on a large variety of problems, and are now widely used. LSTMs are explicitly designed to avoid the long-term dependency problem. Remembering information for long periods of time is practically their default behavior, not something they struggle to learn!
 
