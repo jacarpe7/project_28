@@ -11,9 +11,10 @@ from pynput import keyboard
 from rx.subject import AsyncSubject
 from rx.core import Observable
 from rx.subject import Subject
+import test_model, database_interface
 
 #DEBUG MODE - Set true to have debug comments in console.
-debug = False
+debug = True
 
 # GUI constants
 B_PAD = 15
@@ -37,9 +38,11 @@ insufficient_funds = False
 invalid_pin_msg = False
 
 # variables related to gestures
-HOVER = 0
-LEFT_SWIPE = 1
-RIGHT_SWIPE = 2
+HOVER = 3
+LEFT_SWIPE = 0
+RIGHT_SWIPE = 1
+UP = 2
+DOWN = 4
 
 # pin values for gestures
 global current, previous, after
@@ -64,40 +67,14 @@ TRANS_NO = 1
 # variables for capturing input & storing account balance
 deposit_type = ""
 pin_code = ""
-correct_pin = "1234"
 amount_entered = ""
-acct_balance = 280
+acct_balance = check_balance("123456789")
 transaction_message = None
 
-#gesture listener 
-def on_press(key):
-    try:
-        keyListener.on_next(key)
-        if debug:
-            print('alphanumeric key {0} pressed'.format(
-                key.char))
-    except AttributeError:
-        if debug:
-            print('special key {0} pressed'.format(
-                key))
-
-def on_release(key):
-    if debug:
-        print('{0} released'.format(
-            key))
-    if key == keyboard.Key.esc:
-        # Stop listener
-        return False
- 
-#observable declaration, SEE IMPLEMENTATION IN PIN MENU FOR EXAMPLE
-keyListener = Subject()
-
-#pynumpt keyboard listening subscription, this is monitoring key strokes
-#Will need to remove when back-end data is ready.
-listener = keyboard.Listener(
-    on_press=on_press,
-    on_release=on_release)
-
+# Gesture listener
+def gestureListener(observable: AsyncSubject):
+    global keyListener
+    keyListener = observable
 
 class Atm:
     """
@@ -154,14 +131,13 @@ class Atm:
             width=B_WIDTH, height=B_HT, bg='red', command=cancel)
         button_clear.grid(row=0,column=0, padx=BUTTON_X,pady=BUTTON_Y)
         button_cancel.grid(row=0,column=1, padx=BUTTON_X,pady=BUTTON_Y)
-        
-        listener.start()
+
         if debug:  
             keyListener.subscribe(
-                lambda x:print(navigation_gestures(x))) 
+                lambda x:print(navigation_gestures(x[0]))) 
         else:
             keyListener.subscribe(
-                lambda x:navigation_gestures(x))
+                lambda x:navigation_gestures(x[0]))
 
 
 # Define funtion for gesture navigation
@@ -182,12 +158,12 @@ def navigation_gestures(swipe):
 
     # Initial screen menu
     if initial_screen:
-        if swipe is HOVER:
+        if swipe == HOVER:
             gesture_pin_menu()
-        return key
+        return swipe
     # PIN entry screen
     if pin_entry_screen:
-        if swipe is RIGHT_SWIPE:
+        if swipe == RIGHT_SWIPE:
             current +=1
             after +=1
             previous +=1
@@ -198,7 +174,7 @@ def navigation_gestures(swipe):
             elif previous == 10:
                 previous = 0
             gesture_pin_menu()
-        elif swipe is LEFT_SWIPE:
+        elif swipe == LEFT_SWIPE:
             current -=1
             after -=1
             previous -=1
@@ -209,11 +185,11 @@ def navigation_gestures(swipe):
             elif previous == -1:
                 previous = 9
             gesture_pin_menu()
-        elif swipe is HOVER:
+        elif swipe == HOVER:
             if len(pin_code) < 4:
                 pin_code = pin_code + str(current)
                 gesture_pin_menu()
-            if pin_code == correct_pin:
+            if check_pin("123456789", pin_code):
                 pin_valid = True
                 main_menu_selection = CHECK_BAL
                 display_main_menu()
@@ -226,15 +202,15 @@ def navigation_gestures(swipe):
         return swipe
     # Main menu
     if menu_present:
-        if swipe is RIGHT_SWIPE:
+        if swipe == RIGHT_SWIPE:
             if main_menu_selection == DEPOSIT or main_menu_selection == CHECK_BAL:
                 main_menu_selection = main_menu_selection + 1
                 display_main_menu()
-        if swipe is LEFT_SWIPE:
+        if swipe == LEFT_SWIPE:
             if main_menu_selection == CHECK_BAL or main_menu_selection == WITHDRAWAL:
                 main_menu_selection = main_menu_selection - 1
                 display_main_menu()
-        if swipe is HOVER:
+        if swipe == HOVER:
             if main_menu_selection == DEPOSIT:
                 deposit_menu_selection = CASH
                 display_deposit_options()
@@ -246,13 +222,13 @@ def navigation_gestures(swipe):
         return swipe
     # Deposit Options menu
     if deposit_options_prompt:
-        if swipe is RIGHT_SWIPE and deposit_menu_selection == CASH:
+        if swipe == RIGHT_SWIPE and deposit_menu_selection == CASH:
             deposit_menu_selection = deposit_menu_selection + 1
             display_deposit_options()
-        if swipe is LEFT_SWIPE and deposit_menu_selection == CHECK:
+        if swipe == LEFT_SWIPE and deposit_menu_selection == CHECK:
             deposit_menu_selection = deposit_menu_selection - 1
             display_deposit_options()
-        if swipe is HOVER:
+        if swipe == HOVER:
             if deposit_menu_selection == CASH:
                 deposit_type = "cash"
                 display_gesture_deposit_prompt()
@@ -265,7 +241,7 @@ def navigation_gestures(swipe):
         increment_value = 20
         if amount_entered == '' or None:
             amount_entered = '0'
-        if swipe is RIGHT_SWIPE:
+        if swipe == RIGHT_SWIPE:
             if amount_entered == '300':
                 if debug:
                     print(amount_entered) 
@@ -274,7 +250,7 @@ def navigation_gestures(swipe):
                 if debug:
                     print(amount_entered + ' incrementing')
                 display_gesture_deposit_prompt()
-        if swipe is LEFT_SWIPE:
+        if swipe == LEFT_SWIPE:
             if amount_entered == '0' or None:
                 if debug:
                     print(amount_entered) 
@@ -283,19 +259,20 @@ def navigation_gestures(swipe):
                 if debug:
                     print(amount_entered + ' decrementing')
                 display_gesture_deposit_prompt()
-        if swipe is HOVER:
-            acct_balance = acct_balance + int(amount_entered)
+        if swipe == HOVER:
+            deposit(acct_balance + int(amount_entered))
+            acct_balance = check_balance("123456789")
             transaction_message = "Deposit successful"
             amount_entered = ""
             another_trans_selection = TRANS_NO
             display_another_trans_prompt() 
-        return key
+        return swipe
     # Withdrawal Menu
     if withdrawal_prompt:
         increment_value = 20
         if amount_entered == '' or None:
             amount_entered = '0'
-        if swipe is RIGHT_SWIPE:
+        if swipe == RIGHT_SWIPE:
             if amount_entered == '300':
                 if debug:
                     print(amount_entered)
@@ -305,7 +282,7 @@ def navigation_gestures(swipe):
                 if debug:
                     print(amount_entered + ' incrementing')
                 display_gesture_withdrawal_prompt()
-        if swipe is LEFT_SWIPE:
+        if swipe == LEFT_SWIPE:
             if amount_entered == '0' or None:
                 if debug:
                     print(amount_entered)
@@ -316,9 +293,10 @@ def navigation_gestures(swipe):
                     print(amount_entered + ' decrementing')
                 
                 display_gesture_withdrawal_prompt()
-        if swipe is HOVER:
+        if swipe == HOVER:
             if int(amount_entered) <= int(acct_balance):
-                acct_balance = acct_balance - int(amount_entered)
+                withdraw(int(amount_entered))
+                acct_balance = check_balance("123456789")
                 transaction_message = "Please take your cash"
                 amount_entered = ""
                 another_trans_selection = TRANS_NO
@@ -330,18 +308,18 @@ def navigation_gestures(swipe):
         return swipe
     #Check Balance screen
     if acct_balance_displayed:
-        if swipe is LEFT_SWIPE:
+        if swipe == LEFT_SWIPE:
             display_main_menu()
         return swipe
     #Another transaction prompt
     if another_trans_prompt:
-        if swipe is LEFT_SWIPE and another_trans_selection == TRANS_NO:
+        if swipe == LEFT_SWIPE and another_trans_selection == TRANS_NO:
             another_trans_selection = TRANS_YES
             display_another_trans_prompt()
-        if swipe is RIGHT_SWIPE and another_trans_selection == TRANS_YES:
+        if swipe == RIGHT_SWIPE and another_trans_selection == TRANS_YES:
             another_trans_selection = TRANS_NO
             display_another_trans_prompt()
-        if swipe is HOVER:
+        if swipe == HOVER:
             if another_trans_selection == TRANS_NO:
                 pin_valid = False
                 pin_code = ""
@@ -355,14 +333,14 @@ def navigation_gestures(swipe):
         return swipe
     # Insufficient Funds screen
     if insufficient_funds:
-        if swipe is LEFT_SWIPE:
+        if swipe == LEFT_SWIPE:
             display_main_menu()
         return swipe
     # Invalid PIN Screen
     if invalid_pin_msg:
-        if swipe is LEFT_SWIPE:
+        if swipe == LEFT_SWIPE:
             gesture_pin_menu()
-        return key
+        return swipe
             
 
 # Define method for pin entry screen.
@@ -660,8 +638,15 @@ def clear():
         gesture_pin_menu()
 
 
-# Entry point to initiate the program for execution    
-if __name__ == '__main__':
+# Main function for ATM to launch model and interface
+def main():
+    global keyListener, root
     root = Tk()
+    keyListener = test_model.main()
     gui = Atm(root)
     root.mainloop()
+    
+
+# Entry point to initiate the program for execution    
+if __name__ == '__main__':
+    main()
