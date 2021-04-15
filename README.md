@@ -46,13 +46,13 @@ Russell Smith</br>
 
   > QT-7 
 
-  <p align="center"><img src="media/qt-7.jpeg" width="200">
+  <p align="center"><img src="media/qt-7.jpeg" width="201">
 
   After the QT-7, Bob tipped us off to a friend's company of his that designs paint that is electronically conductive and could potentially detect proximity of a user's hand. Once we realized this; the next iteration of design is the proximity sensor pictured below.
 
   > Original Sensor Design
 
-  // PICTURE OF ORIGINAL PROXIMITY PAINT SENSOR
+  <p align="center"><img src="media/original_design.jpeg" width="200">
 
   When we started testing and applying Machine Learning to the data being produced from the sensor above, we were unable to get a sufficiently accurate classification model. With both the QT-7 and this new 4-sensor board, the delta values were inconsistent between sessions. Additionally, they would sometimes hold a charge and render the data processing dysfunctional as it relied on a delta threshold being exceeded. When a charge was held, the output data no longer reflected a standard gesture signature. Even when not holding a charge, though, we found the data of each gesture to be too similar to each other for accurate classification. The close proximity of the sensors and the lack of distinct gesture signatures in the output data led use to reach out to our sponsor, Bob, for a different design. Collectively, we discussed a series of designs for potential sensors. Below are the results of those design mockups.
 
