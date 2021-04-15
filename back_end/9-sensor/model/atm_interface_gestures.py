@@ -11,8 +11,6 @@ from pynput import keyboard
 from rx.subject import AsyncSubject
 from rx.core import Observable
 from rx.subject import Subject
-import sys
-sys.path.insert(1, '../../../database')
 import test_model, database_interface
 
 #DEBUG MODE - Set true to have debug comments in console.
@@ -263,6 +261,7 @@ def navigation_gestures(swipe):
                 display_gesture_deposit_prompt()
         if swipe == HOVER:
             deposit(acct_balance + int(amount_entered))
+            acct_balance = check_balance("123456789")
             transaction_message = "Deposit successful"
             amount_entered = ""
             another_trans_selection = TRANS_NO
