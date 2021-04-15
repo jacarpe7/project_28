@@ -7,7 +7,7 @@
 import sqlite3
 import os
 
-DB_PATH = os.path.abspath('back_end/9-sensor/model/bank_db')
+DB_PATH = os.path.abspath('bank_db')
 
 
 # In[15]:
@@ -24,6 +24,7 @@ def check_balance(uuid):
 
 
 def check_pin(uuid, pin):
+    print(DB_PATH)
     con = sqlite3.connect(DB_PATH)
     cur = con.cursor()
     cur.execute('SELECT * FROM userinfo WHERE uuid = (?) AND pin = (?)', (uuid,pin,))
