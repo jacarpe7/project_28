@@ -102,9 +102,10 @@ Now to discuss the front end portion of the project. To our surprise in our init
 <a name="notworked"/>
 
 ## Final Product
-<p align="center"><img src="media/final_project_gif.gif">
 
 > Pictured above is the finished product, demonstrating the complete use of the proximity sensor, a Python ATM front end, a machine learning powered backend, all connected to a seemless SQL database.
+
+<p align="center"><img src="media/final_project_gif.gif">
 
 <a name="nexttime"/>
 
