@@ -67,15 +67,9 @@ Russell Smith</br>
 
   In developing a machine learning model that works best for our application there were several choices of model types. Below is a list of models that we tested prior to landing on a LSTM (Long Term Short Memory Network) model.
 
-  - Linear Regression.
-  - Logistic Regression.
-  - Decision Tree.
-  - SVM.
-  - Naive Bayes.
-  - kNN.
-  - K-Means.
-  - Random Forest.
-  - LSTM.
+  - RNN
+  - GRU
+  - LSTM
 
   > In testing, below is a chart of the models compared to eachother with their accuracy rates:
 
