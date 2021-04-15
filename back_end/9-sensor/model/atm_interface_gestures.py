@@ -11,7 +11,9 @@ from pynput import keyboard
 from rx.subject import AsyncSubject
 from rx.core import Observable
 from rx.subject import Subject
-import test_model
+import sys
+sys.path.insert(1, '../../../database')
+import test_model, database_interface
 
 #DEBUG MODE - Set true to have debug comments in console.
 debug = True
@@ -67,9 +69,8 @@ TRANS_NO = 1
 # variables for capturing input & storing account balance
 deposit_type = ""
 pin_code = ""
-correct_pin = "1234"
 amount_entered = ""
-acct_balance = 280
+acct_balance = check_balance("123456789")
 transaction_message = None
 
 # Gesture listener
@@ -190,7 +191,7 @@ def navigation_gestures(swipe):
             if len(pin_code) < 4:
                 pin_code = pin_code + str(current)
                 gesture_pin_menu()
-            if pin_code == correct_pin:
+            if check_pin("123456789", pin_code):
                 pin_valid = True
                 main_menu_selection = CHECK_BAL
                 display_main_menu()
@@ -261,7 +262,7 @@ def navigation_gestures(swipe):
                     print(amount_entered + ' decrementing')
                 display_gesture_deposit_prompt()
         if swipe == HOVER:
-            acct_balance = acct_balance + int(amount_entered)
+            deposit(acct_balance + int(amount_entered))
             transaction_message = "Deposit successful"
             amount_entered = ""
             another_trans_selection = TRANS_NO
@@ -295,7 +296,8 @@ def navigation_gestures(swipe):
                 display_gesture_withdrawal_prompt()
         if swipe == HOVER:
             if int(amount_entered) <= int(acct_balance):
-                acct_balance = acct_balance - int(amount_entered)
+                withdraw(int(amount_entered))
+                acct_balance = check_balance("123456789")
                 transaction_message = "Please take your cash"
                 amount_entered = ""
                 another_trans_selection = TRANS_NO

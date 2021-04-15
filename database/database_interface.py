@@ -48,6 +48,12 @@ def withdraw(uuid, amount):
 
 # In[18]:
 
+def deposit(new_amount):
+    uuid = "123456789"
+    con = sqlite3.connect('bank_db')
+    cur = con.cursor()
+    cur.execute('UPDATE userinfo SET balance = (?) WHERE uuid= (?)', (new_amount, uuid,))
+    return
 
 #Example Functions
 print(check_pin("123456789", 1234))
