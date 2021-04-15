@@ -12,3 +12,4 @@ pysqlite3
 pynput
 rx
 tensorflow
+os

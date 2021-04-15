@@ -5,16 +5,13 @@
 
 
 import sqlite3
-import os
-
-DB_PATH = os.path.abspath('back_end/9-sensor/model/bank_db')
 
 
 # In[15]:
 
 
 def check_balance(uuid):
-    con = sqlite3.connect(DB_PATH)
+    con = sqlite3.connect('src/bank_db')
     cur = con.cursor()
     cur.execute('SELECT balance FROM userinfo WHERE uuid = (?)', (uuid,))
     return cur.fetchone()
@@ -24,7 +21,7 @@ def check_balance(uuid):
 
 
 def check_pin(uuid, pin):
-    con = sqlite3.connect(DB_PATH)
+    con = sqlite3.connect('/src/bank_db')
     cur = con.cursor()
     cur.execute('SELECT * FROM userinfo WHERE uuid = (?) AND pin = (?)', (uuid,pin,))
     return cur.fetchone()
@@ -35,7 +32,7 @@ def check_pin(uuid, pin):
 
 
 def withdraw(uuid, amount):
-    con = sqlite3.connect(DB_PATH)
+    con = sqlite3.connect('/src/bank_db')
     cur = con.cursor()
     cur.execute('SELECT balance FROM userinfo WHERE uuid = (?)', (uuid,))
     current_amount = cur.fetchone()[0]
@@ -51,12 +48,6 @@ def withdraw(uuid, amount):
 
 # In[18]:
 
-def deposit(new_amount):
-    uuid = "123456789"
-    con = sqlite3.connect(DB_PATH)
-    cur = con.cursor()
-    cur.execute('UPDATE userinfo SET balance = (?) WHERE uuid= (?)', (new_amount, uuid,))
-    return
 
 #Example Functions
 print(check_pin("123456789", 1234))
