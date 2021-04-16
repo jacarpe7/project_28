@@ -1,93 +1,129 @@
-import os
 import serial
-import platform
-import pandas as pd
-import numpy as np
+import threading
+import time
+from numpy import mean
+from numpy import std
 from numpy import dstack
-import tensorflow as tf
-from tensorflow import keras
+from pandas import read_csv
+import keras.models
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.layers import Flatten
+from keras.layers import Dropout
+from keras.layers import LSTM
+from keras.utils import to_categorical
+from matplotlib import pyplot
+from rx.core import Observable
+from rx.subject import Subject
+import atm_interface_gestures 
 
-# import model and display model summary
-model = tf.keras.models.load_model("lstm")
-# model.summary()
+def main():
+    model = keras.models.load_model("lstm", compile=True)
 
-# Need to define port according to your setup. Typical port name - Windows: 'COM3'  Mac: '/dev/tty.usbmodem12345'
-platform.system()
-if platform.system() == 'Windows':
-    port = 'COM3'
-else:
-    port = '/dev/tty.usbmodem2202'
+    # Need to define port according to your setup. Typical port name - Windows: 'COM3'  Mac: '/dev/tty.usbmodem12345'
+    serialPort = serial.Serial(port='COM3',baudrate=38400,bytesize=8,timeout=2,stopbits=serial.STOPBITS_ONE)
 
-serialPort = serial.Serial(port=port,baudrate=38400,bytesize=8,timeout=2,stopbits=serial.STOPBITS_ONE)
+    class Row:
+        def __init__(row, delta0, delta1, delta2, delta3, delta4):
+            row.delta0 = delta0
+            row.delta1 = delta1
+            row.delta2 = delta2
+            row.delta3 = delta3
+            row.delta4 = delta4
 
-# discard first line
-serialPort.readline()
+            
+    # discard first line
+    serialPort.readline()
 
-deltaMax = 0;
+    #list for each sensor
+    list0 = list()
+    list1 = list()
+    list2 = list()
+    list3 = list()
+    list4 = list()
+    list5 = list()
+    list6 = list()
+    subject = Subject()
 
-print("Ready for gesture testing.\n")
+    # atm_interface_gestures.main()
+    # atm_interface_gestures.gestureListener(output)
+    def loopChecker():
+        i = 0
+        q = 0
+        queue = []
+        
+        output = -1
+        while (1):
+            parseLine = serialPort.readline().decode('utf-8').split(",")
+            deltas = [parseLine[1], parseLine[2], parseLine[3], parseLine[4], parseLine[5]]
+            
+            if q < 6:
+                queue.append(Row(parseLine[1], parseLine[2], parseLine[3], parseLine[4], parseLine[5]))
+                q += 1 
+            
+            else:
+                queue.pop(0)
+                queue.append(Row(parseLine[1], parseLine[2], parseLine[3], parseLine[4], parseLine[5]))
+                # convert string array to int array
+                map(int, deltas)
+                # grab max delta value
+                max_value = max(deltas)
+                # if max delta value exceeds threshold, read in data to get gesture 'data signature'
+                if int(max_value) >= 20:
+                    for obj in queue:
+                        list0.append(int(obj.delta0))
+                        list1.append(int(obj.delta1))
+                        list2.append(int(obj.delta2))
+                        list3.append(int(obj.delta3))
+                        list4.append(int(obj.delta4))
 
-while (1):
-    
-    queue = [[],[],[],[],[]]
+                    for x in range(40):
+                        parseLine = serialPort.readline().decode('utf-8').split(",")
+                        list0.append(int(parseLine[1]))
+                        list1.append(int(parseLine[2]))
+                        list2.append(int(parseLine[3]))
+                        list3.append(int(parseLine[4]))
+                        list4.append(int(parseLine[5]))
 
-    # for repeat iterations, checks for maximum delta level before processing
-    parseLine = serialPort.readline().decode('utf-8').split(",")
-    # for maximum delta monitoring, omit time and newline values from parseLine
-    deltas = [parseLine[1], parseLine[2], parseLine[3], parseLine[4], parseLine[5]]
-    deltaMax = max(map(int, deltas))
 
-    # holding loop until all sensors are below 20
-    while deltaMax > 20:
-        parseLine = serialPort.readline().decode('utf-8').split(",")
-        # for maximum delta monitoring, omit time and newline values from parseLine
-        deltas = [parseLine[1], parseLine[2], parseLine[3], parseLine[4], parseLine[5]]
-        deltaMax = max(map(int, deltas))
+                    i += 1
 
-    # populates queue
-    for _ in range(20):
-        parseLine = serialPort.readline().decode('utf-8').split(",")
-        for a in range(5):
-            # a+1 as the first output, a[0], is a counter
-            queue[a].append(int(parseLine[a+1]))
+                    # prepare data for model interpretation
+                    data = list()
+                    data.append(list0)
+                    data.append(list1)
+                    data.append(list2)
+                    data.append(list3)
+                    data.append(list4)
 
-    while deltaMax < 20:
-        parseLine = serialPort.readline().decode('utf-8').split(",")
-        # for maximum delta monitoring, omit time and newline values from parseLine
-        deltas = [parseLine[1], parseLine[2], parseLine[3], parseLine[4], parseLine[5]]
-        deltaMax = max(map(int, deltas))
-        for a in range(5):
-            queue[a].pop(0)
-            queue[a].append(int(parseLine[a+1]))
+                    data = dstack(data)
 
-    # reset deltaMax value
-    deltaMax = 0
-    for x in range(30):
-        parseLine = serialPort.readline().decode('utf-8').split(",")
-        for a in range(5):
-            queue[a].append(int(parseLine[a+1]))
-    
-    testArr = list()
-    for a in range(5):
-        testArr.append(queue[a])
+                    # model classification of activity
+                    
 
-    testArr = dstack(testArr)
+                    output = model.predict_classes(data)
+                    print("Output: " + str(output))
+                    
+                    subject.on_next(output)
 
-    prediction = model.predict_classes(testArr)
-    print("Gesture prediction: " + str(prediction))
+                    # clear data for next run
+                    list0.clear()
+                    list1.clear()
+                    list2.clear()
+                    list3.clear()
+                    list4.clear()
 
-    # # Test for what result of prediction was
-    # switch (prediction[0]) {
-    #     case 1: print('swipe left');
-    #         break;
-    #     case 2: print('swipe right');
-    #         break;
-    #     case 3: print('swipe up');
-    #         break;
-    #     case 4: print('select');
-    #         break;
-    #     default: print('unknown selection {}'.format(prediction[0]));
-    #         break;
-    # }
-           
-serialPort.close()
+                    q = 0
+                    deltas.clear()
+                    queue.clear()
+
+                else:
+                    q += 1 
+
+        serialPort.close()
+
+    t1 = threading.Thread(target=loopChecker)
+    t1.daemon = True
+    t1.start()
+    print("returning subject")
+    return subject
