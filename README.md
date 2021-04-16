@@ -138,6 +138,6 @@ The requirements are straightforward, on your computer you need an updated worki
 ## Setup and Run
 Included in this repo is pip requirements file. By running the following command in your terminal;
 
-`pip install -r pip_requirements.txt && python back_end/9-sensor/model/atm_interface_v1.py`
+`pip install -r pip_requirements.txt && python back_end/9-sensor/model/atm_interface_gestures.py`
 
 
