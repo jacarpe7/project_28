@@ -5,8 +5,8 @@ proximity sensor gesture recognition.
 Created on Jan 27 2021
 @author: Josh Carpenter, Michael Frederic
 """
-
-from tkinter import Tk, Frame, Button, Text, SUNKEN, DISABLED, NORMAL, END
+import os
+from tkinter import Tk, Frame, Button, Text, SUNKEN, DISABLED, NORMAL, END, PhotoImage
 from pynput import keyboard
 from rx.subject import AsyncSubject
 from rx.core import Observable
@@ -120,6 +120,13 @@ class Atm:
         self.root = root    
         root.title("ASU Capstone ATM Simulator")
         root.geometry("650x525")
+      
+        # ASU logo image
+        base_folder = os.path.dirname(__file__)
+        image_path = os.path.join(base_folder, 'asu_pitchfork.png')
+        global asuLogo
+        asuLogo = PhotoImage(file=image_path)
+
 
         # Create the main frames for the various sections on the UI
         center_frame = Frame(root, width=400, height=500, relief=SUNKEN)
@@ -150,7 +157,8 @@ class Atm:
         root.main_lcd.tag_configure("center_selected", \
             justify='center', font="fixedsys 20", foreground = "blue")
         
-        root.main_lcd.insert("1.0", "\n\n\n\nWelcome to the ASU ATM System\n")
+        root.main_lcd.image_create("1.0", image=asuLogo)
+        root.main_lcd.insert("2.0", "\nWelcome to the ASU ATM System\n")
         root.main_lcd.insert(END, "\n\nHover to begin")
         root.main_lcd.tag_add("center", "1.0", "end")
         root.main_lcd.grid(row=0, column=0, padx=5, pady=(25, 5))
@@ -469,7 +477,8 @@ def display_initial_screen():
     cancel_prompt = False
     root.main_lcd.config(state=NORMAL)
     root.main_lcd.delete("1.0", END)
-    root.main_lcd.insert("1.0", "\n\n\n\nWelcome to the ASU ATM System\n")
+    root.main_lcd.image_create("1.0", image=asuLogo)
+    root.main_lcd.insert("2.0", "\nWelcome to the ASU ATM System\n")
     root.main_lcd.insert(END, "\n\nHover to begin")
     root.main_lcd.tag_add("center", "1.0", "end")
     root.main_lcd.config(state=DISABLED)
