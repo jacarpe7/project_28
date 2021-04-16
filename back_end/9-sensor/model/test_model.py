@@ -11,9 +11,11 @@ from tensorflow import keras
 from rx.core import Observable
 from rx.subject import Subject
 
+LSTM_P = os.path.abspath('lstm')
+
 def main():
     # import model and display model summary
-    model = tf.keras.models.load_model("lstm")
+    model = tf.keras.models.load_model(LSTM_P)
     # model.summary()
 
     # Need to define port according to your setup. Typical port name - Windows: 'COM3'  Mac: '/dev/tty.usbmodem12345'
