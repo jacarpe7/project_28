@@ -9,3 +9,7 @@ scipy==1.6.1
 sklearn==0.0
 tf==1.0.0
 pysqlite3
+pysqlite3
+pynput
+rx
+tensorflow
